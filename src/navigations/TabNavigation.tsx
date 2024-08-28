@@ -1,11 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AboutStackScreen } from '../screens/About';
+import { TimerStackScreen } from '../screens/Timer';
 import { PreferenceStackScreen } from '../screens/Preferences';
-import {CreateReflectionStackScreen} from '../screens/CreateReflection';
+import { StopWatchStackScreen } from '../screens/StopWatch';
 import { AlarmStackScreen } from '../screens/Alarm';
-import { SuggestionsStackScreen } from '../screens/Suggestions';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ClockStackScreen } from '../screens/Clock';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const screenConfig = { header: () => null };
 
@@ -28,15 +28,15 @@ export default (() => {
             };
           }
           if (route.name === 'alarm') {
-            return <MaterialCommunityIcon name='alarm' style={activeIconStyle} color={color} size={size} />;
+            return <Ionicons name='alarm' style={activeIconStyle} color={color} size={size} />;
           } else if (route.name === 'timer') {
-            return <MaterialCommunityIcon name='pencil-outline' style={activeIconStyle} color={color} size={size} />;
+            return <Ionicons name='timer' style={activeIconStyle} color={color} size={size} />;
           } else if (route.name === 'clock') {
-            return <MaterialCommunityIcon name='cog-outline' style={activeIconStyle} color={color} size={size} />;
+            return <Ionicons name='time' style={activeIconStyle} color={color} size={size} />;
           } else if (route.name === 'stopwatch') {
-            return <MaterialCommunityIcon name='brain' style={activeIconStyle} color={color} size={size} />;
+            return <Ionicons name='stopwatch' style={activeIconStyle} color={color} size={size} />;
           } else if (route.name === 'pref') {
-            return <MaterialCommunityIcon name='information-variant' style={activeIconStyle} color={color} size={size} />
+            return <Ionicons name='cog' style={activeIconStyle} color={color} size={size} />
           }
         },
         tabBarShowLabel: false,
@@ -54,10 +54,10 @@ export default (() => {
       })}
       >
       <Tab.Screen name='alarm' component={AlarmStackScreen} options={{ ...screenConfig }} />
-      <Tab.Screen name='timer' component={SuggestionsStackScreen} options={{ tabBarBadge: 1, ...screenConfig }} />
-      <Tab.Screen name='clock' component={CreateReflectionStackScreen} options={{ ...screenConfig }}  />
-      <Tab.Screen name='stopwatch' component={PreferenceStackScreen} options={{ ...screenConfig }} />
-      <Tab.Screen name='pref' component={AboutStackScreen} options={{ ...screenConfig }} />
+      <Tab.Screen name='timer' component={TimerStackScreen} options={{ tabBarBadge: 1, ...screenConfig }} />
+      <Tab.Screen name='clock' component={ClockStackScreen} options={{ ...screenConfig }}  />
+      <Tab.Screen name='stopwatch' component={StopWatchStackScreen} options={{ ...screenConfig }} />
+      <Tab.Screen name='pref' component={PreferenceStackScreen} options={{ ...screenConfig }} />
     </Tab.Navigator>
   );
 });

@@ -9,6 +9,38 @@ export interface Alarm {
   interval: string[];
 }
 
+
+export type ThemeType = 'system'|'dark'|'light';
+
+export interface Lap {
+  lapTime: number;
+  overallTime: number;
+};
+
+export interface StopWatchObj {
+  laps: Lap[];
+  timestamp: number;
+  isPaused: boolean;
+}
+
+export interface TimeStamp {
+  hours:number;
+  minutes: number;
+  seconds: number;
+  milliseconds: number;
+}
+
+export interface DropdownOption {
+  label: string,
+  value: any
+}
+export interface Preferences {
+  theme: ThemeType,
+  notificationEnabled: boolean,
+  language: string,
+  notificationSound: string
+};
+
 export interface ScreenWithNavigation {
   navigation: NavigationProp<ParamListBase>;
   route: NavigatorScreenParams<any>;

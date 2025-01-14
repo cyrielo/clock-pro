@@ -8,7 +8,7 @@ type SectionProps = PropsWithChildren< {
 const Section = ({ title }: SectionProps) => {
   return (
   <View style={{ marginVertical: 20 }}>
-    <Text style={{ fontSize: 20, fontWeight: '400' }}>
+    <Text style={{ fontSize: 18, fontWeight: '400' }}>
       {title }
     </Text>
   </View>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { ReactNode, RefObject } from 'react';
+import { View } from 'react-native';
 import Button from './Button';
 import { COLORS } from '../constants/colors';;
 import Ionicons from '@react-native-vector-icons/ionicons';
@@ -7,40 +7,68 @@ import { ClockValueStyle } from '../assets/styles/AppStyle';
 import {StopWatchStore} from '../store';
 import { Lap, StopWatchObj } from '../interfaces';
 import { observer } from 'mobx-react-lite';
+import { getTimeObj } from '../utils/stringUtils';
 
-const togglePlay = () => {
+const togglePlay = (stopWatchFaceHandle: RefObject<ReactNode | null>) => {
   if (StopWatchStore.isPaused){
     StopWatchStore.setStopWatch({ isPaused: false } as StopWatchObj);
   } else {
+    // @ts-ignore
+    const currentTimetamp = stopWatchFaceHandle.current.getTimeStamp();
+    StopWatchStore.pause(currentTimetamp);
     StopWatchStore.setStopWatch({ isPaused: true } as StopWatchObj);
   }
 };
 
-const addLap = () => {
-  const {laps, timestamp, setStopWatch} = StopWatchStore;
-  const prevLap = laps[laps.length - 1]; 
-  const prevLapTime = (prevLap) ? (timestamp - prevLap.overallTime) : timestamp;
-  const lap: Lap = { lapTime: prevLapTime, overallTime: timestamp };
-  setStopWatch({ laps: [...laps, lap] } as StopWatchObj);
+const resetTimer = (stopWatchFaceHandle: RefObject<ReactNode|null>) => {
+  StopWatchStore.reset();
+  // @ts-ignore
+  stopWatchFaceHandle.current.setTimeStamp(0);
+}
+
+const addLap = (stopWatchFaceHandle: RefObject<ReactNode|null>) => {
+  if (stopWatchFaceHandle) {
+    if (stopWatchFaceHandle.current) {
+      // @ts-ignore
+      const currentTimetamp = stopWatchFaceHandle.current.getTimeStamp();
+      const { laps } = StopWatchStore;
+      const prevLap = laps[laps.length - 1];
+      const prevLapTime = (prevLap) ? (currentTimetamp - prevLap.overallTime) : currentTimetamp;
+      const lap: Lap = { lapTime: prevLapTime, overallTime: currentTimetamp };
+      StopWatchStore.setStopWatch({ laps: [...StopWatchStore.laps, lap] } as StopWatchObj);
+    }
+  }
+
 };
 
-const LapControlView = observer(() => {
+interface LapControlViewProps {
+  stopWatchFaceHandle: RefObject<ReactNode|null>;
+}
+
+const LapControlView = observer(({stopWatchFaceHandle}: LapControlViewProps) => {
   return (
-    <View style={{ marginTop: 20, height: 65 }}>
+    <View style={{
+      marginTop: 20,
+      position: 'absolute',
+      width: '100%',
+      bottom: 0,
+      height: 65,
+
+      }}>
       <View style={{ ...ClockValueStyle.controlsBTNgrp }}>
-        <Button onPress={() => StopWatchStore.reset()}
+        <Button onPress={() => resetTimer(stopWatchFaceHandle)}
           style={{ ...ClockValueStyle.controlsBTN }}>
           <Ionicons name='stop' size={24} />
         </Button>
         <Button
-          onPress={() => togglePlay()}
+          onPress={() => togglePlay(stopWatchFaceHandle)}
           style={{ ...ClockValueStyle.controlsBTN, backgroundColor: COLORS.Blue1 }}>
           <Ionicons
             name={StopWatchStore.isPaused ? 'play' : 'pause'}
             color={COLORS.Light} size={24} />
         </Button>
         <Button 
-          onPress={() => addLap()}
+          onPress={() => addLap(stopWatchFaceHandle)}
           style={{ ...ClockValueStyle.controlsBTN }}>
           <Ionicons name='play-skip-forward-sharp' size={24} />
         </Button>

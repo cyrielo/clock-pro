@@ -2,7 +2,7 @@ import {runInAction, makeAutoObservable} from 'mobx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Lap, StopWatchObj, TimeStamp } from '../interfaces';
 
-export default class Stopwatch implements StopWatchObj {
+export default class StopwatchStore implements StopWatchObj {
 
   laps:Lap[] = [];
   timestamp = 0;
@@ -18,16 +18,21 @@ export default class Stopwatch implements StopWatchObj {
 
 
   async setStopWatch(stopWatchObj:StopWatchObj) {
-    runInAction(() => {
-      Object.assign(this, stopWatchObj);
-    });
+    Object.assign(this, stopWatchObj);
+  }
+
+  setTimestamp(timeStamp:number) {
+    runInAction(() => this.timestamp = timeStamp);
   }
 
   async reset() {
-    this.laps = [];
-    this.timestamp = 0;
-    this.isPaused = true;
-    this.saveStopWatchObj();
+    runInAction(() => {
+      this.laps = [];
+      this.timestamp = 0;
+      this.isPaused = true;
+      this.saveStopWatchObj();
+    })
+
   }
 
   private async getStopWatchObj(): Promise<StopWatchObj> {
@@ -55,9 +60,12 @@ export default class Stopwatch implements StopWatchObj {
     }
   }
 
-  async pause(timestamp:number) {
+  async pause(timestamp:number, cb?: Function) {
     runInAction(() => {
       this.timestamp = timestamp;
+      if (typeof cb == 'function') {
+        cb(timestamp);
+      }
     });
     this.saveStopWatchObj();
   }

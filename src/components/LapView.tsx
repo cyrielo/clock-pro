@@ -62,7 +62,7 @@ const LapView = observer(({style}: LapViewProps) => {
                   {overallTime.hours ? `${overallTime.hours}h `:''}
                   {overallTime.minutes ? `${overallTime.minutes}m ` : ''}
                   {overallTime.seconds ? `${overallTime.seconds}s ` : ''}
-                  {overallTime.milliseconds ? `${overallTime.seconds}ms ` : ''}
+                  {overallTime.milliseconds ? `${overallTime.milliseconds}ms ` : ''}
                 </Text>
               </View>
               <View style={{ flex: 1, }}>
@@ -70,7 +70,7 @@ const LapView = observer(({style}: LapViewProps) => {
                   {lapTime.hours ? `${lapTime.hours}h ` : ''}
                   {lapTime.minutes ? `${lapTime.minutes}m ` : ''}
                   {lapTime.seconds ? `${lapTime.seconds}s ` : ''}
-                  {lapTime.milliseconds ? `${lapTime.seconds}ms ` : ''}
+                  {lapTime.milliseconds ? `${lapTime.milliseconds}ms ` : '0ms'}
                 </Text>
               </View>
               <View style={{ flex: 1, }}>

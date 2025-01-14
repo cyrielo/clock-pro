@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle} from 'react';
 import { View, Text } from 'react-native';
 import { CircularCard } from '../components/Card';
 import { ClockValueStyle } from '../assets/styles/AppStyle';
@@ -6,13 +6,20 @@ import Separator from './Seperator';
 import { getTimeObj } from '../utils/stringUtils';
 import { StopWatchStore } from '../store';
 import { observer } from 'mobx-react-lite';
-import { StopWatchObj } from '../interfaces';
 
-const StopwatchFace = observer(() => {
-  const { isPaused, timestamp:prevTimeStamp } = StopWatchStore;
+const StopwatchFace = observer(forwardRef((_, ref) => {
+  const { isPaused, timestamp: prevTimeStamp } = StopWatchStore;
   const [timestamp, setTimeStamp] = useState(prevTimeStamp);
-  const interval = useRef<NodeJS.Timeout|number|undefined>(0);
-  const INTERVAL_STEP = 112;
+  useImperativeHandle(ref, () => ({
+    getTimeStamp: () => {
+      return timestamp;
+    },
+    setTimeStamp: (timestamp:number) => {
+      setTimeStamp(timestamp);
+    }
+  }));
+  const interval = useRef<NodeJS.Timeout | number | undefined>(0);
+  const INTERVAL_STEP = 93;
 
   useEffect(() => {
     if (!isPaused) {
@@ -22,7 +29,6 @@ const StopwatchFace = observer(() => {
     } else {
       clearInterval(interval.current);
       interval.current = undefined;
-      StopWatchStore.setStopWatch({ timestamp } as StopWatchObj);
     }
     return () => {
       if (interval.current) {
@@ -30,8 +36,9 @@ const StopwatchFace = observer(() => {
       }
     }
   }, [isPaused]);
+
   return (
-    <CircularCard style={{ marginTop: 10, paddingHorizontal: 10}}>
+    <CircularCard style={{ marginTop: 10, paddingHorizontal: 10 }}>
       <View style={{ marginVertical: 10 }}>
         <Text style={{ ...ClockValueStyle.title }}>STOPWATCH</Text>
       </View>
@@ -71,12 +78,12 @@ const StopwatchFace = observer(() => {
       </View>
       <View style={{ marginVertical: 15, }}>
         <Text style={{ ...ClockValueStyle.labels }}>
-          {StopWatchStore.isPaused ? 'Paused': ''}
+          {StopWatchStore.isPaused ? 'Paused' : ''}
         </Text>
       </View>
     </CircularCard>
   )
-});
+}));
 StopwatchFace.displayName = 'StopwatchFace';
 
 export default StopwatchFace;

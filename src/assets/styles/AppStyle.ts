@@ -13,13 +13,13 @@ export default StyleSheet.create({
 
 export const ClockValueStyle = StyleSheet.create({
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500',
   },
   separator: {
     marginRight: 10,
     textAlign: 'center',
-    fontSize: 28,
+    fontSize: 17,
     fontWeight: 300
   },
   values: {
@@ -29,7 +29,7 @@ export const ClockValueStyle = StyleSheet.create({
   },
   labels: {
     fontWeight: 400,
-    fontSize: 15,
+    fontSize: 14,
     textAlign: 'center',
     color: '#6c757d',
   },

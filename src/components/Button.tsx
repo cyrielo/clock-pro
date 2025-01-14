@@ -6,7 +6,7 @@ type ButtonProps = PropsWithChildren<{
   disabled?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
-  onPress?: () => {};
+  onPress?: () => any;
 }>
 
 const Button = ({ style, disabled = false, textStyle, children, onPress }:  ButtonProps) : React.JSX.Element => {

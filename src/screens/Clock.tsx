@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { format,} from 'date-fns';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
@@ -14,10 +14,12 @@ import { observer } from 'mobx-react-lite';
 import { useNavigation } from '@react-navigation/native';
 import { ClockStore } from '../store';
 import { FLOATING_FOOTER_HEIGHT, SPACING } from '../constants';
+import { fromZonedTime } from 'date-fns-tz';
 
 
 interface DateTimeProps extends PropsWithChildren {
   date: Date;
+  timezone: string;
 }
 
 const ClockStyle = StyleSheet.create({
@@ -44,9 +46,18 @@ const ClockStyle = StyleSheet.create({
   }
 });
 
-const DateTime = ({date} : DateTimeProps) =>{
+const DateTime = ({timezone} : DateTimeProps) => {
+  const [date, setDate] = useState(fromZonedTime(new Date(), timezone));
   const dateStr = `${format(date, 'EE, LLL dd yyy')}`;
   const timeStr = `${format(date, 'hh : mm aa')}`;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDate(fromZonedTime(new Date(), timezone));
+    }, (1000 * 30));
+    return (() => {
+      clearInterval(interval);
+    });
+  }, [])
   return (
     <View>
       <View style={ClockStyle.digitalClockContainer}>
@@ -103,7 +114,7 @@ const Clock = observer(({ navigation }:any) => {
                 color: 'teal',
                 fontWeight: 500
               }}>Local Time</Text>
-              <DateTime date={new Date()} />
+              <DateTime date={new Date()} timezone={ClockStore.localTimezone} />
             </View>
             <View style={{}}>
               <AnalogClock />

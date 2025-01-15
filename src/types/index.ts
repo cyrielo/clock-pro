@@ -12,13 +12,15 @@ export interface Alarm {
 
 export type ThemeType = 'system'|'dark'|'light';
 
-export type Timezone = {
+export type Place = {
   location: string;
   timeZone: string;
   flag: string;
-  hoursDiff: number;
-  date: Date;
-  isDaytime: boolean;
+  hoursDiff?: number;
+  code: string;
+  utcOffset: number;
+  dstOffset: number;
+  isDaytime?: boolean;
   isDayLight: boolean;
 };
 

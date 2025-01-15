@@ -17,7 +17,7 @@ import AlarmCard from '../components/AlarmCard';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {observer} from 'mobx-react-lite';
 import { AlarmStore } from '../store/';
-import { ScreenWithNavigation } from '../interfaces/index';
+import { ScreenWithNavigation } from '../types/index';
 
 
 const Alarm = observer(({navigation} :ScreenWithNavigation) => {

@@ -1,6 +1,6 @@
 import { makeObservable, observable, action, runInAction } from 'mobx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alarm } from '../interfaces';
+import { Alarm } from '../types';
 
 export default class AlarmStore {
 

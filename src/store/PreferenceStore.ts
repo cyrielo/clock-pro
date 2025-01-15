@@ -1,6 +1,6 @@
 import {runInAction, makeAutoObservable} from 'mobx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Preferences } from '../interfaces/';
+import { Preferences } from '../types';
 export default class PreferenceStore {
 
   preferences: Preferences = {

@@ -1,4 +1,4 @@
-import { TimeStamp } from "../interfaces";
+import { TimeStamp } from "../types";
 
 export const upperCaseFirst = (str:string): string  => {
   return str.charAt(0).toLocaleUpperCase() + str.slice(1);

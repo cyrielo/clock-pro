@@ -12,7 +12,17 @@ export interface Alarm {
 
 export type ThemeType = 'system'|'dark'|'light';
 
-export interface Lap {
+export type Timezone = {
+  location: string;
+  timeZone: string;
+  flag: string;
+  hoursDiff: number;
+  date: Date;
+  isDaytime: boolean;
+  isDayLight: boolean;
+};
+
+export type Lap = {
   lapTime: number;
   overallTime: number;
 };

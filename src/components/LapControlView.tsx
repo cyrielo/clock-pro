@@ -5,7 +5,7 @@ import { COLORS } from '../constants/colors';;
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { ClockValueStyle } from '../assets/styles/AppStyle';
 import {StopWatchStore} from '../store';
-import { Lap, StopWatchObj } from '../interfaces';
+import { Lap, StopWatchObj } from '../types';
 import { observer } from 'mobx-react-lite';
 import { getTimeObj } from '../utils/stringUtils';
 

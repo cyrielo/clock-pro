@@ -82,7 +82,7 @@ export const TimerStackScreen = () => {
   return (
     <TimerStackNavigator.Navigator>
       <TimerStackNavigator.Screen
-        name="About" options={{ header: () => null }}>
+        name="Timer" options={{ header: () => null }}>
         {(props: any) => <Timer {...props} />}
       </TimerStackNavigator.Screen>
     </TimerStackNavigator.Navigator>

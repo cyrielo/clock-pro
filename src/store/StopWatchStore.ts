@@ -1,6 +1,6 @@
 import {runInAction, makeAutoObservable} from 'mobx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Lap, StopWatchObj, TimeStamp } from '../interfaces';
+import { Lap, StopWatchObj, TimeStamp } from '../types';
 
 export default class StopwatchStore implements StopWatchObj {
 

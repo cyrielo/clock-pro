@@ -1,4 +1,4 @@
-import { ThemeType, DropdownOption } from "../interfaces";
+import { ThemeType, DropdownOption } from "../types";
 
 export const USER_KEY = 'USER_KEY__reflection';
 export const THEMES: DropdownOption[] = [{

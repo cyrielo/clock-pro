@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Button,  } from 'react-native';
 import RNDateTimePicker, { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { ScreenWithNavigation } from '../interfaces';
+import { ScreenWithNavigation } from '../types';
 import ScrollPicker from 'react-native-wheel-scrollview-picker';
 
 const AlarmDetail = ({navigation, route} : ScreenWithNavigation) => {

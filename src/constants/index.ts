@@ -1,6 +1,8 @@
 import { ThemeType, DropdownOption } from "../types";
 
 export const USER_KEY = 'USER_KEY__reflection';
+export const FLOATING_FOOTER_HEIGHT = 100;
+export const SPACING = 70;
 export const THEMES: DropdownOption[] = [{
   label: 'System',
   value: 'system' as ThemeType

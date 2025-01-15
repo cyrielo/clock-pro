@@ -1,26 +1,28 @@
-import { Timezone } from 'countries-and-timezones';
 import React from 'react';
-import { View, FlatList, Text, Image} from 'react-native';
-import Ionicon from '@react-native-vector-icons/ionicons';
+import { View, FlatList, Text, Image, TouchableOpacity} from 'react-native';
+import MaterialIcon from '@react-native-vector-icons/material-design-icons';
 import { observer } from 'mobx-react-lite';
-import { ClockStore } from '../store/';
 import { formatInTimeZone, getTimezoneOffset } from 'date-fns-tz'
+import { Place } from '../types';
+import { ClockStore } from '../store';
 
 interface TimeZoneProps {
-  
+  data: Place[];
+  localTimezone: string;
 }
-const TimeZones = observer(({}: TimeZoneProps) => {
+const TimeZones = observer(({ data, localTimezone }: TimeZoneProps) => {
   const date = new Date();
 
   const calcOffset = (timezone:string, date:Date) :string => {
-    const localOffset = getTimezoneOffset(ClockStore.localTimezone, date) / 3600000;
+    const localOffset = getTimezoneOffset(localTimezone, date) / 3600000;
     const offset = getTimezoneOffset(timezone, date) / 3600000;
     const diff = Math.abs(localOffset - offset);
+    if (localOffset == offset) {return ''};
     return (localOffset > offset) ? `- ${diff} hours` : `+ ${diff} hours`;
   }
   return (
     <FlatList
-      data={ClockStore.favorites}
+      data={data}
       style={{}}
       showsVerticalScrollIndicator={false}
       renderItem={({item, index}) => {
@@ -38,7 +40,13 @@ const TimeZones = observer(({}: TimeZoneProps) => {
               borderBottomWidth: 0.3,
               borderBottomColor: 'rgba(0,0,0,0.3)',
             }}>
-            <View style={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{
+              display: 'flex',
+              flex: 2,
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginRight: 15,
+              }}>
             <Image
               height={18}
               width={18}
@@ -46,7 +54,9 @@ const TimeZones = observer(({}: TimeZoneProps) => {
               source={{ uri: item.flag }}
             />
             <View style={{ marginLeft: 5 }}>
-              <Text style={{ fontSize: 14 }}>{item.location}</Text>
+              <Text style={{ fontSize: 14 }}>
+                  {`${item.location}, ${item.country}`}
+                </Text>
                 <Text style={{ fontSize: 12 }}>
                   {
                     `${formatInTimeZone(date, item.timeZone, 'EE, LLL dd')}`
@@ -54,11 +64,27 @@ const TimeZones = observer(({}: TimeZoneProps) => {
                 </Text>
             </View>
           </View>
-            <View style={{ flex: 1,}}>
-            <Ionicon
-                color={item.isDayLight ? 'gold' : 'grey'}
-                name={item.isDayLight ? 'sunny' : 'moon'}
-              size={28} />
+            <View style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (item.isFave) {
+                    ClockStore.removeFavorite(item);
+                  } else {
+                    ClockStore.addFavorite(item);
+                  }
+                }}>
+                <MaterialIcon
+                  name={(item.isFave) ? 'heart-circle' : 'heart-plus-outline'}
+                  color={(item.isFave) ? 'red' : 'grey' }
+                  size={22}
+                />
+              </TouchableOpacity>
           </View>
           <View style={{
             display: 'flex',

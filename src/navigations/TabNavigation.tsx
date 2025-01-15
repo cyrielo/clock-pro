@@ -5,7 +5,6 @@ import { PreferenceStackScreen } from '../screens/Preferences';
 import { StopWatchStackScreen } from '../screens/StopWatch';
 import { AlarmStackScreen } from '../screens/Alarm';
 import { ClockStackScreen } from '../screens/Clock';
-import AlarmDetail from '../screens/ManageAlarm';
 import Ionicons from '@react-native-vector-icons/ionicons';
 
 export const screenConfig = { header: () => null };

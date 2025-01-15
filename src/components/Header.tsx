@@ -1,10 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ViewProps } from 'react-native';
-import ButtonPicture from './ButtonPicture';
 import Ionicon from '@react-native-vector-icons/ionicons';
-import Droppable from './Droppable';
 //@ts-ignore
-import GuestProfilePhoto from '../assets/img/image.png';
 const HeaderStyles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
@@ -20,7 +17,7 @@ const HeaderStyles = StyleSheet.create({
 type HeaderProps = {
   hasAdd?: boolean;
   title?: string;
-  onAdd?: () => any;
+  onAdd?: Function;
 } & ViewProps
 
 const Header = ({ hasAdd = true, title, onAdd }: HeaderProps) => {

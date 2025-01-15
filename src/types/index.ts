@@ -18,6 +18,9 @@ export type Place = {
   flag: string;
   hoursDiff?: number;
   code: string;
+  country: string;
+  continent:string;
+  isFave?: boolean;
   utcOffset: number;
   dstOffset: number;
   isDaytime?: boolean;

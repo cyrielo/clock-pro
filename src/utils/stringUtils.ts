@@ -5,6 +5,7 @@ export const upperCaseFirst = (str:string): string  => {
 };
 
 export const getTimeObj = (timestamp:number):TimeStamp => {
+  if (!timestamp || timestamp < 0) {return {} as TimeStamp};
   const hours = Math.floor(timestamp / 3600000); // 3600000 ms in 1 hour
   const minutes = Math.floor((timestamp % 3600000) / 60000); // 60000 ms in 1 minute
   const seconds = Math.floor((timestamp % 60000) / 1000); // 1000 ms in 1 second

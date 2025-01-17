@@ -11,7 +11,12 @@ export interface Alarm {
 
 
 export type ThemeType = 'system'|'dark'|'light';
-
+export type Timer = {
+  isPaused:boolean;
+  isSilent:boolean;
+  color:string;
+  duration:number;
+};
 export type Place = {
   location: string;
   timeZone: string;

@@ -13,6 +13,8 @@ export interface Alarm {
 export type ThemeType = 'system'|'dark'|'light';
 export type Timer = {
   isPaused:boolean;
+  label:string;
+  sound:string;
   isSilent:boolean;
   color:string;
   duration:number;

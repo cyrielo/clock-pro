@@ -32,6 +32,9 @@ export const LANGUAGES: DropdownOption[] = [{
   value: 'fr'
 }];
 export const NotificationSounds: DropdownOption[] = [{
+  label: 'Silent',
+  value: 'silent'
+},{
   label: 'Default',
   value: '/path/to/default_sound'
 },{

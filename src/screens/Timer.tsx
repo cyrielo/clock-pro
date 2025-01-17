@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { View, Text,  Dimensions, TouchableOpacity, Modal, Button } from 'react-native';
+import { View, Text,  Dimensions, FlatList, TouchableOpacity, Modal, Button, TextInput } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicon from '@react-native-vector-icons/ionicons';
 import Header from '../components/Header';
@@ -10,6 +10,11 @@ import Pulsate from '../components/Pulsate';
 import { TimerStore } from '../store';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
+import Select from '../components/SelectWidget';
+import {COLORS} from '../constants/colors';
+import { Dropdown } from 'react-native-element-dropdown';
+import { upperCaseFirst } from '../utils/stringUtils';
+import ManageTimer from '../components/ManageTimer';
 const GRID = {length: 3, height: 4};
 const TimerStackNavigator = createNativeStackNavigator();
 
@@ -56,6 +61,9 @@ const TimerItem = () => {
     </>
   )
 }
+
+
+
 
 const Rows: React.FC<RowProps> = ({ Col }) => (
   Array.from({ length: GRID.height }).map((_, index) => {
@@ -126,13 +134,7 @@ const Timer = observer(() => {
               backgroundColor: '#fff',
               borderRadius: 5
             }}>
-              <View style={{width: 70, margin:10,height: 40}}>
-                <Button
-                  onPress={() => setModalVisibility(false)}
-                  title='Close' />
-              </View>
-
-
+              <ManageTimer editMode={false}/>
             </View>
         </Modal>
         <View style={{

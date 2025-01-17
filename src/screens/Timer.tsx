@@ -1,5 +1,5 @@
-import React, { FunctionComponent, ReactElement, ReactNode } from 'react';
-import { View, Text,  Dimensions, TouchableOpacity } from 'react-native';
+import React, { FunctionComponent, useState } from 'react';
+import { View, Text,  Dimensions, TouchableOpacity, Modal, Button } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicon from '@react-native-vector-icons/ionicons';
 import Header from '../components/Header';
@@ -7,7 +7,9 @@ import {observer} from 'mobx-react-lite';
 import { FLOATING_FOOTER_HEIGHT, SPACING } from '../constants';
 import CircularProgressBar from '../components/CircularProgressBar';
 import Pulsate from '../components/Pulsate';
-
+import { TimerStore } from '../store';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 const GRID = {length: 3, height: 4};
 const TimerStackNavigator = createNativeStackNavigator();
 
@@ -93,35 +95,70 @@ const Cols: React.FC<ColProps> = ({row}) => {
           justifyContent: 'flex-end',
         }}
       >
+        {
+          (row == 0 && index == 0) && <Text>src/screens/Timer.tsx</Text>
+        }
+        {
+          (row == 2 && index == 2) && <Text>src/screens/Timer.tsx</Text>
+        }
       </TouchableOpacity>
     )
   });
 };
 const Timer = observer(() => {
-    const windowHeight = Dimensions.get('window').height;
-    const screenHeight = windowHeight - (FLOATING_FOOTER_HEIGHT + SPACING);
+  const windowHeight = Dimensions.get('window').height;
+  const screenHeight = windowHeight - (FLOATING_FOOTER_HEIGHT + SPACING);
+  const [modalVisibility, setModalVisibility] = useState(true);
+  const [dateTime, setDateTime] = useState(new Date());
   return (
-    <View style={{
-      display: 'flex',
-      marginTop: 20,
-      marginBottom: 0,
-      marginHorizontal: 20,
-      paddingBottom: 130,
-      height: screenHeight
-    }}>
-      <Header title='Timer' hasAdd={true} />
-      <View style={{
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        alignItems: 'center',
-        alignContent: 'center',
-        margin: 'auto',
-        marginTop: 35,
-      }}>
-        <Rows Col={Cols} />
-      </View>
-    </View>)
+    <SafeAreaProvider>
+      <SafeAreaView>
+        <Modal
+          animationType='slide'
+          onDismiss={() => setModalVisibility(false)}
+          transparent={true}
+          visible={modalVisibility}
+          >
+            <View style={{
+              minWidth: '85%',
+              minHeight: 300,
+              margin: 'auto',
+              backgroundColor: '#fff',
+              borderRadius: 5
+            }}>
+              <View style={{width: 70, margin:10,height: 40}}>
+                <Button
+                  onPress={() => setModalVisibility(false)}
+                  title='Close' />
+              </View>
+
+
+            </View>
+        </Modal>
+        <View style={{
+          display: 'flex',
+          marginTop: 20,
+          marginBottom: 0,
+          marginHorizontal: 20,
+          paddingBottom: 130,
+          height: screenHeight
+        }}>
+          <Header title='Timer' hasAdd={true} />
+          <View style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+            alignContent: 'center',
+            margin: 'auto',
+            marginTop: 35,
+          }}>
+            <Rows Col={Cols} />
+          </View>
+        </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
+)
 });
 
 export const TimerStackScreen = () => {

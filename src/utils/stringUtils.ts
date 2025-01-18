@@ -8,7 +8,8 @@ export const padNumber = (val:number, zeroCount:number = 1) : string => {
   return (val < 9 && val > -9) ? `${'0'.repeat(zeroCount)}${val}`: `${val}`;
 }
 
-export const timeToMilliseconds = (val:number, hand: 'hours'|'minutes'|'seconds') : number => {
+export const timeToMilliseconds = (val:number|string, hand: 'hours'|'minutes'|'seconds') : number => {
+  if (typeof val != 'number') { val = parseInt(val, 10) || 0 }
   switch(hand){
     case "hours":
       return val * 3600000;

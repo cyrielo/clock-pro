@@ -1,5 +1,4 @@
 import React, {useRef, useState} from 'react';
-import type { PropsWithChildren } from 'react';
 import { View, TouchableOpacity, Text, TextInput, TextStyle } from 'react-native';
 import { Dropdown, IDropdownRef} from 'react-native-element-dropdown';
 import { COLORS } from '../constants/colors';
@@ -7,13 +6,11 @@ import { NotificationSounds } from '../constants/';
 import { Timer } from '../types';
 import Ionicon from '@react-native-vector-icons/ionicons';
 import Button from './Button';
-import { getTimeObj } from '../utils/stringUtils';
+import { getTimeObj, timeToMilliseconds } from '../utils/stringUtils';
 import { observer } from 'mobx-react-lite';
 import { TimerStore } from '../store';
 
 type ManageTimerProps = {
-  editMode?:boolean;
-  prevTimer?: Timer;
 };
 
 type TimerInputProps = {
@@ -54,17 +51,17 @@ const TimerInput: React.FC<TimerInputProps> = (({
   )
 });
 
-const ManageTimer: React.FC<ManageTimerProps> = observer(({
-  editMode, prevTimer = {} }) => {
+const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
   const colorSelectorRef = useRef<IDropdownRef>(null);
   const ColorData = Object.keys(COLORS).slice(0,10).map((label, _) => ({
     label,
     value: COLORS[label]
   }));
-  //const { color, duration, label, sound } = prevTimer as Timer;
+  const colKey = TimerStore.activeColumnKey;
+  const prevTimer = (TimerStore.timer[colKey] || {}) as Timer;
+  const editMode = TimerStore.timer[colKey] !== undefined;
   const defaultTimer = {
     isPaused: true,
-    isSilent: true,
     duration: 0,
     label: '',
     color: ColorData[0].value,
@@ -73,7 +70,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({
 
   const [timer, setTimer] = useState({
     ...defaultTimer,
-    ...prevTimer,
+    ...prevTimer
   } as Timer);
   const timeObj = getTimeObj(timer.duration);
   const [hours, setHour] = useState(`${timeObj.hours}`);
@@ -112,19 +109,19 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({
       }}>
         <TimerInput
           placeholder='00'
-          value={`${hours || ''}`}
+          value={`${parseInt(hours, 10) || ''}`}
           label='hour'
           onChangeText={(value: string) => setHour(value)}
         />
         <TimerInput
           placeholder='00'
-          value={`${minutes || ''}`}
+          value={`${parseInt(minutes, 10) || ''}`}
           label='min'
           onChangeText={(value: string) => setMinutes(value)}
         />
         <TimerInput
           placeholder='00'
-          value={`${seconds}`}
+          value={`${parseInt(seconds, 10) || '' }`}
           label='sec'
           onChangeText={(value: string) => setSeconds(value)}
         />
@@ -146,7 +143,6 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({
             value={timer.label}
             onChangeText={(label) => {
               setTimer({...timer, label});
-              console.log('label->', label);
             }}
             maxLength={15}
             style={{
@@ -252,21 +248,37 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({
       </View>
       <View style={{
         display: 'flex',
+        flexDirection: 'row',
         alignItems:'center',
         marginTop:15,
         justifyContent: 'center'
       }}>
         <Button
-          style={{width:100, backgroundColor:'grey'}}
+          style={{ backgroundColor:'grey', marginRight: 10}}
           onPress={() => {
-            const columnKey = TimerStore.activeColumnKey;
-            console.log('add timer ->', columnKey, timer);
-            TimerStore.addTimer(columnKey, timer);
+            const hourINms = timeToMilliseconds(hours, 'hours');
+            const minsINms = timeToMilliseconds(minutes, 'minutes');
+            const secINms = timeToMilliseconds(seconds, 'seconds');
+            const durationInms = hourINms + minsINms + secINms;
+            timer.duration = durationInms;
+            TimerStore.addTimer(colKey, timer);
             TimerStore.toggleTimerModalVisibility();
           }}
           >
-          <Text>Start timer</Text>
+          <Text style={{textAlign: 'center', }}>
+            {editMode ? 'Update timer' : 'Start timer'}
+          </Text>
         </Button>
+        { editMode ? (
+          <Button onPress={() => {
+            TimerStore.deleteTimer(colKey);
+            TimerStore.toggleTimerModalVisibility();
+          }}
+          style={{ backgroundColor: '#d11a2a', }}>
+            <Text style={{ color: '#dcdcdc', fontWeight: 500, textAlign: 'center', }}>Delete timer</Text>
+          </Button>
+        ) : null }
+
       </View>
     </View>
   );

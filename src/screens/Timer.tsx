@@ -11,10 +11,9 @@ import { TimerStore } from '../store';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ManageTimer from '../components/ManageTimer';
 import { Timer as TimerType } from '../types';
-import { getTimeObj } from '../utils/stringUtils';
+import { getTimeObj, padNumber } from '../utils/stringUtils';
 const GRID = {length: 3, height: 4};
 const TimerStackNavigator = createNativeStackNavigator();
-
 
 type ColProps = {
   row: number;
@@ -26,8 +25,9 @@ type RowProps = {
 
 interface TimerItemProps extends TimerType {}
 
-const TimerItem = ({ color, duration, isPaused, isSilent, label, sound }: TimerItemProps) => {
-  const {hours = '0', minutes='0', seconds='0'} = getTimeObj(duration);
+const TimerItem = ({ color, duration, isPaused, label, sound }: TimerItemProps) => {
+  const {hours = 0, minutes= 0, seconds= 0} = getTimeObj(duration);
+  const isSilent = sound == 'silent';
   return (
     <>
       <Pulsate isPaused={isPaused} duration={1000}>
@@ -42,7 +42,7 @@ const TimerItem = ({ color, duration, isPaused, isSilent, label, sound }: TimerI
               fontWeight: 400,
               textAlign: 'center'
             }}>
-            {`${hours}:${minutes}:${seconds}`}
+            {`${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`}
           </Text>
           <Text
             style={{
@@ -51,7 +51,7 @@ const TimerItem = ({ color, duration, isPaused, isSilent, label, sound }: TimerI
               fontWeight: 400,
               textAlign: 'center'
             }}>
-            {label ||'Fish pie'}
+            { label || ''}
           </Text>
         </CircularProgressBar>
       </Pulsate>
@@ -63,16 +63,13 @@ const TimerItem = ({ color, duration, isPaused, isSilent, label, sound }: TimerI
           position: 'absolute',
           borderColor: 'transparent'
         }}
-        name={ isSilent ? 'notifications-off' : 'notifications'}
+        name={isSilent ? 'notifications-off' : 'notifications'}
         size={16}
         color={isSilent ? '#dcdcdc' :'#fff'}
       />
     </>
   )
 }
-
-
-
 
 const Rows: React.FC<RowProps> = ({ Col }) => (
   Array.from({ length: GRID.height }).map((_, index) => {
@@ -95,13 +92,20 @@ const Cols: React.FC<ColProps> = ({row}) => {
   return Array.from({ length: GRID.length }).map((_, index) => {
     const hasTimer = Object.hasOwn(TimerStore.timer, `${row}_${index}`);
     const timer = hasTimer ? TimerStore.timer[`${row}_${index}`] as TimerType : {} as TimerType;
-    console.log('hasTimer', hasTimer, timer);
     return (
       <TouchableOpacity
         key={index}
-        onPress={() => {
+        onLongPress={() => {
           TimerStore.toggleTimerModalVisibility(`${row}_${index}`);
-          console.log('modal');
+        }}
+        onPress={() => {
+          const colKey = `${row}_${index}`;
+          const timer = TimerStore.timer[colKey];
+          if (timer) {
+            TimerStore.toggleTimer(colKey);
+          } else {
+            TimerStore.toggleTimerModalVisibility(`${row}_${index}`);
+          }
         }}
         style={{
           flex: 1,
@@ -142,7 +146,7 @@ const Timer = observer(() => {
               backgroundColor: '#fff',
               borderRadius: 5
             }}>
-              <ManageTimer editMode={false}/>
+              <ManageTimer/>
             </View>
         </Modal>
         <View style={{

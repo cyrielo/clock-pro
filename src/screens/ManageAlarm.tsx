@@ -4,7 +4,7 @@ import RNDateTimePicker, { DateTimePickerAndroid, DateTimePickerEvent } from '@r
 import { ScreenWithNavigation } from '../types';
 import ScrollPicker from 'react-native-wheel-scrollview-picker';
 
-const AlarmDetail = ({navigation, route} : ScreenWithNavigation) => {
+const ManageAlarm = ({navigation, route} : ScreenWithNavigation) => {
   const [date, setDate] = useState(new Date(1598051730000));
 
   const onChange = (event:DateTimePickerEvent, selectedDate:Date) => {
@@ -56,5 +56,5 @@ const AlarmDetail = ({navigation, route} : ScreenWithNavigation) => {
   );
 };
 
-export default AlarmDetail;
+export default ManageAlarm;
 

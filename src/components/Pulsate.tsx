@@ -5,12 +5,14 @@ interface PulsateProps {
   children: React.ReactNode;
   duration?: number; // Duration of one pulsate cycle in milliseconds
   scaleFactor?: number; // How much the component grows during pulsation
+  isPaused?: boolean
 }
 
 const Pulsate: React.FC<PulsateProps> = ({
   children,
   duration = 1000,
   scaleFactor = 1.1,
+  isPaused = false
 }) => {
   const scaleValue = useRef(new Animated.Value(1)).current;
 
@@ -30,9 +32,7 @@ const Pulsate: React.FC<PulsateProps> = ({
         }),
       ])
     );
-
-    loopAnimation.start();
-
+    if (!isPaused) { loopAnimation.start(); }
     return () => loopAnimation.stop(); // Clean up on unmount
   }, [scaleFactor, duration]);
 

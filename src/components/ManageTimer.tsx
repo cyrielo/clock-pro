@@ -8,6 +8,8 @@ import { Timer } from '../types';
 import Ionicon from '@react-native-vector-icons/ionicons';
 import Button from './Button';
 import { getTimeObj } from '../utils/stringUtils';
+import { observer } from 'mobx-react-lite';
+import { TimerStore } from '../store';
 
 type ManageTimerProps = {
   editMode?:boolean;
@@ -18,12 +20,14 @@ type TimerInputProps = {
   placeholder: string;
   value?: string;
   label: string;
+  onChangeText:Function;
 }
 
 const TimerInput: React.FC<TimerInputProps> = (({
   placeholder,
   label,
-  value
+  value,
+  onChangeText
 }) => {
   return (
     <View style={{
@@ -40,6 +44,7 @@ const TimerInput: React.FC<TimerInputProps> = (({
           textAlign: 'center',
           height: '100%'
         }}
+        onChangeText={(text: string) => typeof onChangeText == 'function' && onChangeText(text) }
         cursorColor={'transparent'}
         value={value}
         maxLength={2}
@@ -49,17 +54,31 @@ const TimerInput: React.FC<TimerInputProps> = (({
   )
 });
 
-const ManageTimer: React.FC<ManageTimerProps> = ({
+const ManageTimer: React.FC<ManageTimerProps> = observer(({
   editMode, prevTimer = {} }) => {
   const colorSelectorRef = useRef<IDropdownRef>(null);
   const ColorData = Object.keys(COLORS).slice(0,10).map((label, _) => ({
     label,
     value: COLORS[label]
   }));
-  const { color, duration, label, sound } = prevTimer as Timer;
-  const { hours, minutes, seconds } = getTimeObj(duration);
-  const [selectedColor, setSelectedColor] = useState(color ? color : '#ad1457');
-  const [selectedSound, setSelectedSound] = useState(sound ? sound : 'silent');
+  //const { color, duration, label, sound } = prevTimer as Timer;
+  const defaultTimer = {
+    isPaused: true,
+    isSilent: true,
+    duration: 0,
+    label: '',
+    color: ColorData[0].value,
+    sound: 'silent'
+  } as Timer;
+
+  const [timer, setTimer] = useState({
+    ...defaultTimer,
+    ...prevTimer,
+  } as Timer);
+  const timeObj = getTimeObj(timer.duration);
+  const [hours, setHour] = useState(`${timeObj.hours}`);
+  const [minutes, setMinutes] = useState(`${timeObj.minutes}`);
+  const [seconds, setSeconds] = useState(`${timeObj.seconds}`);
   return (
     <View>
       <View style={{
@@ -76,7 +95,10 @@ const ManageTimer: React.FC<ManageTimerProps> = ({
         <Text style={{ fontWeight: 500, fontSize: 16 }}>
           {(editMode) ? 'Edit Timer' : 'New Timer'}
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            TimerStore.toggleTimerModalVisibility();
+          }}>
           <Text style={{ fontWeight: 500, fontSize: 16 }}>Cancel</Text>
         </TouchableOpacity>
       </View>
@@ -88,9 +110,24 @@ const ManageTimer: React.FC<ManageTimerProps> = ({
         marginVertical: 'auto',
         height: 80,
       }}>
-        <TimerInput placeholder='00' value={hours.toString()} label='hour' />
-        <TimerInput placeholder='00' value={minutes.toString()} label='min' />
-        <TimerInput placeholder='00' value={seconds.toString()} label='sec' />
+        <TimerInput
+          placeholder='00'
+          value={`${hours || ''}`}
+          label='hour'
+          onChangeText={(value: string) => setHour(value)}
+        />
+        <TimerInput
+          placeholder='00'
+          value={`${minutes || ''}`}
+          label='min'
+          onChangeText={(value: string) => setMinutes(value)}
+        />
+        <TimerInput
+          placeholder='00'
+          value={`${seconds}`}
+          label='sec'
+          onChangeText={(value: string) => setSeconds(value)}
+        />
       </View>
       <View style={{
         display: 'flex',
@@ -106,7 +143,11 @@ const ManageTimer: React.FC<ManageTimerProps> = ({
           <Text style={{marginBottom: 5, }}>Label</Text>
           <TextInput
             placeholder='Timer Label'
-            value={label}
+            value={timer.label}
+            onChangeText={(label) => {
+              setTimer({...timer, label});
+              console.log('label->', label);
+            }}
             maxLength={15}
             style={{
               borderRadius: 5,
@@ -129,7 +170,7 @@ const ManageTimer: React.FC<ManageTimerProps> = ({
             data={ColorData}
             labelField={'label'}
             valueField={'value'}
-            value={selectedColor}
+            value={timer.color}
             activeColor='transparent'
             containerStyle={{
               borderColor: 'transparent',
@@ -150,7 +191,7 @@ const ManageTimer: React.FC<ManageTimerProps> = ({
                       height: 32,
                       width: 32,
                       borderRadius: 4,
-                      backgroundColor: selectedColor,
+                      backgroundColor: timer.color,
                     }} />
                 </View>
               )
@@ -167,7 +208,7 @@ const ManageTimer: React.FC<ManageTimerProps> = ({
             />)
             }}
             onChange={({ value }) => {
-              setSelectedColor(value)
+              setTimer((prev) => Object.assign(prev, {color: value}));
             }}
           />
         </View>
@@ -203,9 +244,9 @@ const ManageTimer: React.FC<ManageTimerProps> = ({
           data={NotificationSounds}
           labelField={'label'}
           valueField={'value'}
-          value={selectedSound}
+          value={timer.sound}
           onChange={({ value }) => {
-            setSelectedSound(value)
+            setTimer((prev) => Object.assign(prev, { sound: value }));
           }}
         />
       </View>
@@ -218,7 +259,10 @@ const ManageTimer: React.FC<ManageTimerProps> = ({
         <Button
           style={{width:100, backgroundColor:'grey'}}
           onPress={() => {
-            console.log('Start timer');
+            const columnKey = TimerStore.activeColumnKey;
+            console.log('add timer ->', columnKey, timer);
+            TimerStore.addTimer(columnKey, timer);
+            TimerStore.toggleTimerModalVisibility();
           }}
           >
           <Text>Start timer</Text>
@@ -226,7 +270,7 @@ const ManageTimer: React.FC<ManageTimerProps> = ({
       </View>
     </View>
   );
-};
+});
 
 ManageTimer.displayName = 'ManageTimer';
 

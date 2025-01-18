@@ -9,12 +9,9 @@ import CircularProgressBar from '../components/CircularProgressBar';
 import Pulsate from '../components/Pulsate';
 import { TimerStore } from '../store';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
-import Select from '../components/SelectWidget';
-import {COLORS} from '../constants/colors';
-import { Dropdown } from 'react-native-element-dropdown';
-import { upperCaseFirst } from '../utils/stringUtils';
 import ManageTimer from '../components/ManageTimer';
+import { Timer as TimerType } from '../types';
+import { getTimeObj } from '../utils/stringUtils';
 const GRID = {length: 3, height: 4};
 const TimerStackNavigator = createNativeStackNavigator();
 
@@ -27,10 +24,13 @@ type RowProps = {
   Col: FunctionComponent<ColProps>;
 }
 
-const TimerItem = () => {
+interface TimerItemProps extends TimerType {}
+
+const TimerItem = ({ color, duration, isPaused, isSilent, label, sound }: TimerItemProps) => {
+  const {hours = '0', minutes='0', seconds='0'} = getTimeObj(duration);
   return (
     <>
-      <Pulsate duration={1000}>
+      <Pulsate isPaused={isPaused} duration={1000}>
         <CircularProgressBar
           size={100}
           strokeWidth={3}
@@ -42,7 +42,16 @@ const TimerItem = () => {
               fontWeight: 400,
               textAlign: 'center'
             }}>
-            24:03:15
+            {`${hours}:${minutes}:${seconds}`}
+          </Text>
+          <Text
+            style={{
+              fontSize: 16,
+              letterSpacing: 1.5,
+              fontWeight: 400,
+              textAlign: 'center'
+            }}>
+            {label ||'Fish pie'}
           </Text>
         </CircularProgressBar>
       </Pulsate>
@@ -54,9 +63,9 @@ const TimerItem = () => {
           position: 'absolute',
           borderColor: 'transparent'
         }}
-        name='notifications'
+        name={ isSilent ? 'notifications-off' : 'notifications'}
         size={16}
-        color={'#fff'}
+        color={isSilent ? '#dcdcdc' :'#fff'}
       />
     </>
   )
@@ -84,18 +93,21 @@ const Rows: React.FC<RowProps> = ({ Col }) => (
 );
 const Cols: React.FC<ColProps> = ({row}) => {
   return Array.from({ length: GRID.length }).map((_, index) => {
+    const hasTimer = Object.hasOwn(TimerStore.timer, `${row}_${index}`);
+    const timer = hasTimer ? TimerStore.timer[`${row}_${index}`] as TimerType : {} as TimerType;
+    console.log('hasTimer', hasTimer, timer);
     return (
       <TouchableOpacity
         key={index}
         onPress={() => {
-          console.log('row ->', row);
-          console.log('Pressed cell', index);
+          TimerStore.toggleTimerModalVisibility(`${row}_${index}`);
+          console.log('modal');
         }}
         style={{
           flex: 1,
           borderWidth: 1,
-          borderColor: 'rgba(100,100,100,0.2)',
-          backgroundColor: 'rgba(100,100,100,0.5)',
+          borderColor: (hasTimer) ? timer.color : 'transparent',
+          backgroundColor: (hasTimer) ? timer.color : 'rgba(100,100,100,0.5)',
           marginHorizontal: 7,
           height: 110,
           borderRadius: 10,
@@ -104,10 +116,8 @@ const Cols: React.FC<ColProps> = ({row}) => {
         }}
       >
         {
-          (row == 0 && index == 0) && <Text>src/screens/Timer.tsx</Text>
-        }
-        {
-          (row == 2 && index == 2) && <Text>src/screens/Timer.tsx</Text>
+          Object.hasOwn(TimerStore.timer, `${row}_${index}`) ?
+            <TimerItem {...timer}  /> : null
         }
       </TouchableOpacity>
     )
@@ -116,16 +126,14 @@ const Cols: React.FC<ColProps> = ({row}) => {
 const Timer = observer(() => {
   const windowHeight = Dimensions.get('window').height;
   const screenHeight = windowHeight - (FLOATING_FOOTER_HEIGHT + SPACING);
-  const [modalVisibility, setModalVisibility] = useState(true);
-  const [dateTime, setDateTime] = useState(new Date());
   return (
     <SafeAreaProvider>
       <SafeAreaView>
         <Modal
           animationType='slide'
-          onDismiss={() => setModalVisibility(false)}
+          onDismiss={() => TimerStore.toggleTimerModalVisibility()}
           transparent={true}
-          visible={modalVisibility}
+          visible={TimerStore.timerModalVisibility}
           >
             <View style={{
               minWidth: '85%',

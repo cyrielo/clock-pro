@@ -4,6 +4,23 @@ export const upperCaseFirst = (str:string): string  => {
   return str.charAt(0).toLocaleUpperCase() + str.slice(1);
 };
 
+export const padNumber = (val:number, zeroCount:number = 1) : string => {
+  return (val < 9 && val > -9) ? `${'0'.repeat(zeroCount)}${val}`: `${val}`;
+}
+
+export const timeToMilliseconds = (val:number, hand: 'hours'|'minutes'|'seconds') : number => {
+  switch(hand){
+    case "hours":
+      return val * 3600000;
+    case "minutes":
+      return val * 60000;
+    case "seconds":
+      return val * 1000;
+    default:
+      return 0;
+  }
+}
+
 export const getTimeObj = (timestamp:number):TimeStamp => {
   if (!timestamp || timestamp < 0) {return {} as TimeStamp};
   const hours = Math.floor(timestamp / 3600000); // 3600000 ms in 1 hour

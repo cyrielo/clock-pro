@@ -47,9 +47,9 @@ export default class TimerStore {
     });
   }
 
-  async deleteTimer(index:string) {
+  async deleteTimer(activeColumnKey:string) {
     runInAction(() => {
-      delete this.timer[index];
+      delete this.timer[activeColumnKey];
     });
     await this.persistTimer();
   }
@@ -63,15 +63,10 @@ export default class TimerStore {
     return (timerStr != null) ? JSON.parse(timerStr) : this.timer;
   }
 
-  private async clearTimer () {
-    await AsyncStorage.removeItem(this.key);
-  }
-
   async setTimer() {
     const timer = await this.fetchTimer();
     runInAction(() => {
       this.timer = Object.assign(this.timer, timer);
     });
   }
-
 }

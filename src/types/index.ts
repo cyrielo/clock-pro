@@ -16,7 +16,7 @@ export type Timer = {
   label:string;
   sound:string;
   color:string;
-  isComplete: boolean;
+  reset: boolean;
   duration:number;
 };
 export type Place = {

@@ -34,7 +34,7 @@ const Pulsate: React.FC<PulsateProps> = ({
     );
     if (!isPaused) { loopAnimation.start(); }
     return () => loopAnimation.stop(); // Clean up on unmount
-  }, [scaleFactor, duration]);
+  }, [scaleFactor, duration, isPaused]);
 
   return (
     <Animated.View style={{ transform: [{ scale: scaleValue }] }}>

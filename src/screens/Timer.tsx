@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { View, Text,  Dimensions, FlatList, TouchableOpacity, Modal, Button, TextInput } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicon from '@react-native-vector-icons/ionicons';
@@ -23,18 +23,47 @@ type RowProps = {
   Col: FunctionComponent<ColProps>;
 }
 
-interface TimerItemProps extends TimerType {}
+interface TimerItemProps {
+  columnKey: string;
+}
 
-const TimerItem = ({ color, duration, isPaused, label, sound }: TimerItemProps) => {
-  const {hours = 0, minutes= 0, seconds= 0} = getTimeObj(duration);
+const TimerItem = observer(({ columnKey }: TimerItemProps) => {
+  const { color, duration, isPaused, label, sound, isComplete } = TimerStore.timer[columnKey];
+  const countDownRef = useRef<NodeJS.Timeout|number>(0);
+  const [countDown, setCountDown] = useState(duration);
+  //const [timerProgress, se]
+  const { hours = 0, minutes = 0, seconds = 0 } = getTimeObj(countDown);
   const isSilent = sound == 'silent';
+  const fiftyPercent = duration * 0.6;
+  const tenPercent = duration * 0.2;
+  const timerProgress = (countDown / duration) * 100 > 0 ? (countDown / duration) * 100 : 0;
+  const fastOrSlowPulse = (countDown <= tenPercent) ? 100 : 500;
+  const pulseSpeed = ((countDown <= fiftyPercent)) ? fastOrSlowPulse : 1000;
+  const countDownComplete = countDown <= -1000;
+
+  useEffect(() => {
+    if (!isPaused && !isComplete) {
+      if (countDownComplete) { setCountDown(duration); } // reset duration
+      countDownRef.current = setInterval(() => {
+        setCountDown(countDown - 1000);
+      }, 1000);
+      if (countDown == -1000) {
+        clearInterval(countDownRef.current);
+        const update = { isComplete: true, isPaused: true } as TimerType;
+        TimerStore.updateTimer(columnKey, update);
+      }
+    }
+    return () => {
+      clearInterval(countDownRef.current);
+    };
+  }, [isPaused, isComplete, pulseSpeed, countDown, duration]);
   return (
     <>
-      <Pulsate isPaused={isPaused} duration={1000}>
+      <Pulsate isPaused={isPaused} duration={pulseSpeed}>
         <CircularProgressBar
           size={100}
           strokeWidth={3}
-          progress={10}>
+          progress={timerProgress}>
           <Text
             style={{
               fontSize: 16,
@@ -69,7 +98,7 @@ const TimerItem = ({ color, duration, isPaused, label, sound }: TimerItemProps) 
       />
     </>
   )
-}
+});
 
 const Rows: React.FC<RowProps> = ({ Col }) => (
   Array.from({ length: GRID.height }).map((_, index) => {
@@ -90,21 +119,23 @@ const Rows: React.FC<RowProps> = ({ Col }) => (
 );
 const Cols: React.FC<ColProps> = ({row}) => {
   return Array.from({ length: GRID.length }).map((_, index) => {
-    const hasTimer = Object.hasOwn(TimerStore.timer, `${row}_${index}`);
-    const timer = hasTimer ? TimerStore.timer[`${row}_${index}`] as TimerType : {} as TimerType;
+    const columnKey = `${row}_${index}`;
+    const hasTimer = Object.hasOwn(TimerStore.timer, columnKey);
+    const timer = hasTimer ? TimerStore.timer[columnKey] as TimerType : {} as TimerType;
     return (
       <TouchableOpacity
         key={index}
         onLongPress={() => {
-          TimerStore.toggleTimerModalVisibility(`${row}_${index}`);
+          TimerStore.toggleTimerModalVisibility(columnKey);
         }}
         onPress={() => {
-          const colKey = `${row}_${index}`;
-          const timer = TimerStore.timer[colKey];
+          const timer = TimerStore.timer[columnKey];
           if (timer) {
-            TimerStore.toggleTimer(colKey);
+            const update = { isPaused: !timer.isPaused } as TimerType;
+            update.isComplete = (timer.isComplete) ? false: timer.isComplete;
+            TimerStore.updateTimer(columnKey, update);
           } else {
-            TimerStore.toggleTimerModalVisibility(`${row}_${index}`);
+            TimerStore.toggleTimerModalVisibility(columnKey);
           }
         }}
         style={{
@@ -120,8 +151,8 @@ const Cols: React.FC<ColProps> = ({row}) => {
         }}
       >
         {
-          Object.hasOwn(TimerStore.timer, `${row}_${index}`) ?
-            <TimerItem {...timer}  /> : null
+          Object.hasOwn(TimerStore.timer, columnKey) ?
+            <TimerItem columnKey={columnKey} /> : null
         }
       </TouchableOpacity>
     )

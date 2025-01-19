@@ -11,7 +11,6 @@ export default class TimerStore {
   constructor() {
     makeAutoObservable(this);
     this.setTimer();
-    this.clearTimer();
   }
 
   async updateTimer(activeColumnKey:string, timer:Timer) {

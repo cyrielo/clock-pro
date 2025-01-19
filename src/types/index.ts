@@ -6,11 +6,15 @@ export interface Alarm {
   title: string;
   time: string;
   active: boolean;
-  interval: string[];
+  shouldVibrate: boolean;
+  shouldRepeat: boolean;
+  weekdays: Weekdays[];
 }
 
 
 export type ThemeType = 'system'|'dark'|'light';
+export type Weekdays = 'sunday' | 'monday' | 'tuesday' | 'wednessday' | 'thursday' | 'friday' | 'saturday';
+
 export type Timer = {
   isPaused:boolean;
   label:string;

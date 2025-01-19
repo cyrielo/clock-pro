@@ -7,6 +7,7 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 interface CircularProgressBarProps {
   progress: number; // Progress percentage (0 to 100)
+  isPaused?:boolean;
   size?: number; // Diameter of the circle
   strokeWidth?: number; // Width of the progress stroke
   color?: string; // Progress color
@@ -16,6 +17,7 @@ interface CircularProgressBarProps {
 
 const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   progress,
+  isPaused = false,
   size = 100,
   strokeWidth = 10,
   color = '#3498db',
@@ -29,12 +31,14 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
 
   // Animate the progress
   useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: progress,
-      duration: 500,
-      useNativeDriver: false,
-    }).start();
-  }, [progress]);
+    if (!isPaused) {
+      Animated.timing(animatedValue, {
+        toValue: progress,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [progress, isPaused]);
 
   // Interpolate the strokeDashoffset to animate the progress
   const strokeDashoffset = animatedValue.interpolate({

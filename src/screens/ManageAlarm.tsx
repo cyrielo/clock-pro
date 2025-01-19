@@ -5,19 +5,19 @@ import { ScreenWithNavigation } from '../types';
 import ScrollPicker from 'react-native-wheel-scrollview-picker';
 
 const ManageAlarm = ({navigation, route} : ScreenWithNavigation) => {
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
 
-  const onChange = (event:DateTimePickerEvent, selectedDate:Date) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
+  const onChange = (event:DateTimePickerEvent) => {
+    const currentDate = 'selectedDate';
+    //setDate(currentDate);
   };
 
   const showMode = (currentMode:any) => {
     DateTimePickerAndroid.open({
       value: date,
-      onChange: () => {},
+      onChange: onChange,
       mode: currentMode,
-      is24Hour: true,
+      is24Hour: false,
     });
   };
 
@@ -51,7 +51,7 @@ const ManageAlarm = ({navigation, route} : ScreenWithNavigation) => {
         highlightColor="#d8d8d8"
         highlightBorderWidth={2}
       />
-      {/* <Button title='Show time picker' onPress={() => showTimepicker()} /> */}
+      <Button title='Show time picker' onPress={() => showTimepicker()} />
     </View>
   );
 };

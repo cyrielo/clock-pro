@@ -13,9 +13,14 @@ export default class AlarmStore {
       deleteAlarm: action,
       updateAlarm: action
     });
+    this.loadAlarms();
   }
   private _ALARM_KEY = 'ALARM_KEY';
 
+  async loadAlarms() {
+    const alarms = await this.getAlarms();
+    this.setAlarms(alarms);
+  }
   async createAlarm(alarm: Alarm) {
     const allAlarms = await this.getAlarms();
     allAlarms.push(alarm);

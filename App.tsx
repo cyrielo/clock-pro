@@ -29,6 +29,8 @@ import {
 
 import TabNavigation from './src/navigations/TabNavigation';
 
+import _ from './src/store';
+
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {

@@ -75,14 +75,15 @@ const TimerItem = observer(({ columnKey }: TimerItemProps) => {
               fontSize: 16,
               letterSpacing: 1.5,
               fontWeight: 400,
-              textAlign: 'center'
+              textAlign: 'center',
             }}>
             {`${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`}
           </Text>
           <Text
+            ellipsizeMode='tail'
+            numberOfLines={1}
             style={{
-              fontSize: 16,
-              letterSpacing: 1.5,
+              fontSize: 13.3,
               fontWeight: 400,
               textAlign: 'center'
             }}>

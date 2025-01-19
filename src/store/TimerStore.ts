@@ -11,15 +11,19 @@ export default class TimerStore {
   constructor() {
     makeAutoObservable(this);
     this.setTimer();
+    this.clearTimer();
   }
 
-  async toggleTimer(activeColumnKey:string) {
+  async updateTimer(activeColumnKey:string, timer:Timer) {
     runInAction(() => {
-      const timer = this.timer[activeColumnKey];
-      timer.isPaused = !timer.isPaused;
-      this.timer[activeColumnKey] = timer;
+      this.timer[activeColumnKey] = Object.assign(this.timer[activeColumnKey], { ...timer });
     });
     await this.persistTimer();
+  }
+
+  isTimerPaused(activeColumnKey: string) :boolean|undefined {
+    const timer = this.timer[activeColumnKey];
+    return (timer) ? timer.isPaused : undefined;
   }
 
   async addTimer(activeColumnKey: string, timer: Timer) {
@@ -38,7 +42,7 @@ export default class TimerStore {
     });
   }
 
-  setActiveColumn(activeColumnKey:string) {
+  setActiveColumnKey(activeColumnKey:string) {
     runInAction(() => {
       this.activeColumnKey = activeColumnKey;
     });

@@ -63,7 +63,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
   const editMode = TimerStore.timer[colKey] !== undefined;
   const defaultTimer: Timer = {
     isPaused: false,
-    isComplete: false,
+    reset: false,
     duration: 0,
     label: '',
     color: ColorData[0].value,
@@ -260,7 +260,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             const minsINms = timeToMilliseconds(minutes, 'minutes');
             const secINms = timeToMilliseconds(seconds, 'seconds');
             const durationInms = hourINms + minsINms + secINms;
-            const a = Object.assign(timer, { isPaused: false, isComplete: false, duration: durationInms });
+            const a = Object.assign(timer, { isPaused: false, reset: true, duration: durationInms });
             TimerStore.addTimer(colKey, a);
             TimerStore.toggleTimerModalVisibility();
           }}

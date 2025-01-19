@@ -52,26 +52,26 @@ const TimerInput: React.FC<TimerInputProps> = (({
 });
 
 const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
+
   const colorSelectorRef = useRef<IDropdownRef>(null);
   const ColorData = Object.keys(COLORS).slice(0,10).map((label, _) => ({
     label,
     value: COLORS[label]
   }));
+
   const colKey = TimerStore.activeColumnKey;
-  const prevTimer = (TimerStore.timer[colKey] || {}) as Timer;
   const editMode = TimerStore.timer[colKey] !== undefined;
-  const defaultTimer = {
-    isPaused: true,
+  const defaultTimer: Timer = {
+    isPaused: false,
+    isComplete: false,
     duration: 0,
     label: '',
     color: ColorData[0].value,
     sound: 'silent'
-  } as Timer;
+  };
 
-  const [timer, setTimer] = useState({
-    ...defaultTimer,
-    ...prevTimer
-  } as Timer);
+  const prevTimer:Timer = (TimerStore.timer[colKey] || defaultTimer);
+  const [timer, setTimer] = useState<Timer>({ ...prevTimer });
   const timeObj = getTimeObj(timer.duration);
   const [hours, setHour] = useState(`${timeObj.hours}`);
   const [minutes, setMinutes] = useState(`${timeObj.minutes}`);
@@ -260,8 +260,8 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             const minsINms = timeToMilliseconds(minutes, 'minutes');
             const secINms = timeToMilliseconds(seconds, 'seconds');
             const durationInms = hourINms + minsINms + secINms;
-            timer.duration = durationInms;
-            TimerStore.addTimer(colKey, timer);
+            const a = Object.assign(timer, { isPaused: false, isComplete: false, duration: durationInms });
+            TimerStore.addTimer(colKey, a);
             TimerStore.toggleTimerModalVisibility();
           }}
           >

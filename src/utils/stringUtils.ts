@@ -4,8 +4,9 @@ export const upperCaseFirst = (str:string): string  => {
   return str.charAt(0).toLocaleUpperCase() + str.slice(1);
 };
 
+// only pads single digits numbers
 export const padNumber = (val:number, zeroCount:number = 1) : string => {
-  return (val < 9 && val > -9) ? `${'0'.repeat(zeroCount)}${val}`: `${val}`;
+  return (val <= 9 && val >= -9) ? `${'0'.repeat(zeroCount)}${val}`: `${val}`;
 }
 
 export const timeToMilliseconds = (val:number|string, hand: 'hours'|'minutes'|'seconds') : number => {

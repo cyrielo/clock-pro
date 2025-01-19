@@ -17,11 +17,13 @@ import AlarmCard from '../components/AlarmCard';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {observer} from 'mobx-react-lite';
 import { AlarmStore } from '../store/';
-import { ScreenWithNavigation } from '../types/index';
+import ManageAlarm from './ManageAlarm';
+import { Alarm as AlarmType, ScreenWithNavigation } from '../types/index';
 
 
 const Alarm = observer(({navigation} :ScreenWithNavigation) => {
   //const sheetRef = useRef(null);
+  const alarms = AlarmStore.alarms;
 
   return (
     <>
@@ -33,23 +35,30 @@ const Alarm = observer(({navigation} :ScreenWithNavigation) => {
         minHeight: '100%'
       }}>
       <Header title='Alarm' onAdd={() => {
-          navigation.navigate('ManageAlarm');
+          navigation.navigate('Set Alarm');
       }} />
       <View style={{ ...AppStyle.bottomPadding }}>
+          {alarms.map((alarm: AlarmType, index) => {
+          return (
+            <AlarmCard
+              key={index}
+              title={alarm.title}
+              time='2:45 AM'
+              active={alarm.active}
+              style={{ marginBottom: 20 }}
+              weekdays={alarm.weekdays}
+              shouldRepeat={alarm.shouldRepeat}
+              shouldVibrate={ alarm.shouldVibrate }
+            />
+          );
+        }) }
         <AlarmCard
-          title='Alarm 1'
-          time='2:45 AM'
-          active={true}
-          style={{ marginBottom: 20 }}
-          interval={['Fridays']}
-          shouldVibrate={true}
-        />
-        <AlarmCard
+          shouldRepeat={false}
           title='Work'
           time='8:45 AM'
           active={true}
           style={{ marginBottom: 20 }}
-          interval={['weekdays']}
+          weekdays={['weekdays']}
           shouldVibrate={true}
         />
       </View>
@@ -58,15 +67,20 @@ const Alarm = observer(({navigation} :ScreenWithNavigation) => {
   )
 });
 
-const ReflectionsStackNavigator = createNativeStackNavigator();
+const AlarmStackNavigator = createNativeStackNavigator();
 
 export const AlarmStackScreen = () => {
   return (
-    <ReflectionsStackNavigator.Navigator>
-      <ReflectionsStackNavigator.Screen name="Alarm" options={{ header: () => null }}>
+    <AlarmStackNavigator.Navigator>
+      <AlarmStackNavigator.Screen name="Alarm" options={{ header: () => null }}>
         {(props: any) => <Alarm  {...props} />}
-      </ReflectionsStackNavigator.Screen>
-    </ReflectionsStackNavigator.Navigator>
+      </AlarmStackNavigator.Screen>
+      <AlarmStackNavigator.Group screenOptions={{ presentation: 'modal' }}>
+        <AlarmStackNavigator.Screen name="Set Alarm">
+          {(props: any) => <ManageAlarm {...props} />}
+        </AlarmStackNavigator.Screen>
+      </AlarmStackNavigator.Group>
+    </AlarmStackNavigator.Navigator>
   );
 }
 

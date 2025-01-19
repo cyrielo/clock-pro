@@ -127,7 +127,6 @@ const Cols: React.FC<ColProps> = ({ row, timerRecord }) => {
   return Array.from({ length: GRID.length }).map((_, index) => {
     const columnKey = `${row}_${index}`;
     const hasTimer = Object.hasOwn(timerRecord, columnKey);
-    console.log('hasTimer', hasTimer);
     const timer = hasTimer ? timerRecord[columnKey] as TimerType : {} as TimerType;
     return (
       <TouchableOpacity
@@ -136,11 +135,12 @@ const Cols: React.FC<ColProps> = ({ row, timerRecord }) => {
           TimerStore.toggleTimerModalVisibility(columnKey);
         }}
         onPress={() => {
-          if (timer) {
+          if (hasTimer) {
+            //if timer is already created ? Toggle pause or play
             const update = { isPaused: !timer.isPaused } as TimerType;
-            //update.reset = (timer.reset) ? false : timer.reset;
             TimerStore.updateTimer(columnKey, update);
           } else {
+            // open new create timer window
             TimerStore.toggleTimerModalVisibility(columnKey);
           }
         }}

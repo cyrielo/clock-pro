@@ -20,12 +20,22 @@ type ReflectionCardProps = PropsWithChildren<{
   style?: ViewStyle;
   active: boolean;
   time:string;
-  interval?: string[];
+  weekdays: string[];
   shouldVibrate?:boolean;
+  shouldRepeat:boolean;
   onPress?: () => {};
 }>
 
-const AlarmCard = ({ title, style, time, shouldVibrate = true, active, interval, onPress }: ReflectionCardProps): React.JSX.Element =>  {
+const AlarmCard = ({
+  title,
+  style,
+  time,
+  shouldVibrate = true,
+  active,
+  weekdays,
+  onPress,
+  shouldRepeat
+}: ReflectionCardProps): React.JSX.Element =>  {
   const [isActive, switchAlarm] = useState(active);
   return (
     <View style={{ ...style }}>
@@ -41,7 +51,9 @@ const AlarmCard = ({ title, style, time, shouldVibrate = true, active, interval,
         <View>
           <Text style={{ fontSize: 13, marginBottom: 2}} >{title}</Text>
           <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 2 }}>{time}</Text>
-          <Text style={{ fontSize: 13, marginBottom: 2 }} >{interval}</Text>
+          <Text style={{ fontSize: 13, marginBottom: 2 }} >
+            {weekdays.join(', ')}
+          </Text>
         </View>
         <View>
           <Switch

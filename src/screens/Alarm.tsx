@@ -2,12 +2,9 @@ import React, { useRef } from 'react';
 import {
   View,
   Text,
-  ScrollView,
-  Button,
+
   SafeAreaView,
   Alert,
-  Modal,
-  Pressable
 } from 'react-native';
 
 import Header from '../components/Header';

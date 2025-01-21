@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { TimeStamp } from "../types";
 
 export const upperCaseFirst = (str:string): string  => {
@@ -21,6 +22,10 @@ export const timeToMilliseconds = (val:number|string, hand: 'hours'|'minutes'|'s
     default:
       return 0;
   }
+}
+
+export const formatTimeString = (date:Date) :string => {
+  return format(date, 'hh:mm aa');
 }
 
 export const getTimeObj = (timestamp:number):TimeStamp => {

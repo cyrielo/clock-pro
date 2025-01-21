@@ -23,7 +23,8 @@ type ReflectionCardProps = PropsWithChildren<{
   weekdays: string[];
   shouldVibrate?:boolean;
   shouldRepeat:boolean;
-  onPress?: () => {};
+  onPress?: Function;
+  onActiveToggle?: Function;
 }>
 
 const AlarmCard = ({
@@ -34,9 +35,9 @@ const AlarmCard = ({
   active,
   weekdays,
   onPress,
-  shouldRepeat
+  shouldRepeat,
+  onActiveToggle
 }: ReflectionCardProps): React.JSX.Element =>  {
-  const [isActive, switchAlarm] = useState(active);
   return (
     <View style={{ ...style }}>
       <View style={{
@@ -59,8 +60,12 @@ const AlarmCard = ({
           <Switch
             thumbColor={'#f4f3f4'}
             trackColor={{ false: '#767577', true: '#81b0ff' }}
-            value={isActive}
-            onValueChange={switchAlarm}
+            value={active}
+            onValueChange={(val) => {
+              if (typeof onActiveToggle == 'function') {
+                onActiveToggle(val);
+              }
+            }}
            />
         </View>
       </View>

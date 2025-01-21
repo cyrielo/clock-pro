@@ -1,4 +1,4 @@
-import { makeObservable, observable, action, runInAction } from 'mobx';
+import { makeAutoObservable, observable, action, runInAction } from 'mobx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alarm } from '../types';
 import { formatTimeString } from '../utils/stringUtils';
@@ -8,12 +8,7 @@ export default class AlarmStore {
   alarms: Record<string, Alarm> = {};
 
   constructor() {
-    makeObservable(this, {
-      alarms: observable,
-      createAlarm: action,
-      deleteAlarm: action,
-      updateAlarm: action
-    });
+    makeAutoObservable(this);
     this.loadAlarms();
   }
   private _ALARM_KEY = 'ALARM_KEY';

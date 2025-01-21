@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { View, Text, ImageBackground, DimensionValue, StyleSheet, ImageSourcePropType, ViewStyle, Switch } from 'react-native';
 
@@ -10,10 +10,6 @@ const AlarmCardStyles = StyleSheet.create({
     alignItems: 'center',
   }
 });
-
-interface Media {
-  src: ImageSourcePropType | undefined
-}
 
 type ReflectionCardProps = PropsWithChildren<{
   title: string;
@@ -34,10 +30,15 @@ const AlarmCard = ({
   shouldVibrate = true,
   active,
   weekdays,
-  onPress,
   shouldRepeat,
   onActiveToggle
 }: ReflectionCardProps): React.JSX.Element =>  {
+  const [isActive, setActive] = useState(active);
+  useEffect(() => {
+    if (active !== isActive) {
+      setActive(active);
+    }
+  }, [active]);
   return (
     <View style={{ ...style }}>
       <View style={{
@@ -60,10 +61,11 @@ const AlarmCard = ({
           <Switch
             thumbColor={'#f4f3f4'}
             trackColor={{ false: '#767577', true: '#81b0ff' }}
-            value={active}
+            value={isActive}
             onValueChange={(val) => {
               if (typeof onActiveToggle == 'function') {
                 onActiveToggle(val);
+                setActive(val);
               }
             }}
            />

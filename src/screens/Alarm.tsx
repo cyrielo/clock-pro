@@ -1,12 +1,8 @@
-import React, { useRef } from 'react';
+import React, {  } from 'react';
 import {
-  View,
-  Text,
   SafeAreaView,
-  Alert,
   TouchableOpacity,
-  FlatList,
-  Dimensions
+  ScrollView
 } from 'react-native';
 
 import Header from '../components/Header';
@@ -16,15 +12,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {observer} from 'mobx-react-lite';
 import { AlarmStore } from '../store/';
 import ManageAlarm from './ManageAlarm';
-import { Alarm as AlarmType, ScreenWithNavigation } from '../types/index';
+import { ScreenWithNavigation } from '../types/index';
 import { formatTimeString } from '../utils/stringUtils';
 
 
-const Alarm = observer(({navigation} :ScreenWithNavigation) => {
-  const alarms = Object.keys(AlarmStore.alarms);
-
+const Alarm = observer(({navigation, route} :ScreenWithNavigation) => {
+  const alarmKeys = Object.keys(AlarmStore.alarms);
   return (
-    <>
     <SafeAreaView 
       style={{
         ...AppStyle.container,
@@ -32,40 +26,49 @@ const Alarm = observer(({navigation} :ScreenWithNavigation) => {
         position: 'relative',
         height: '100%'
       }}>
-      <Header title='Alarm' onAdd={() => {
-          navigation.navigate('Set Alarm');
-      }} />
-      <FlatList
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          marginBottom: 90,
+        }}>
+        <Header title='Alarm' onAdd={() => {
+            navigation.navigate('Set Alarm');
+        }} />
+          {alarmKeys.map((item, index) => {
+            const alarm = AlarmStore.alarms[item];
+            return (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  navigation.navigate('Set Alarm', { prevAlarm: alarm, prevAlarmIndex: item });
+                }}
+              >
+                <AlarmCard
+                  style={{ marginBottom: 20 }}
+                  title={alarm.label}
+                  time={formatTimeString(new Date(alarm.timestamp))}
+                  active={alarm.active}
+                  weekdays={alarm.weekdays}
+                  shouldRepeat={alarm.shouldRepeat}
+                  shouldVibrate={alarm.shouldVibrate}
+                  onActiveToggle={(val: boolean) => {
+                    AlarmStore.updateAlarm(item, { active: val });
+                  }}
+                />
+              </TouchableOpacity>
+            );
+          })}
+      </ScrollView>
+
+      {/* <FlatList
         style={{
           marginBottom: 90,
          }}
         showsVerticalScrollIndicator={false}
-        data={alarms}
-        renderItem={({item, index}) => {
-          const alarm = AlarmStore.alarms[item];
-          return (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                navigation.navigate('Set Alarm', { prevAlarm: alarm, prevAlarmIndex: item });
-              }}
-            >
-              <AlarmCard
-                title={alarm.label}
-                time={formatTimeString(new Date(alarm.timestamp))}
-                active={alarm.active}
-                style={{ marginBottom: 20 }}
-                weekdays={alarm.weekdays}
-                shouldRepeat={alarm.shouldRepeat}
-                shouldVibrate={alarm.shouldVibrate}
-                onActiveToggle={(val: boolean) => { AlarmStore.updateAlarm(item, { active: val }) }}
-              />
-            </TouchableOpacity>
-          );
-        }}
-      />
+          data={alarmKeys}
+        renderItem={}
+      /> */}
     </SafeAreaView>
-    </>
   )
 });
 

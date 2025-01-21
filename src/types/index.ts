@@ -1,13 +1,14 @@
 import { NavigationProp, ParamListBase,  } from "@react-navigation/native";
 import type { NavigatorScreenParams,  } from '@react-navigation/native';
 
-export interface Alarm {
-  id: string;
-  title: string;
-  time: string;
+export type Alarm = {
+  label: string;
+  timestamp: number;
   active: boolean;
   shouldVibrate: boolean;
   shouldRepeat: boolean;
+  sound:string;
+  shouldSnooze:boolean;
   weekdays: Weekdays[];
 }
 

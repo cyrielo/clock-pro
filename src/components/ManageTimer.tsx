@@ -63,6 +63,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
   const editMode = TimerStore.timer[colKey] !== undefined;
   const defaultTimer: Timer = {
     isPaused: false,
+    elapsedTime: 0,
     reset: false,
     duration: 0,
     label: '',

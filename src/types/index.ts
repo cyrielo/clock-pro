@@ -18,6 +18,7 @@ export type Weekdays = 'sunday' | 'monday' | 'tuesday' | 'wednessday' | 'thursda
 
 export type Timer = {
   isPaused:boolean;
+  elapsedTime:number;
   label:string;
   sound:string;
   color:string;

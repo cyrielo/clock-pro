@@ -74,6 +74,10 @@ export const NotificationSounds: DropdownOption[] = [{
   }, {
   label: 'Screaming',
   value: 'screaming'
+  },
+  {
+    label: 'Stella',
+    value: 'stella'
   }, {
   label: 'Serious alarm',
   value: 'serious_alarm'
@@ -88,10 +92,10 @@ export const NotificationSounds: DropdownOption[] = [{
   value: 'tsismosa'
   }, {
   label: 'Wake the f** up hard',
-  value: 'wake_the_f**_up_hard'
+  value: 'wake_the_fxx_up_hard'
   }, {
   label: 'Wake the f** up',
-  value: 'wake_the_f**_up'
+  value: 'wake_the_fxx_up'
   }, {
   label: 'Wake up',
   value: 'wake_up'

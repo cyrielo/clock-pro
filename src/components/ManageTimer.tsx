@@ -1,12 +1,12 @@
 import React, {useRef, useState} from 'react';
-import { View, TouchableOpacity, Text, TextInput, TextStyle } from 'react-native';
+import { View, TouchableOpacity, Text, TextInput } from 'react-native';
 import { Dropdown, IDropdownRef} from 'react-native-element-dropdown';
 import { COLORS } from '../constants/colors';
 import { NotificationSounds } from '../constants/';
 import { Timer } from '../types';
 import Ionicon from '@react-native-vector-icons/ionicons';
 import Button from './Button';
-import { getTimeObj, timeToMilliseconds } from '../utils/stringUtils';
+import { getTimeObj, timeToMilliseconds, createHash } from '../utils/stringUtils';
 import { observer } from 'mobx-react-lite';
 import { TimerStore } from '../store';
 
@@ -62,9 +62,10 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
   const colKey = TimerStore.activeColumnKey;
   const editMode = TimerStore.timer[colKey] !== undefined;
   const defaultTimer: Timer = {
+    id: createHash(),
+    isComplete: false,
     isPaused: false,
     elapsedTime: 0,
-    reset: false,
     duration: 0,
     label: '',
     color: ColorData[0].value,
@@ -256,13 +257,18 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
       }}>
         <Button
           style={{ backgroundColor:'grey', marginRight: 10}}
-          onPress={() => {
+          onPress={async () => {
             const hourINms = timeToMilliseconds(hours, 'hours');
             const minsINms = timeToMilliseconds(minutes, 'minutes');
             const secINms = timeToMilliseconds(seconds, 'seconds');
             const durationInms = hourINms + minsINms + secINms;
-            const a = Object.assign(timer, { isPaused: false, reset: true, duration: durationInms });
-            TimerStore.addTimer(colKey, a);
+            const a = Object.assign(timer, {
+              isPaused: false,
+              isComplete: false,
+              elapsedTime: 0,
+              duration: durationInms
+            });
+            await TimerStore.addTimer(colKey, a);
             TimerStore.toggleTimerModalVisibility();
           }}
           >
@@ -271,8 +277,8 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
           </Text>
         </Button>
         { editMode ? (
-          <Button onPress={() => {
-            TimerStore.deleteTimer(colKey);
+          <Button onPress={async () => {
+            await TimerStore.deleteTimer(colKey);
             TimerStore.toggleTimerModalVisibility();
           }}
           style={{ backgroundColor: '#d11a2a', }}>

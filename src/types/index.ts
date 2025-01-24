@@ -2,6 +2,7 @@ import { NavigationProp, ParamListBase,  } from "@react-navigation/native";
 import type { NavigatorScreenParams,  } from '@react-navigation/native';
 
 export type Alarm = {
+  id:string;
   label: string;
   timestamp: number;
   active: boolean;
@@ -12,11 +13,20 @@ export type Alarm = {
   weekdays: Weekdays[];
 }
 
+export type Notification = {
+  id:string;
+  sound: string;
+  title:string;
+  description:string;
+  color:string;
+};
 
 export type ThemeType = 'system'|'dark'|'light';
 export type Weekdays = 'sunday' | 'monday' | 'tuesday' | 'wednessday' | 'thursday' | 'friday' | 'saturday';
 
 export type Timer = {
+  id:string;
+  isComplete:boolean;
   isPaused:boolean;
   elapsedTime:number;
   label:string;

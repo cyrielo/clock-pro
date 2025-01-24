@@ -4,7 +4,7 @@ import RNDateTimePicker, { DateTimePickerAndroid, DateTimePickerEvent } from '@r
 import { Alarm, ScreenWithNavigation, Weekdays } from '../types';
 import { CircularCard } from '../components/Card';
 import Ionicon from '@react-native-vector-icons/ionicons';
-import { formatTimeString, getTimeObj, upperCaseFirst } from '../utils/stringUtils';
+import {  formatTimeString, getTimeObj, upperCaseFirst, createHash } from '../utils/stringUtils';
 import { FLOATING_FOOTER_HEIGHT, SPACING } from '../constants';
 import Button from '../components/Button';
 import { Switch } from 'react-native';
@@ -14,7 +14,6 @@ import { AlarmStore, ClockStore, PreferencesStore } from '../store';
 import { fromZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
 import Pulsate from '../components/Pulsate';
-
 interface ManageAlarmProps extends ScreenWithNavigation {
   alarmKey:string;
 };
@@ -343,7 +342,9 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
         <Button
           onPress={async () => {
             //save
+            const uniquestring = `${timestamp}-${selectedDays.join(',')}`;
             const alarm:Alarm = {
+              id: createHash(uniquestring),
               active: isAlaramActive,
               shouldRepeat,
               shouldSnooze,

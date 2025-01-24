@@ -30,9 +30,9 @@ interface TimerItemProps {
 }
 
 const TimerItem = observer(({ columnKey }: TimerItemProps) => {
-  const { duration, isPaused, label, sound, reset } = TimerStore.timer[columnKey];
+  const { duration, isPaused, label, sound, elapsedTime } = TimerStore.timer[columnKey];
   const countDownRef = useRef<NodeJS.Timeout|number>(0);
-  const [countDown, setCountDown] = useState(duration);
+  const [countDown, setCountDown] = useState(duration - elapsedTime);
   const { hours = 0, minutes = 0, seconds = 0 } = getTimeObj(countDown);
   const isSilent = (sound == 'silent');
   const fiftyPercent = duration * 0.6;
@@ -44,24 +44,32 @@ const TimerItem = observer(({ columnKey }: TimerItemProps) => {
 
   useEffect(() => {
     if (!isPaused ) {
-      if (countDownComplete || reset) {
-        setCountDown(duration);// reset duration
-        const update = { reset: false } as TimerType; // completed reset
-        TimerStore.updateTimer(columnKey, update);
+      if (countDownComplete) {
+        setCountDown(duration); // reset duration if complete
+        const update = Object.assign({},TimerStore.timer[columnKey], {
+          elapsedTime: 0,
+          isPaused: true,
+          isComplete: true
+        }) as TimerType;
+        // broadcast countdown complete
+        TimerStore.updateTimer(columnKey, update, 'firedByReset');
       } 
-      countDownRef.current = setInterval(() => {
-        setCountDown(countDown - 1000);
-      }, 1000);
-      if (countDown == -1000) {
-        clearInterval(countDownRef.current);
-        const update = { isPaused: true } as TimerType;
-        TimerStore.updateTimer(columnKey, update);
-      }
+      //manage setInterval
+      countDownRef.current = setInterval(() => { setCountDown(countDown - 1000); }, 1000);
+      if (countDown == -1000) { clearInterval(countDownRef.current); }
+    } else {
+      // handle countdownPause event
+      const update = Object.assign({}, TimerStore.timer[columnKey], {
+        elapsedTime: duration - countDown,
+        isComplete: countDown === duration,
+      }) as TimerType;
+      TimerStore.updateTimer(columnKey, update, 'firedByPaused');
     }
     return () => {
+      // cleanup interval when component unmounts
       clearInterval(countDownRef.current);
     };
-  }, [isPaused, reset, pulseSpeed, countDown, duration]);
+  }, [isPaused, pulseSpeed, countDown, duration]);
   return (
     <>
       <Pulsate isPaused={isPaused} duration={pulseSpeed}>
@@ -138,7 +146,8 @@ const Cols: React.FC<ColProps> = ({ row, timerRecord }) => {
         onPress={() => {
           if (hasTimer) {
             //if timer is already created ? Toggle pause or play
-            const update = { isPaused: !timer.isPaused } as TimerType;
+            const isComplete = timer.isComplete ? false : timer.isComplete;
+            const update = Object.assign({}, TimerStore.timer[columnKey], { isPaused: !timer.isPaused, isComplete }) as TimerType;
             TimerStore.updateTimer(columnKey, update);
           } else {
             // open new create timer window

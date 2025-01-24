@@ -1,5 +1,7 @@
 import { format } from "date-fns";
 import { TimeStamp } from "../types";
+import CryptoJS from 'crypto-js';
+
 
 export const upperCaseFirst = (str:string): string  => {
   return str.charAt(0).toLocaleUpperCase() + str.slice(1);
@@ -22,6 +24,11 @@ export const timeToMilliseconds = (val:number|string, hand: 'hours'|'minutes'|'s
     default:
       return 0;
   }
+}
+
+export const createHash = (str?:string):string => {
+  const finalString = str ? str : `${Math.ceil(Math.random() * 10128)}`;
+  return CryptoJS.MD5(finalString).toString();
 }
 
 export const formatTimeString = (date:Date) :string => {

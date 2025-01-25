@@ -1,3 +1,4 @@
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import type { PropsWithChildren } from 'react';
 import {View, ViewProps, ViewStyle } from 'react-native';
@@ -25,9 +26,10 @@ interface CircularCardProps extends React.PropsWithChildren {
 }
 
 export const CircularCard = ({ style, children }: CircularCardProps) => {
+  const theme = useTheme();
   return (
     <View style={{
-      backgroundColor: '#fff',
+      backgroundColor: theme.colors.background,
       borderWidth: 1.5,
       borderColor: 'transparent',
       display: 'flex',
@@ -38,7 +40,7 @@ export const CircularCard = ({ style, children }: CircularCardProps) => {
       width: 250,
       borderRadius: 150,
       elevation: 20,
-      shadowColor: 'grey',
+      shadowColor: theme.colors.text,
       shadowOpacity: 0.5,
       shadowRadius: 20,
       marginBottom: 25,

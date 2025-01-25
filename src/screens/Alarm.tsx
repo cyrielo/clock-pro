@@ -38,7 +38,7 @@ const Alarm = observer(({navigation, route} :ScreenWithNavigation) => {
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  navigation.navigate('Set Alarm', { prevAlarm: alarm, prevAlarmIndex: item });
+                  navigation.navigate('Set Alarm', { prevAlarm: alarm });
                 }}
               >
                 <AlarmCard
@@ -50,7 +50,7 @@ const Alarm = observer(({navigation, route} :ScreenWithNavigation) => {
                   shouldRepeat={alarm.shouldRepeat}
                   shouldVibrate={alarm.shouldVibrate}
                   onActiveToggle={(val: boolean) => {
-                    AlarmStore.updateAlarm(item, { active: val });
+                    AlarmStore.updateAlarm(Object.assign({}, alarm, { active: val }));
                   }}
                 />
               </TouchableOpacity>

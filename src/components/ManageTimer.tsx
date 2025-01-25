@@ -8,7 +8,7 @@ import Ionicon from '@react-native-vector-icons/ionicons';
 import Button from './Button';
 import { getTimeObj, timeToMilliseconds, createHash } from '../utils/stringUtils';
 import { observer } from 'mobx-react-lite';
-import { TimerStore } from '../store';
+import { PreferencesStore, TimerStore } from '../store';
 
 type ManageTimerProps = {
 };
@@ -69,7 +69,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
     duration: 0,
     label: '',
     color: ColorData[0].value,
-    sound: 'silent'
+    sound: PreferencesStore.preferences.notificationSound
   };
 
   const prevTimer:Timer = (TimerStore.timer[colKey] || defaultTimer);

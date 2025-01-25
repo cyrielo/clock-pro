@@ -29,8 +29,44 @@ export const ScheduleTimer = async (timer:Timer, timestamp:number) => {
 };
 
 export const CancelTimerNotification = async (id:string) => {
-  notifee.cancelTriggerNotification(id);
+  await notifee.cancelTriggerNotification(id);
+  await notifee.deleteChannel(id);
 }
+
+export const DisplayNotification = async (timer:Timer) => {
+  await notifee.requestPermission();
+  const channelId = timer.id;
+  const notifciation: Notification = {
+    id: timer.id,
+    color: timer.color,
+    sound: timer.sound,
+    title: `⏰ ${timer.label}`,
+    description: `Timer is complete`
+  };
+  await notifee.createChannel({
+    id: channelId,
+    name: timer.id,
+    sound: timer.sound,
+    bypassDnd: true,
+    importance: AndroidImportance.HIGH
+  });
+  await notifee.displayNotification({
+    title: notifciation.title,
+    body: notifciation.description,
+    android: {
+      channelId,
+      ongoing: true,
+      sound: notifciation.sound || 'default',
+      color: notifciation.color || 'blue',
+      importance: AndroidImportance.HIGH,
+      lightUpScreen: true,
+      loopSound: true,
+      onlyAlertOnce: false,
+      visibility: AndroidVisibility.PUBLIC,
+      pressAction: { id: notifciation.id, },
+    },
+  });
+};
 
 const a = async (alarm:Alarm, channelId?:string) => {
   const notificationTrigger: TimestampTrigger = {
@@ -143,6 +179,7 @@ const triggerNotification = async (payload: TriggerPayload) => {
       importance: AndroidImportance.HIGH
     }); 
     await notifee.createTriggerNotification({
+      id: payload.notifciation.id,
       title: payload.notifciation.title,
       body: payload.notifciation.description,
       data: payload.data,

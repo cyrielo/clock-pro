@@ -1,55 +1,71 @@
-import { makeAutoObservable, observable, action, runInAction } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScheduleAlarm, CancelAlarmSchedule } from '../services/NotificationServices';
 import { Alarm } from '../types';
-import { formatTimeString } from '../utils/stringUtils';
 
 export default class AlarmStore {
 
   alarms: Record<string, Alarm> = {};
+  private _ALARM_KEY = 'ALARM_KEY';
 
   constructor() {
     makeAutoObservable(this);
     this.loadAlarms();
   }
-  private _ALARM_KEY = 'ALARM_KEY';
+
   async loadAlarms() {
     const alarms = await this.getAlarms();
     runInAction(() => {
       this.alarms = alarms;
     });
   }
-  async createAlarm(alarm: Alarm, prevKey?:string) {
-    if (prevKey) {
-      this.updateAlarm(prevKey, alarm);
-      return;
+
+  async createAlarm(alarm: Alarm) {
+    try {
+      if (this.alarms[alarm.id]) {
+        this.updateAlarm(alarm);
+        return;
+      }
+      runInAction(() => {
+        this.alarms[alarm.id] = alarm;
+      });
+      console.log('created', alarm);
+      await ScheduleAlarm(alarm);
+      await this.persistAlarm();
+    } catch (error) {
+      console.log('Error While Saving..', error);
     }
-    const key = this.generateAlarmKey(alarm);
-    runInAction(() => {
-      this.alarms[key] = alarm;
-    });
-    this.persistAlarm();
+
   }
 
-  async updateAlarm(key:string, updatePartial:Partial<Alarm>) {
-    runInAction(() => {
-      const currentAlarm = this.alarms[key];
-      const update = Object.assign(currentAlarm, updatePartial);
-      this.alarms[key] = update;
-    });
-    this.persistAlarm();
+  async updateAlarm(alarm:Alarm) {
+    try {
+      const oldAlarm = this.alarms[alarm.id];
+      await CancelAlarmSchedule(oldAlarm, alarm.id);
+      runInAction(() => {
+        this.alarms[alarm.id] = Object.assign({}, alarm);;
+      });
+      console.log('updated', this.alarms[alarm.id]);
+      if (alarm.active) {
+        await ScheduleAlarm(alarm);
+      }
+      await this.persistAlarm();
+    }catch(error) {
+      console.log('Error While updating', error);
+    }
   }
 
   async deleteAlarm(key:string) {
-    runInAction(() => {
-      delete this.alarms[key];
-    });
-    this.persistAlarm();
-  }
-
-  generateAlarmKey(a:Alarm):string {
-    const daysLen = a.weekdays.length;
-    const timestring = formatTimeString(new Date(a.timestamp));
-    return `${timestring}_${daysLen}`;
+    try {
+      const alarm = this.alarms[key];
+      await CancelAlarmSchedule(alarm, alarm.id);
+      runInAction(() => {
+        delete this.alarms[key];
+      });
+      await this.persistAlarm();
+    } catch (error) {
+      console.log('Error while deleting', error);
+    }
   }
 
   async persistAlarm() {

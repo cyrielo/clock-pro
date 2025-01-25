@@ -52,8 +52,8 @@ const TimerItem = observer(({ columnKey }: TimerItemProps) => {
           isComplete: true
         }) as TimerType;
         // broadcast countdown complete
-        TimerStore.updateTimer(columnKey, update, 'firedByReset');
-      } 
+        TimerStore.updateTimer(columnKey, update).finally(() => {});
+      }
       //manage setInterval
       countDownRef.current = setInterval(() => { setCountDown(countDown - 1000); }, 1000);
       if (countDown == -1000) { clearInterval(countDownRef.current); }
@@ -63,7 +63,7 @@ const TimerItem = observer(({ columnKey }: TimerItemProps) => {
         elapsedTime: duration - countDown,
         isComplete: countDown === duration,
       }) as TimerType;
-      TimerStore.updateTimer(columnKey, update, 'firedByPaused');
+      TimerStore.updateTimer(columnKey, update).finally(() => { });
     }
     return () => {
       // cleanup interval when component unmounts
@@ -143,12 +143,12 @@ const Cols: React.FC<ColProps> = ({ row, timerRecord }) => {
         onLongPress={() => {
           TimerStore.toggleTimerModalVisibility(columnKey);
         }}
-        onPress={() => {
+        onPress={async () => {
           if (hasTimer) {
             //if timer is already created ? Toggle pause or play
             const isComplete = timer.isComplete ? false : timer.isComplete;
             const update = Object.assign({}, TimerStore.timer[columnKey], { isPaused: !timer.isPaused, isComplete }) as TimerType;
-            TimerStore.updateTimer(columnKey, update);
+            await TimerStore.updateTimer(columnKey, update);
           } else {
             // open new create timer window
             TimerStore.toggleTimerModalVisibility(columnKey);

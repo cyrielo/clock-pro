@@ -13,13 +13,16 @@ import { AlarmStore } from '../store/';
 import ManageAlarm from './ManageAlarm';
 import { ScreenWithNavigation } from '../types/index';
 import { formatTimeString } from '../utils/stringUtils';
+import { useTheme } from '@react-navigation/native';
 
 const Alarm = observer(({navigation, route} :ScreenWithNavigation) => {
   const alarmKeys = Object.keys(AlarmStore.alarms);
+  const theme = useTheme();
   return (
     <SafeAreaView 
       style={{
         ...AppStyle.container,
+        ...theme.colors,
         marginBottom: 0,
         position: 'relative',
         height: '100%'

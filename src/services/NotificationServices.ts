@@ -2,10 +2,11 @@ import notifee, { TimestampTrigger, TriggerType, AlarmType, AndroidImportance, A
 import { Alarm, Timer, Notification, Weekdays, TriggerPayload } from '../types';
 import { COLORS } from '../constants/colors';
 import { fromZonedTime } from 'date-fns-tz';
-import { ClockStore } from '../store';
+import { ClockStore, PreferencesStore } from '../store';
 import { add, format, getTime } from 'date-fns';
 
 export const ScheduleTimer = async (timer:Timer, timestamp:number) => {
+  if (!PreferencesStore.preferences.notificationEnabled) { return; }
   const notificationTrigger: TimestampTrigger = {
     timestamp: timestamp,
     type: TriggerType.TIMESTAMP,
@@ -34,6 +35,7 @@ export const CancelTimerNotification = async (id:string) => {
 }
 
 export const DisplayNotification = async (timer:Timer) => {
+  if (!PreferencesStore.preferences.notificationEnabled) { return; }
   await notifee.requestPermission();
   const channelId = timer.id;
   const notifciation: Notification = {
@@ -68,7 +70,8 @@ export const DisplayNotification = async (timer:Timer) => {
   });
 };
 
-const a = async (alarm:Alarm, channelId?:string) => {
+const ScheduleAlarmHelper = async (alarm:Alarm, channelId?:string) => {
+  if (!PreferencesStore.preferences.notificationEnabled) { return; }
   const notificationTrigger: TimestampTrigger = {
     timestamp: alarm.timestamp,
     type: TriggerType.TIMESTAMP,
@@ -100,7 +103,7 @@ const RescheduleAlarmInPlace = async (alarm:Alarm) => {
   const newAlarm = Object.assign({}, alarm, {
     timestamp: newDate.getTime()
   });
-  await a(newAlarm);
+  await ScheduleAlarmHelper(newAlarm);
 }
 
 export const ScheduleAlarm = async (alarm: Alarm) => {
@@ -118,7 +121,7 @@ export const ScheduleAlarm = async (alarm: Alarm) => {
       alarm.timestamp = getTime(newDate);
     }
     if (!alarm.weekdays.length) {
-      await a(Object.assign({}, alarm, { id: alarmNotificationId }), alarmNotificationId);
+      await ScheduleAlarmHelper(Object.assign({}, alarm, { id: alarmNotificationId }), alarmNotificationId);
       return;
     }
     const weekdays =  alarm.weekdays; 
@@ -135,7 +138,7 @@ export const ScheduleAlarm = async (alarm: Alarm) => {
           const timestamp = newDate.getTime();
           const newAlarm = Object.assign({}, alarm, {timestamp, id});
           await notifee.cancelTriggerNotification(id);
-          await a(newAlarm, alarmNotificationId);
+          await ScheduleAlarmHelper(newAlarm, alarmNotificationId);
           // schedule Alarm for the week
           if (match === alarm.weekdays.length) {
             break;
@@ -168,6 +171,7 @@ export const GetTriggerNotificationIds = async() => {
 }
 
 const triggerNotification = async (payload: TriggerPayload) => {
+  if (!PreferencesStore.preferences.notificationEnabled) { return; }
   await notifee.requestPermission();
   try {
     const channelId = payload.channelId ? payload.channelId : payload.notifciation.id;

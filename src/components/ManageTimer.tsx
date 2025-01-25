@@ -9,6 +9,7 @@ import Button from './Button';
 import { getTimeObj, timeToMilliseconds, createHash } from '../utils/stringUtils';
 import { observer } from 'mobx-react-lite';
 import { PreferencesStore, TimerStore } from '../store';
+import { useTheme } from '@react-navigation/native';
 
 type ManageTimerProps = {
 };
@@ -26,6 +27,7 @@ const TimerInput: React.FC<TimerInputProps> = (({
   value,
   onChangeText
 }) => {
+  const theme = useTheme();
   return (
     <View style={{
       display: 'flex',
@@ -39,12 +41,14 @@ const TimerInput: React.FC<TimerInputProps> = (({
           fontSize: 22,
           width: 50,
           textAlign: 'center',
-          height: '100%'
+          height: '100%',
+          color: theme.colors.text,
         }}
         onChangeText={(text: string) => typeof onChangeText == 'function' && onChangeText(text) }
         cursorColor={'transparent'}
         value={value}
         maxLength={2}
+        placeholderTextColor={theme.colors.text}
         placeholder={placeholder} />
       <Text style={{ fontSize: 18, marginLeft: 2, marginTop: 5 }}>{label}</Text>
     </View>
@@ -52,7 +56,7 @@ const TimerInput: React.FC<TimerInputProps> = (({
 });
 
 const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
-
+  const theme = useTheme();
   const colorSelectorRef = useRef<IDropdownRef>(null);
   const ColorData = Object.keys(COLORS).slice(0,10).map((label, _) => ({
     label,
@@ -79,7 +83,10 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
   const [minutes, setMinutes] = useState(`${timeObj.minutes}`);
   const [seconds, setSeconds] = useState(`${timeObj.seconds}`);
   return (
-    <View>
+    <View style={{
+      backgroundColor: theme.colors.background,
+      padding: 10,
+    }}>
       <View style={{
         display: 'flex',
         flexDirection: 'row',
@@ -91,14 +98,14 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
         <TouchableOpacity>
           <Text style={{ fontWeight: 500, fontSize: 16 }}></Text>
         </TouchableOpacity>
-        <Text style={{ fontWeight: 500, fontSize: 16 }}>
+        <Text style={{ fontWeight: 500, fontSize: 16, color: theme.colors.text }}>
           {(editMode) ? 'Edit Timer' : 'New Timer'}
         </Text>
         <TouchableOpacity
           onPress={() => {
             TimerStore.toggleTimerModalVisibility();
           }}>
-          <Text style={{ fontWeight: 500, fontSize: 16 }}>Cancel</Text>
+          <Text style={{ fontWeight: 500, fontSize: 16, color: theme.colors.text, }}>Cancel</Text>
         </TouchableOpacity>
       </View>
       <View style={{
@@ -139,8 +146,9 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
           marginHorizontal: 10,
           minWidth: 120
         }}>
-          <Text style={{marginBottom: 5, }}>Label</Text>
+          <Text style={{ marginBottom: 5, color: theme.colors.text, }}>Label</Text>
           <TextInput
+            placeholderTextColor={theme.colors.text}
             placeholder='Timer Label'
             value={timer.label}
             onChangeText={(label) => {
@@ -151,8 +159,9 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
               borderRadius: 5,
               borderWidth: 1,
               borderColor: 'grey',
-              backgroundColor: 'rgba(200,200,200,0.1)',
+              backgroundColor: theme.colors.background,
               padding: 5,
+              color: theme.colors.text,
             }}
           />
         </View>
@@ -177,7 +186,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             renderLeftIcon={() => {
               return (
                 <View>
-                  <Text style={{}}>Color</Text>
+                  <Text style={{ color: theme.colors.text, }}>Color</Text>
                   <TouchableOpacity
                     onPress={() => {
                       if (colorSelectorRef.current) {
@@ -226,8 +235,8 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
           alignItems: 'center',
           justifyContent: 'center',
           }}>
-          <Ionicon name='notifications'  color='grey' size={18}/>
-          <Text style={{ textAlign: 'center', marginLeft: 4 }}>Sound</Text>
+          <Ionicon name='notifications' color={theme.colors.text} size={18}/>
+          <Text style={{ textAlign: 'center', marginLeft: 4, color: theme.colors.text, }}>Sound</Text>
         </View>
         <Dropdown
           style={{
@@ -236,10 +245,11 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             borderWidth: 1,
             borderRadius: 8,
             padding: 4,
-            borderColor: 'grey'
+            borderColor: theme.colors.border,
           }}
           showsVerticalScrollIndicator={false}
           data={NotificationSounds}
+          selectedTextStyle={{ color: theme.colors.text }}
           labelField={'label'}
           valueField={'value'}
           value={timer.sound}
@@ -256,7 +266,12 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
         justifyContent: 'center'
       }}>
         <Button
-          style={{ backgroundColor:'grey', marginRight: 10}}
+          style={{
+            backgroundColor: theme.colors.background,
+            marginRight: 10,
+            borderColor: theme.colors.border,
+            borderWidth: 1,
+          }}
           onPress={async () => {
             const hourINms = timeToMilliseconds(hours, 'hours');
             const minsINms = timeToMilliseconds(minutes, 'minutes');
@@ -272,7 +287,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             TimerStore.toggleTimerModalVisibility();
           }}
           >
-          <Text style={{textAlign: 'center', }}>
+          <Text style={{textAlign: 'center', color: theme.colors.text }}>
             {editMode ? 'Update timer' : 'Start timer'}
           </Text>
         </Button>
@@ -282,10 +297,15 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             TimerStore.toggleTimerModalVisibility();
           }}
           style={{ backgroundColor: '#d11a2a', }}>
-            <Text style={{ color: '#dcdcdc', fontWeight: 500, textAlign: 'center', }}>Delete timer</Text>
+            <Text style={{
+              color: theme.colors.text,
+              fontWeight: 500,
+              textAlign: 'center'
+              }}>
+                Delete timer
+            </Text>
           </Button>
         ) : null }
-
       </View>
     </View>
   );

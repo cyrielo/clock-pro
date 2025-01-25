@@ -54,7 +54,7 @@ export default (() => {
       })}
       >
       <Tab.Screen name='alarm' component={AlarmStackScreen} options={{ ...screenConfig }} />
-      <Tab.Screen name='timer' component={TimerStackScreen} options={{ tabBarBadge: 1, ...screenConfig }} />
+      <Tab.Screen name='timer' component={TimerStackScreen} options={{ ...screenConfig }} />
       <Tab.Screen name='clock' component={ClockStackScreen} options={{ ...screenConfig }}  />
       <Tab.Screen name='stopwatch' component={StopWatchStackScreen} options={{ ...screenConfig }} />
       <Tab.Screen name='pref' component={PreferenceStackScreen} options={{ ...screenConfig }} />

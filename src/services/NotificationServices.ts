@@ -5,7 +5,7 @@ import { fromZonedTime } from 'date-fns-tz';
 import { ClockStore } from '../store';
 import { add, format, getTime } from 'date-fns';
 
-export const scheduleTimer = async (timer:Timer, timestamp:number) => {
+export const ScheduleTimer = async (timer:Timer, timestamp:number) => {
   const notificationTrigger: TimestampTrigger = {
     timestamp: timestamp,
     type: TriggerType.TIMESTAMP,
@@ -28,7 +28,7 @@ export const scheduleTimer = async (timer:Timer, timestamp:number) => {
   await triggerNotification(payload);
 };
 
-export const cancelTimerNotification = async (id:string) => {
+export const CancelTimerNotification = async (id:string) => {
   notifee.cancelTriggerNotification(id);
 }
 
@@ -127,7 +127,7 @@ export const CancelAlarmSchedule = async (alarm:Alarm, channelId:string) => {
   }
 };
 
-export const getTriggerNotificationIds = async() => {
+export const GetTriggerNotificationIds = async() => {
   return await notifee.getTriggerNotificationIds();
 }
 

@@ -1,13 +1,17 @@
+import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
-import { View, Text, ImageBackground, DimensionValue, StyleSheet, ImageSourcePropType, ViewStyle, Switch } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, Switch } from 'react-native';
+import { COLORS } from '../constants/colors';
 
 const AlarmCardStyles = StyleSheet.create({
-  headerContainer: {
+  container: {
+    borderBottomWidth: 1,
+    paddingVertical: 10,
+    display: 'flex',
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
-    alignItems: 'center',
   }
 });
 
@@ -33,6 +37,7 @@ const AlarmCard = ({
   shouldRepeat,
   onActiveToggle
 }: ReflectionCardProps): React.JSX.Element =>  {
+  const theme = useTheme();
   const [isActive, setActive] = useState(active);
   useEffect(() => {
     if (active !== isActive) {
@@ -42,25 +47,33 @@ const AlarmCard = ({
   return (
     <View style={{ ...style }}>
       <View style={{
-        borderBottomColor: '#eef3fa',
-        borderBottomWidth: 1,
-        paddingVertical: 10,
-        display:'flex',
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+        ...AlarmCardStyles.container,
+        borderBottomColor: theme.colors.border,
       }}>
         <View>
-          <Text style={{ fontSize: 13, marginBottom: 2}} >{title}</Text>
-          <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 2 }}>{time}</Text>
-          <Text style={{ fontSize: 13, marginBottom: 2 }} >
+          <Text style={{
+            fontSize: 13,
+            marginBottom: 2,
+            color: theme.colors.text
+            }} >{title}</Text>
+          <Text style={{
+            fontSize: 28,
+            fontWeight: 'bold',
+            marginBottom: 2,
+            color: theme.colors.text
+            }}>{time}</Text>
+          <Text style={{
+            fontSize: 13,
+            marginBottom: 2,
+            color: theme.colors.text
+            }} >
             {weekdays.join(', ')}
           </Text>
         </View>
         <View>
           <Switch
-            thumbColor={'#f4f3f4'}
-            trackColor={{ false: '#767577', true: '#81b0ff' }}
+            thumbColor={theme.colors.text}
+            trackColor={{ false: COLORS.Grey, true: COLORS.Blue_2 }}
             value={isActive}
             onValueChange={(val) => {
               if (typeof onActiveToggle == 'function') {

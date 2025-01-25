@@ -7,7 +7,7 @@ export default class PreferenceStore {
     theme: 'system',
     language: 'ch',
     notificationEnabled: true,
-    notificationSound: '/path/to/default_sound'
+    notificationSound: 'loud_alarm_sound'
   };
   private _PREFERENCE_KEY = 'PREFERENCE_KEY';
 

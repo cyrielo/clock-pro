@@ -5,6 +5,7 @@ export default class PreferenceStore {
 
   preferences: Preferences = {
     theme: 'system',
+    isHydrated: false,
     language: 'ch',
     notificationEnabled: true,
     notificationSound: 'loud_alarm_sound'
@@ -18,7 +19,7 @@ export default class PreferenceStore {
 
   private async loadPreference() {
     const savedPrefs = await this.getPreferences();
-    this.setPreferences(savedPrefs);
+    await this.setPreferences(savedPrefs);
   }
 
   async setPreferences(preferences: Preferences) {
@@ -26,6 +27,7 @@ export default class PreferenceStore {
     runInAction(() => {
       this.preferences = preferences;
       this.preferences = Object.assign(this.preferences, preferences);
+      this.preferences.isHydrated = true;
     });
     } catch(e) {
     }

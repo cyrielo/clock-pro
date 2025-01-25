@@ -5,7 +5,7 @@ import { Alarm, ScreenWithNavigation, Weekdays } from '../types';
 import { CircularCard } from '../components/Card';
 import Ionicon from '@react-native-vector-icons/ionicons';
 import {  formatTimeString, getTimeObj, upperCaseFirst, createHash } from '../utils/stringUtils';
-import { FLOATING_FOOTER_HEIGHT, SPACING } from '../constants';
+import { FLOATING_FOOTER_HEIGHT } from '../constants';
 import Button from '../components/Button';
 import { Switch } from 'react-native';
 import { NotificationSounds } from '../constants';
@@ -14,12 +14,14 @@ import { AlarmStore, ClockStore, PreferencesStore } from '../store';
 import { fromZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
 import Pulsate from '../components/Pulsate';
+import { useTheme } from '@react-navigation/native';
 
 interface ManageAlarmProps extends ScreenWithNavigation {
   alarmKey:string;
 };
 
 const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
+  const theme = useTheme();
   const routeParams = route && route.params || {};
   const prevAlarm = (routeParams && routeParams.prevAlarm || {}) as Alarm;
   const timerRef = useRef<NodeJS.Timeout | number>();
@@ -29,6 +31,8 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
   const [date, setDate] = useState(prevDate);
 
   const handleAlarmTimeChange = (event:DateTimePickerEvent) => {
+    const eventType = event.type;
+    if (eventType == 'dismissed') { return; }
     const timestamp = event.nativeEvent.timestamp;
     const selectedDate = fromZonedTime(new Date(timestamp), timezone);
     const currentDay = format(selectedDate, 'eeee').toLocaleLowerCase() as Weekdays;
@@ -129,11 +133,22 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
                 color={isAlaramActive ? '#09c' : '#dcdcdc'}
                 size={20}
               />
-              <Text style={{ fontSize: 16, marginLeft: 5, textAlign: 'center' }}>
+              <Text style={{
+                fontSize: 16,
+                marginLeft: 5,
+                textAlign: 'center',
+                color: theme.colors.text
+                }}>
                 Alarm {isAlaramActive ? 'on' : 'off'}
               </Text>
             </View>
-            <Text style={{ fontSize: 38, marginVertical: 15,  width: '100%', textAlign: 'center' }}>
+            <Text style={{
+              fontSize: 38,
+              marginVertical: 15, 
+              width: '100%',
+              textAlign: 'center',
+              color: theme.colors.text
+              }}>
               {timeString}
             </Text>
             <Pulsate isPaused={!isAlaramActive && !remainingTime}>
@@ -143,6 +158,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
                   fontSize: 16,
                   width: '85%',
                   textAlign: 'center',
+                  color: theme.colors.text
                 }}>
                 {(isAlaramActive && remainingTime) ? remainingTime : ''}
               </Text>
@@ -151,6 +167,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
                 fontSize: 16,
                 width: '100%',
                 textAlign: 'center',
+                color: theme.colors.text
               }}>
                 {(isAlaramActive && remainingTime) ? 'remaining' : ''}
               </Text>
@@ -160,7 +177,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
       </CircularCard>
       <View style={{
           minHeight: 250,
-          backgroundColor: '#fff',
+          backgroundColor: theme.colors.background,
           padding: 10,
           borderRadius: 10,
           marginHorizontal: 15,
@@ -174,7 +191,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
         }}>
           { allDays.map((day, index) => {
             const isSelectedDay = selectedDays.includes(day);
-            const bgColor = isSelectedDay ? 'rgba(200,200,200,0.6)' : 'rgba(200,200,200,0.1)' ;
+            const bgColor = isSelectedDay ? 'rgba(200,200,200,0.6)' : theme.colors.background ;
             return (
               <TouchableOpacity
                 onPress={() => handleDaysSelection(day)}
@@ -187,7 +204,10 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
                   marginRight: (index != allDays.length - 1) ? 4 : 0,
                 }}
                 >
-                <Text style={{textAlign: 'center'}}>
+                <Text style={{
+                  textAlign: 'center',
+                  color: theme.colors.text
+                  }}>
                   {upperCaseFirst(day).slice(0,3)}
                 </Text>
               </TouchableOpacity>
@@ -203,12 +223,20 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
           borderBottomColor: 'grey',
           justifyContent:'flex-start',
           }}>
-            <Text style={{padding: 5}}>
+            <Text style={{
+              padding: 5,
+              color: theme.colors.text
+              }}>
               Alarm name
             </Text>
             <TextInput
-              placeholder='Alarm name ...'
-              style={{ }}
+              placeholder='Enter alarm name'
+              style={{
+                color: theme.colors.text,
+                borderColor: theme.colors.border,
+                borderRadius: 5,
+              }}
+              placeholderTextColor={theme.colors.text}
               onChangeText={setLabel}
               value={label}
             />
@@ -222,7 +250,9 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
           paddingBottom: 7,
           borderBottomColor: 'grey',
         }}>
-          <Text>
+          <Text style={{
+              color: theme.colors.text,
+            }}>
             Active
           </Text>
           <Switch
@@ -242,7 +272,9 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
           <View style={{
             flex: 1,
           }}>
-            <Text>
+            <Text style={{
+              color: theme.colors.text,
+            }}>
               Alarm Sound
             </Text>
           </View>
@@ -257,15 +289,15 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
               style={{
                 width: '100%',
               }}
-              selectedTextStyle={{ textAlign: 'right' }}
+              selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
               data={NotificationSounds}
               search={false}
               value={alarmSound}
-              placeholderStyle={{ textAlign: 'right' }}
+              placeholderStyle={{ textAlign: 'right', color: theme.colors.text }}
               onChange={(item) => {
                 setAlarmSound(item.value);
               }}
-              renderRightIcon={() => (<Ionicon style={{}} name='chevron-forward-outline' size={24} />)}
+              renderRightIcon={() => (<Ionicon color={theme.colors.text } style={{}} name='chevron-forward-outline' size={24} />)}
               labelField={'label'}
               valueField={'value'}
             />
@@ -280,7 +312,9 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
           paddingBottom: 7,
           borderBottomColor: 'grey',
         }}>
-          <Text>
+          <Text style={{
+              color: theme.colors.text,
+            }}>
             Allow Snooze
           </Text>
           <Switch
@@ -297,7 +331,9 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
           paddingBottom: 7,
           borderBottomColor: 'grey',
         }}>
-          <Text>
+          <Text style={{
+              color: theme.colors.text,
+            }}>
             Repeat
           </Text>
           <Switch
@@ -312,7 +348,9 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
           marginTop: 20,
           paddingBottom: 7,
         }}>
-          <Text>
+          <Text style={{
+              color: theme.colors.text,
+            }}>
             Vibrate
           </Text>
           <Switch

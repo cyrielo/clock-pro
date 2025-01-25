@@ -1,3 +1,4 @@
+import { TimestampTrigger } from "@notifee/react-native";
 import { NavigationProp, ParamListBase,  } from "@react-navigation/native";
 import type { NavigatorScreenParams,  } from '@react-navigation/native';
 
@@ -20,6 +21,13 @@ export type Notification = {
   description:string;
   color:string;
 };
+
+export type TriggerPayload = {
+  channelId?:string;
+  trigger: TimestampTrigger,
+  notifciation: Notification,
+  data?:any;
+}
 
 export type ThemeType = 'system'|'dark'|'light';
 export type Weekdays = 'sunday' | 'monday' | 'tuesday' | 'wednessday' | 'thursday' | 'friday' | 'saturday';

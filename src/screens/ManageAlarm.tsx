@@ -14,6 +14,7 @@ import { AlarmStore, ClockStore, PreferencesStore } from '../store';
 import { fromZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
 import Pulsate from '../components/Pulsate';
+
 interface ManageAlarmProps extends ScreenWithNavigation {
   alarmKey:string;
 };
@@ -21,8 +22,6 @@ interface ManageAlarmProps extends ScreenWithNavigation {
 const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
   const routeParams = route && route.params || {};
   const prevAlarm = (routeParams && routeParams.prevAlarm || {}) as Alarm;
-  const prevAlarmIndex = routeParams && routeParams.prevAlarmIndex || null;
-
   const timerRef = useRef<NodeJS.Timeout | number>();
   const timezone = ClockStore.localTimezone;
   const prevDate =
@@ -331,9 +330,9 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
         padding: 10
       }}>
         <Button
-          onPress={() => {
+          onPress={async () => {
             //delete
-            AlarmStore.deleteAlarm(prevAlarmIndex);
+            await AlarmStore.deleteAlarm(prevAlarm.id);
             navigation.goBack();
           }}
           style={{marginRight: 10, padding: 10, borderRadius: 20}}>
@@ -344,7 +343,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
             //save
             const uniquestring = `${timestamp}-${selectedDays.join(',')}`;
             const alarm:Alarm = {
-              id: createHash(uniquestring),
+              id: (prevAlarm && prevAlarm.id) ? prevAlarm.id : createHash(uniquestring),
               active: isAlaramActive,
               shouldRepeat,
               shouldSnooze,
@@ -354,7 +353,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
               timestamp,
               weekdays:selectedDays
             }
-            await AlarmStore.createAlarm(alarm, prevAlarmIndex);
+            await AlarmStore.createAlarm(alarm);
             navigation.goBack();
           }}
           style={{padding: 10, backgroundColor: 'teal', borderRadius: 20 }}>

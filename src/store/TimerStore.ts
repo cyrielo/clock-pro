@@ -1,7 +1,7 @@
 import { runInAction, makeAutoObservable } from "mobx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Timer } from "../types";
-import { cancelNotificationSchedule,  getTriggerNotificationIds, scheduleTimer } from "../services/NotificationServices";
+import { CancelTimerNotification, GetTriggerNotificationIds, DisplayNotification, ScheduleTimer } from "../services/NotificationServices";
 
 export default class TimerStore {
   timer = {} as Record<string, Timer>
@@ -14,29 +14,23 @@ export default class TimerStore {
     this.setTimer();
   }
 
-  async updateTimer(activeColumnKey:string, timer:Timer, initiator?:string) {
+  async updateTimer(activeColumnKey:string, timer:Timer) {
     runInAction(() => {
       this.timer[activeColumnKey] = Object.assign(this.timer[activeColumnKey], { ...timer });
     });
+    await this.persistTimer();
     // handle notification triggers
     if (timer.isPaused && !timer.isComplete) {
-      await cancelNotificationSchedule(timer.id);
+      await CancelTimerNotification(timer.id);
     }
-    if (!timer.isPaused) {
-      const notificationsIds = await getTriggerNotificationIds();
+
+    if(!timer.isPaused && !timer.isComplete) {
+      const notificationsIds = await GetTriggerNotificationIds();
       const diff = timer.duration - timer.elapsedTime;
       const timestamp = Date.now() + diff;
-      if (notificationsIds.includes(timer.id)) {
-        if (timer.elapsedTime > 0) {
-          await cancelNotificationSchedule(timer.id);
-          await scheduleTimer(timer, timestamp);
-        }
-        await this.persistTimer();
+      if (!notificationsIds.includes(timer.id)) {
+        await ScheduleTimer(timer, timestamp);
         return;
-      }
-      if (!timer.isComplete) {
-        await this.persistTimer();
-        await scheduleTimer(timer, timestamp);
       }
     }
   }
@@ -46,7 +40,7 @@ export default class TimerStore {
     runInAction(() => {
       this.timer[activeColumnKey] = timer;
     });
-    await scheduleTimer(timer, timestamp);
+    await ScheduleTimer(timer, timestamp);
     await this.persistTimer();
   }
 
@@ -67,7 +61,7 @@ export default class TimerStore {
 
   async deleteTimer(activeColumnKey:string) {
     try {
-      await cancelNotificationSchedule(this.timer[activeColumnKey].id);
+      await CancelTimerNotification(this.timer[activeColumnKey].id);
       runInAction(() => {
         delete this.timer[activeColumnKey];
       });

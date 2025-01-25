@@ -29,11 +29,10 @@ export default class AlarmStore {
       runInAction(() => {
         this.alarms[alarm.id] = alarm;
       });
-      console.log('created', alarm);
       await ScheduleAlarm(alarm);
       await this.persistAlarm();
     } catch (error) {
-      console.log('Error While Saving..', error);
+      console.error('Error While Saving..', error);
     }
 
   }
@@ -45,13 +44,12 @@ export default class AlarmStore {
       runInAction(() => {
         this.alarms[alarm.id] = Object.assign({}, alarm);;
       });
-      console.log('updated', this.alarms[alarm.id]);
       if (alarm.active) {
         await ScheduleAlarm(alarm);
       }
       await this.persistAlarm();
     }catch(error) {
-      console.log('Error While updating', error);
+      console.error('Error While updating', error);
     }
   }
 
@@ -64,7 +62,7 @@ export default class AlarmStore {
       });
       await this.persistAlarm();
     } catch (error) {
-      console.log('Error while deleting', error);
+      console.error('Error while deleting', error);
     }
   }
 

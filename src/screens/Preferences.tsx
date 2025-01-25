@@ -43,7 +43,6 @@ const Preferences = observer( () => {
   const toggelModal = () => {
     Keyboard.dismiss();
     setModalVisibility(!modalVisibility);
-    console.log('modal set to ', modalVisibility);
   }
 
   return (

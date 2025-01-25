@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ViewProps } from 'react-native';
 import Ionicon from '@react-native-vector-icons/ionicons';
+import { useTheme } from '@react-navigation/native';
 //@ts-ignore
 const HeaderStyles = StyleSheet.create({
   headerContainer: {
@@ -21,10 +22,12 @@ type HeaderProps = {
 } & ViewProps
 
 const Header = ({ hasAdd = true, title, onAdd }: HeaderProps) => {
+  const theme = useTheme();
   return (
     <View style={HeaderStyles.headerContainer}>
       <Text style={{
-        fontSize: 24
+        fontSize: 24,
+        color: theme.colors.text,
       }}>
         {title}
       </Text>
@@ -38,12 +41,12 @@ const Header = ({ hasAdd = true, title, onAdd }: HeaderProps) => {
           }}>
             <Ionicon style={{
               marginHorizontal: 10,
-              backgroundColor: '#f0f4fa',
+              backgroundColor: theme.colors.background,
               padding: 10,
               borderRadius: 50
             }}
               name='add'
-              color={'#1a1b26'}
+              color={theme.colors.text}
               size={22}
             />
           </TouchableOpacity>

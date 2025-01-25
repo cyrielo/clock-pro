@@ -6,7 +6,7 @@ import { StopWatchStackScreen } from '../screens/StopWatch';
 import { AlarmStackScreen } from '../screens/Alarm';
 import { ClockStackScreen } from '../screens/Clock';
 import Ionicons from '@react-native-vector-icons/ionicons';
-
+import { COLORS } from '../constants/colors';
 export const screenConfig = { header: () => null };
 
 const Tab = createBottomTabNavigator();
@@ -49,8 +49,8 @@ export default (() => {
           height: 80,
         },
         tabBarHideOnKeyboard: true,
-        tabBarActiveTintColor: '#bda5e0',
-        tabBarInactiveTintColor: 'grey',
+        tabBarActiveTintColor: COLORS.Light_Purple,
+        tabBarInactiveTintColor: COLORS.Dark_Grey,
       })}
       >
       <Tab.Screen name='alarm' component={AlarmStackScreen} options={{ ...screenConfig }} />

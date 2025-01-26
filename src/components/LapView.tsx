@@ -5,6 +5,8 @@ import { observer } from 'mobx-react-lite';
 import { StopWatchStore } from '../store';
 import { getTimeObj } from '../utils/stringUtils';
 import { useTheme } from '@react-navigation/native';
+import { PreferencesStore } from '../store';
+import i18n from '../i18n';
 
 interface LapViewProps {
   style?: ViewStyle
@@ -18,6 +20,7 @@ const LapView = observer(({style}: LapViewProps) => {
       listRef.current.scrollToEnd();
     }
   }, [laps]);
+  const {} = PreferencesStore.preferences;
   const windowHeight = Dimensions.get('window').height;
   const clockHeight = 250;
   const lapControlHeight = 65;
@@ -43,13 +46,20 @@ const LapView = observer(({style}: LapViewProps) => {
         backgroundColor: theme.colors.background,
       }}>
         <View style={{ flex: 1 }}>
-          <Text style={LapTableLabelStyle.lapTableLabel}>CURRENT TIME</Text>
+          <Text style={LapTableLabelStyle.lapTableLabel}>
+            {i18n.t('current_time').toLocaleUpperCase()}
+          </Text>
         </View>
         <View style={{ flex: 1, }}>
-          <Text style={LapTableLabelStyle.lapTableLabel}>LAP TIME</Text>
+          <Text style={LapTableLabelStyle.lapTableLabel}>
+            {i18n.t('lap_time').toLocaleUpperCase()}
+          </Text>
         </View>
         <View style={{ flex: 1, }}>
-          <Text style={LapTableLabelStyle.lapTableLabel}>#LAP</Text></View>
+          <Text style={LapTableLabelStyle.lapTableLabel}>
+            #{i18n.t('lap').toLocaleUpperCase()}
+          </Text>
+        </View>
       </View>
       <FlatList
         ref={listRef}

@@ -115,5 +115,6 @@
     "short_november": "Nov",
     "short_december": "Dec",
   "milliseconds": "Milliseconds",
-  "short_milliseconds": "ms"
+  "short_milliseconds": "ms",
+  "developer": "Developer"
 }

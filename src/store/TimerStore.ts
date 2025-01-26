@@ -3,11 +3,12 @@ import { Timer } from "../types";
 import { CancelTimerNotification, GetTriggerNotificationIds, DisplayNotification, ScheduleTimer } from "../services/NotificationServices";
 import { storage } from "../utils/storage";
 
+  const __TIMER_STORE_ = '__TIMER_STORE_';
+
 export default class TimerStore {
   timer:Record<string, Timer> = this.fetchTimer();
   timerModalVisibility = false;
   activeColumnKey = '';
-  private __TIMER_STORE_ = '__TIMER_STORE_';
 
   constructor() {
     makeAutoObservable(this);
@@ -72,11 +73,11 @@ export default class TimerStore {
   }
 
   persistTimer() {
-    storage.set(this.__TIMER_STORE_, JSON.stringify(this.timer))
+    storage.set(__TIMER_STORE_, JSON.stringify(this.timer))
   }
 
   private fetchTimer() {
-    const timerStr = storage.getString(this.__TIMER_STORE_);
+    const timerStr = storage.getString(__TIMER_STORE_);
     return (timerStr !== undefined) ? JSON.parse(timerStr) : this.timer;
   }
 }

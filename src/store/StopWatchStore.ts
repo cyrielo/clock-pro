@@ -2,13 +2,13 @@ import {runInAction, makeAutoObservable} from 'mobx';
 import { Lap, StopWatchObj } from '../types';
 import { storage } from '../utils/storage';
 
+  const STORE_KEY = '_STOPWATCH_KEY__';
+
 export default class StopwatchStore implements StopWatchObj {
 
   laps:Lap[] = this.restoreHistory().laps || [];
   timestamp:number = this.restoreHistory().timestamp || 0;
   isPaused:boolean = this.restoreHistory().isPaused || true;
-
-  private STORE_KEY = '_STOPWATCH_KEY__';
 
   constructor() {
     makeAutoObservable(this);
@@ -39,11 +39,11 @@ export default class StopwatchStore implements StopWatchObj {
       timestamp: this.timestamp,
       isPaused: this.isPaused
     });
-    storage.set(this.STORE_KEY, objstr);
+    storage.set(STORE_KEY, objstr);
   }
 
   private restoreHistory() {
-    const objstr = storage.getString(this.STORE_KEY);
+    const objstr = storage.getString(STORE_KEY);
     const StopWatchObj: StopWatchObj = (objstr !== undefined) ? JSON.parse(objstr) : {}
     return StopWatchObj;
   }

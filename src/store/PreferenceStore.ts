@@ -1,6 +1,8 @@
 import {runInAction, makeAutoObservable} from 'mobx';
 import { Preferences } from '../types';
 import { storage } from '../utils/storage';
+
+const _PREFERENCE_KEY = 'PREFERENCE_KEY';
 export default class PreferenceStore {
 
   preferences: Preferences = {
@@ -9,7 +11,6 @@ export default class PreferenceStore {
     notificationEnabled: this.getPreferences().notificationEnabled || true,
     notificationSound: this.getPreferences().notificationSound || 'loud_alarm_sound'
   };
-  private _PREFERENCE_KEY = 'PREFERENCE_KEY';
 
   constructor() {
     makeAutoObservable(this);
@@ -24,7 +25,7 @@ export default class PreferenceStore {
   }
 
   getPreferences(): Preferences {
-    const preferencesStr = storage.getString(this._PREFERENCE_KEY);
+    const preferencesStr = storage.getString(_PREFERENCE_KEY);
     const preferenceObj: Preferences =
     (preferencesStr !== undefined) ? JSON.parse(preferencesStr) : this.preferences;
     return preferenceObj;
@@ -32,6 +33,6 @@ export default class PreferenceStore {
 
   private savePreference(preferences: Preferences) {
     const preferencesStr = JSON.stringify(preferences);
-    storage.set(this._PREFERENCE_KEY, preferencesStr);
+    storage.set(_PREFERENCE_KEY, preferencesStr);
   }
 }

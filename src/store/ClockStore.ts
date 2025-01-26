@@ -3,11 +3,11 @@ import { Place } from '../types';
 import { getAllCountries, getAllTimezones, TimezoneName } from 'countries-and-timezones';
 import { storage } from '../utils/storage';
 
+const __CLOCK__KEY__ = '__CLOCK__KEY__';
 export default class ClockStore {
   allPlaces: Record<string, Place> = this.getAllPlaces();
   favorites: Record<string, Place> = this.getSavedPlaces() || {};
   localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  private __CLOCK__KEY__ = '__CLOCK__KEY__';
 
   constructor() {
     makeAutoObservable(this);
@@ -74,10 +74,10 @@ export default class ClockStore {
 
   private persistFavorites() {
     const objstr = JSON.stringify(this.favorites);
-    storage.set(this.__CLOCK__KEY__, objstr);
+    storage.set(__CLOCK__KEY__, objstr);
   }
   private getSavedPlaces(): Record<string, Place>{
-    const favesString = storage.getString(this.__CLOCK__KEY__);
+    const favesString = storage.getString(__CLOCK__KEY__);
     return (favesString !== undefined) ? JSON.parse(favesString) : this.favorites;
   }
 }

@@ -3,11 +3,11 @@ import { storage } from '../utils/storage';
 import { ScheduleAlarm, CancelAlarmSchedule } from '../services/NotificationServices';
 import { Alarm } from '../types';
 
+const _ALARM_KEY: string = 'ALARM_KEY';
+
 export default class AlarmStore {
 
   alarms: Record<string, Alarm> = this.getAlarms();
-  private _ALARM_KEY = 'ALARM_KEY';
-
   constructor() {
     makeAutoObservable(this);
   }
@@ -60,11 +60,11 @@ export default class AlarmStore {
 
   persistAlarm() {
     const alarmObjsStr = JSON.stringify(this.alarms);
-    storage.set(this._ALARM_KEY, alarmObjsStr);
+    storage.set(_ALARM_KEY, alarmObjsStr);
   }
 
   getAlarms(): Record<string, Alarm>{
-    const allAlarms = storage.getString(this._ALARM_KEY);
+    const allAlarms = storage.getString(_ALARM_KEY);
     return (allAlarms !== undefined) ? JSON.parse(allAlarms) : {};
   }
 };

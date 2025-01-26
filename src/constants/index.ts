@@ -3,86 +3,89 @@ import { ThemeType, DropdownOption } from "../types";
 export const USER_KEY = 'USER_KEY__reflection';
 export const FLOATING_FOOTER_HEIGHT = 100;
 export const SPACING = 70;
+import i18n from "../i18n";
+
 export const THEMES: DropdownOption[] = [{
-  label: 'System',
+  label: i18n.t('system'),
   value: 'system' as ThemeType
 },
   {
-    label: 'Light',
+    label: i18n.t('light'),
     value: 'light' as ThemeType
   },
   {
-    label: 'Dark',
+    label: i18n.t('dark'),
     value: 'dark' as ThemeType
   },];
+
 export const LANGUAGES: DropdownOption[] = [{
-  label: 'English',
+  label: i18n.t('en'),
   value: 'en'
 },
 {
-  label: 'Chinese',
-  value: 'ch'
+  label: i18n.t('cn'),
+  value: 'cn'
   }, {
-    label: 'Hindi',
-    value: 'in'
+  label: i18n.t('hi'),
+    value: 'hi'
   },
   {
-    label: 'Tagalog',
-    value: 'pe'
+    label: i18n.t('tl'),
+    value: 'tl'
   },
 {
-  label: 'French',
+  label: i18n.t('fr'),
   value: 'fr'
 }];
 
 export const NotificationSounds: DropdownOption[] = [{
-  label: 'Silent',
+  label: i18n.t('silent'),
   value: 'silent'
 },{
-  label: 'Default',
+  label: i18n.t('default'),
   value: 'loud_alarm_sound'
 },{
-  label: 'Buzzer',
+  label: i18n.t('buzzer'),
   value: 'buzzer'
   }, {
-  label: 'iPhone Cat',
+  label: i18n.t('iphone_cat'),
   value: 'iphone_cat'
   }, {
-  label: 'Kill bill whistle',
+  label: i18n.t('kill_bill_whistle'),
   value: 'kill_bill_whistle'
   }, {
   label: 'Merong nag txt sayo',
   value: 'merong_nag_txt_sayo'
   }, {
-  label: 'Minions hello',
+  label: i18n.t('minions_hello'),
   value: 'minions_hello'
   }, {
-  label: 'Morning rooster',
+  label: i18n.t('morning_rooster'), 
   value: 'morning_rooster'
   }, {
-  label: 'Oppo tune',
+  label: i18n.t('oppo_tune'), 
   value: 'oppo_tune'
   }, {
-  label: 'Phone linging',
+  label: i18n.t('phone_ringing'),
   value: 'phone_linging'
   }, {
-  label: 'Ring ring',
+  label: i18n.t('ring_ring'),
   value: 'ring_ring'
   }, {
-  label: 'Screaming goat',
+  label: i18n.t('screaming_goat'),
   value: 'screaming_goat'
   }, {
-  label: 'Screaming',
+  label: i18n.t('screaming'),
   value: 'screaming'
   },
   {
     label: 'Stella',
     value: 'stella'
   }, {
-  label: 'Serious alarm',
+    label: i18n.t('serious_alarm'),
   value: 'serious_alarm'
   }, {
-  label: 'Sister is calling',
+    label: i18n.t('sister_is_calling'),
   value: 'sister_is_calling'
   }, {
   label: 'Slim shady',
@@ -91,13 +94,13 @@ export const NotificationSounds: DropdownOption[] = [{
   label: 'Tsismosa',
   value: 'tsismosa'
   }, {
-  label: 'Wake up heavy',
+    label: i18n.t('wake_up_heavy'),
   value: 'wake_the_fxx_up_hard'
   }, {
-  label: 'Gauranteed wake up alarm',
+    label: i18n.t('gauaranteed_wake_up'), 
   value: 'wake_the_fxx_up'
   }, {
-  label: 'Wake up',
+    label: i18n.t('wake_up'),
   value: 'wake_up'
   }
 ];

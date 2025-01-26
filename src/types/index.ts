@@ -30,7 +30,7 @@ export type TriggerPayload = {
 }
 
 export type ThemeType = 'system'|'dark'|'light';
-export type Weekdays = 'sunday' | 'monday' | 'tuesday' | 'wednessday' | 'thursday' | 'friday' | 'saturday';
+export type Weekdays = 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday';
 
 export type Timer = {
   id:string;

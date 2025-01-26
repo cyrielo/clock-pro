@@ -1,17 +1,17 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Switch, ScrollView, Modal, TouchableOpacity, StyleSheet, Pressable, Keyboard, Button } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Section from '../components/Section';
 import Ionicon from '@react-native-vector-icons/ionicons';
 import { Dropdown } from 'react-native-element-dropdown';
 import { observer } from 'mobx-react-lite';
-import { NotificationSounds, THEMES, LANGUAGES } from '../constants';
+import { NotificationSounds } from '../constants';
 import { PreferencesStore } from '../store/';
 import { useTheme } from '@react-navigation/native';
 import { COLORS } from '../constants/colors';
-import { useTranslation } from 'react-i18next';
-
+import i18n from '../i18n';
+import {  ThemeType } from '../types';
 const IconSize = 24;
 const fontSize = 16;
 
@@ -42,8 +42,7 @@ auris fringilla purus at lacus consequat, vel dictum sapien scelerisque.
 
 const Preferences = observer( () => {
   const theme = useTheme();
-  const { i18n, t} = useTranslation();
-  console.log('i18n', i18n, t);
+  console.log('i18n', i18n);
   const [modalVisibility, setModalVisibility] = useState(false);
   const prefs = PreferencesStore.preferences;
 
@@ -64,8 +63,15 @@ const Preferences = observer( () => {
     }
   });
 
-  return (
+  if (i18n.language !== prefs.language) {
+    i18n.changeLanguage(prefs.language);
+  }
 
+  // useEffect(() => {
+
+  // }, [prefs.language]);
+
+  return (
     <SafeAreaProvider>
       <SafeAreaView>
           <Modal
@@ -109,7 +115,7 @@ const Preferences = observer( () => {
             marginBottom: 0,
             paddingBottom: 130
           }}>
-            <Section title='General' />
+            <Section title={i18n.t('general')} />
             <View style={{
               ...SectionStyle.section
             }}>
@@ -123,7 +129,9 @@ const Preferences = observer( () => {
                   style={{ marginRight: 10 }}
                   name='contrast-outline'
                   size={IconSize} />
-                <Text style={{ fontSize, color: theme.colors.text }}>Theme</Text>
+                <Text style={{ fontSize, color: theme.colors.text }}>
+                  {i18n.t('theme')}
+                </Text>
               </View>
               <View style={{
                 flexDirection: 'row',
@@ -138,7 +146,18 @@ const Preferences = observer( () => {
                     justifyContent: 'flex-end',
                   }}
                   selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
-                  data={THEMES}
+                  data={[{
+                    label: i18n.t('system'),
+                    value: 'system' as ThemeType
+                  },
+                  {
+                    label: i18n.t('light'),
+                    value: 'light' as ThemeType
+                  },
+                  {
+                    label: i18n.t('dark'),
+                    value: 'dark' as ThemeType
+                  }]}
                   search={false}
                   value={prefs.theme}
                   onChange={(item) => {
@@ -160,7 +179,9 @@ const Preferences = observer( () => {
                 alignItems: 'center'
               }}>
                 <Ionicon color={theme.colors.text} style={{ marginRight: 10 }} name='language' size={IconSize} />
-                <Text style={{ fontSize: 16, color: theme.colors.text }}>Language</Text>
+                <Text style={{ fontSize: 16, color: theme.colors.text }}>
+                  {i18n.t('language')}
+                </Text>
               </View>
               <View style={{
                 flexDirection: 'row',
@@ -176,7 +197,26 @@ const Preferences = observer( () => {
                   }}
                   placeholderStyle={{ color: theme.colors.text }}
                   selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
-                  data={LANGUAGES}
+                  data={[{
+                      label: i18n.t('en'),
+                      value: 'en'
+                      },
+                      {
+                        label: i18n.t('cn'),
+                        value: 'cn'
+                      }, {
+                        label: i18n.t('hi'),
+                        value: 'hi'
+                      },
+                      {
+                        label: i18n.t('tl'),
+                        value: 'tl'
+                      },
+                      {
+                        label: i18n.t('fr'),
+                        value: 'fr'
+                      }]
+                    }
                   search={false}
                   value={prefs.language}
                   onChange={({value}) => {
@@ -188,7 +228,7 @@ const Preferences = observer( () => {
                 />
               </View>
             </View>
-            <Section title='Notifications' />
+            <Section title={i18n.t('notifications')} />
             <View style={{
               ...SectionStyle.section
             }}>
@@ -198,7 +238,9 @@ const Preferences = observer( () => {
                 alignItems: 'center'
               }}>
                 <Ionicon color={theme.colors.text} style={{ marginRight: 10 }} name='notifications' size={IconSize} />
-                <Text style={{ fontSize, color: theme.colors.text }}>Allow Notification</Text>
+                <Text style={{ fontSize, color: theme.colors.text }}>
+                  {i18n.t('allow_notification')}
+                </Text>
               </View>
               <View style={{
                 flexDirection: 'row',
@@ -224,7 +266,9 @@ const Preferences = observer( () => {
                 alignItems: 'center'
               }}>
                 <Ionicon color={theme.colors.text} style={{ marginRight: 10 }} name='musical-notes-sharp' size={IconSize} />
-                <Text style={{ fontSize, color: theme.colors.text }}>Notification Sound</Text>
+                <Text style={{ fontSize, color: theme.colors.text }}>
+                  {i18n.t('notification_sound')}
+                </Text>
               </View>
               <View style={{
                 flexDirection: 'row',
@@ -262,7 +306,7 @@ const Preferences = observer( () => {
 
                 }}>
                   <Text style={{ fontSize, color: theme.colors.text }}>
-                    Version:
+                    {i18n.t('version')}:
                   </Text>
                   <Text style={{ fontWeight: '500', fontSize, color: theme.colors.text }}>
                     v1.0
@@ -275,7 +319,7 @@ const Preferences = observer( () => {
                   marginVertical: 10,
                 }}>
                   <Text style={{ fontSize, color: theme.colors.text }}>
-                    Developer:
+                    {i18n.t('developer')}
                   </Text>
                   <Text style={{ fontWeight: '500', fontSize, color: theme.colors.text }}>
                     (Paul Cyril Ologho)
@@ -288,7 +332,7 @@ const Preferences = observer( () => {
                 marginTop: 20,
                 display: 'none',
               }}>
-                <TouchableOpacity onPress={toggelModal}>
+                {/* <TouchableOpacity onPress={toggelModal}>
                   <Text style={{ fontSize, marginVertical: 5, color: theme.colors.text }}>
                     Show Terms &amp; Condition
                   </Text>
@@ -302,7 +346,7 @@ const Preferences = observer( () => {
                   <Text style={{ fontSize, marginVertical: 5, color: theme.colors.text }}>
                     Show Third-Party Software
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
           </View>

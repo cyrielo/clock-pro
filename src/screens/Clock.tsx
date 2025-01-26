@@ -11,7 +11,7 @@ import TimeZones from '../components/TimeZones';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AllTimeZones from './AllTimeZones';
 import { observer } from 'mobx-react-lite';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { ClockStore } from '../store';
 import { FLOATING_FOOTER_HEIGHT, SPACING } from '../constants';
 import { fromZonedTime } from 'date-fns-tz';
@@ -33,20 +33,11 @@ const ClockStyle = StyleSheet.create({
   dateStr: {
     fontSize: 18,
     fontWeight: 500
-  },
-  digitalClock: {
-    fontSize: 24,
-    marginRight: 10,
-    marginBottom: 10,
-  },
-  muted: {
-    color: COLORS.Grey,
-    fontSize: 14,
-    marginHorizontal: 'auto'
   }
 });
 
 const DateTime = ({timezone} : DateTimeProps) => {
+  const theme = useTheme();
   const [date, setDate] = useState(fromZonedTime(new Date(), timezone));
   const dateStr = `${format(date, 'EE, LLL dd yyy')}`;
   const timeStr = `${format(date, 'hh : mm aa')}`;
@@ -64,8 +55,9 @@ const DateTime = ({timezone} : DateTimeProps) => {
         <Text style={[ClockStyle.dateStr, {
           fontWeight: 800,
           fontSize: 24,
+          color: theme.colors.text
         }] }>{timeStr}</Text>
-        <Text style={ClockStyle.dateStr}>{dateStr}</Text>
+        <Text style={{ ...ClockStyle.dateStr, color: theme .colors.text}}>{dateStr}</Text>
         <View style={{
           display: 'flex',
           flexDirection: 'row',
@@ -79,7 +71,7 @@ const DateTime = ({timezone} : DateTimeProps) => {
 
 
 const Clock = observer(({ navigation }:any) => {
-  const [date, setDate] = useState(new Date());
+  const theme = useTheme();
   const windowHeight = Dimensions.get('window').height;
   const screenHeight = windowHeight - (FLOATING_FOOTER_HEIGHT + SPACING);
 
@@ -111,8 +103,8 @@ const Clock = observer(({ navigation }:any) => {
               <Text style={{
                 fontSize: 18,
                 marginBottom: 10,
-                color: 'teal',
-                fontWeight: 500
+                color: theme.colors.text,
+                fontWeight: 500,
               }}>Local Time</Text>
               <DateTime date={new Date()} timezone={ClockStore.localTimezone} />
             </View>
@@ -132,6 +124,7 @@ const Clock = observer(({ navigation }:any) => {
               fontSize: 18,
               fontWeight: 500,
               marginLeft: 10,
+              color: theme.colors.text
             }}>Saved places</Text>
           </View>
           <TimeZones

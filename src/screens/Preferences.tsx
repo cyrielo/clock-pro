@@ -43,7 +43,6 @@ auris fringilla purus at lacus consequat, vel dictum sapien scelerisque.
 
 const Preferences = observer( () => {
   const theme = useTheme();
-  console.log('i18n', i18n);
   const [modalVisibility, setModalVisibility] = useState(false);
   const prefs = PreferencesStore.preferences;
 
@@ -63,10 +62,6 @@ const Preferences = observer( () => {
       marginBottom: 20,
     }
   });
-
-  if (i18n.language !== prefs.language) {
-    i18n.changeLanguage(prefs.language);
-  }
 
   // useEffect(() => {
 

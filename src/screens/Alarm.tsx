@@ -71,9 +71,11 @@ const AlarmStackNavigator = createNativeStackNavigator();
 export const AlarmStackScreen = () => {
   return (
     <AlarmStackNavigator.Navigator>
-      <AlarmStackNavigator.Screen name="Alarm" options={{ header: () => null }}>
-        {(props: any) => <Alarm {...props} />}
-      </AlarmStackNavigator.Screen>
+      <AlarmStackNavigator.Group>
+        <AlarmStackNavigator.Screen name="Alarm" options={{ header: () => null }}>
+          {(props: any) => <Alarm {...props} />}
+        </AlarmStackNavigator.Screen>
+      </AlarmStackNavigator.Group>
       <AlarmStackNavigator.Group screenOptions={{ presentation: 'modal' }}>
         <AlarmStackNavigator.Screen options={{title: i18n.t('set_alarm')}} name="set_alarm">
           {(props: any) => <ManageAlarm  {...props} />}

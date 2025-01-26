@@ -1,24 +1,23 @@
 import { runInAction, makeAutoObservable } from "mobx";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Timer } from "../types";
 import { CancelTimerNotification, GetTriggerNotificationIds, DisplayNotification, ScheduleTimer } from "../services/NotificationServices";
+import { storage } from "../utils/storage";
 
 export default class TimerStore {
-  timer = {} as Record<string, Timer>
+  timer:Record<string, Timer> = this.fetchTimer();
   timerModalVisibility = false;
   activeColumnKey = '';
-  private key = '__TIMER_STORE_';
+  private __TIMER_STORE_ = '__TIMER_STORE_';
 
   constructor() {
     makeAutoObservable(this);
-    this.setTimer();
   }
 
   async updateTimer(activeColumnKey:string, timer:Timer) {
     runInAction(() => {
       this.timer[activeColumnKey] = Object.assign(this.timer[activeColumnKey], { ...timer });
     });
-    await this.persistTimer();
+    this.persistTimer();
     // handle notification triggers
     if (timer.isPaused && !timer.isComplete) {
       await CancelTimerNotification(timer.id);
@@ -41,7 +40,7 @@ export default class TimerStore {
       this.timer[activeColumnKey] = timer;
     });
     await ScheduleTimer(timer, timestamp);
-    await this.persistTimer();
+    this.persistTimer();
   }
 
   toggleTimerModalVisibility(activeColumnKey?:string) {
@@ -65,26 +64,19 @@ export default class TimerStore {
       runInAction(() => {
         delete this.timer[activeColumnKey];
       });
-      await this.persistTimer();
+      this.persistTimer();
     } catch (error) {
       console.error('failed to delete ->', error);
     }
 
   }
 
-  async persistTimer() {
-    await AsyncStorage.setItem(this.key, JSON.stringify(this.timer));
+  persistTimer() {
+    storage.set(this.__TIMER_STORE_, JSON.stringify(this.timer))
   }
 
-  private async fetchTimer() {
-    const timerStr = await AsyncStorage.getItem(this.key) || null;
-    return (timerStr != null) ? JSON.parse(timerStr) : this.timer;
-  }
-
-  async setTimer() {
-    const timer = await this.fetchTimer();
-    runInAction(() => {
-      this.timer = Object.assign(this.timer, timer);
-    });
+  private fetchTimer() {
+    const timerStr = storage.getString(this.__TIMER_STORE_);
+    return (timerStr !== undefined) ? JSON.parse(timerStr) : this.timer;
   }
 }

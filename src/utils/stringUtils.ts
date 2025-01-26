@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { TimeStamp } from "../types";
 import CryptoJS from 'crypto-js';
+import i18n from "../i18n";
 
 
 export const upperCaseFirst = (str:string): string  => {
@@ -29,6 +30,14 @@ export const timeToMilliseconds = (val:number|string, hand: 'hours'|'minutes'|'s
 export const createHash = (str?:string):string => {
   const finalString = str ? str : `${Math.ceil(Math.random() * 10128)}`;
   return CryptoJS.MD5(finalString).toString();
+}
+
+export const formatDateWithTranslation = (date:Date) :string => {
+  const weekday = `${format(date, 'EEEE')}`.toLowerCase();
+  const month = `${format(date, 'LLLL')}`.toLowerCase();
+  const day = `${format(date, 'dd')}`;
+  const year = `${format(date, 'yyy')}`;
+  return `${i18n.t(`short_${weekday}`)}, ${i18n.t(`short_${month}`)} ${day} ${year}`;
 }
 
 export const formatTimeString = (date:Date) :string => {

@@ -8,6 +8,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { observer } from 'mobx-react-lite';
 import { NotificationSounds, THEMES, LANGUAGES } from '../constants';
 import { PreferencesStore } from '../store/';
+import { useTheme } from '@react-navigation/native';
 const IconSize = 24;
 const fontSize = 16;
 
@@ -37,6 +38,7 @@ auris fringilla purus at lacus consequat, vel dictum sapien scelerisque.
 `
 
 const Preferences = observer( () => {
+  const theme = useTheme();
   const [modalVisibility, setModalVisibility] = useState(false);
   const prefs = PreferencesStore.preferences;
 
@@ -44,6 +46,18 @@ const Preferences = observer( () => {
     Keyboard.dismiss();
     setModalVisibility(!modalVisibility);
   }
+
+  const SectionStyle = StyleSheet.create({
+    section: {
+      borderColor: theme.colors.border,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderBottomWidth: 0.5,
+      paddingBottom: 15,
+      marginBottom: 20,
+    }
+  });
 
   return (
 
@@ -53,8 +67,7 @@ const Preferences = observer( () => {
             visible={modalVisibility}
             transparent={true}
             animationType='fade'
-          onRequestClose={toggelModal}
-            style={{ position: 'relative', zIndex:0, borderWidth: 10, borderColor: 'red', backgroundColor: 'red' }}
+            onRequestClose={toggelModal}
           >
             <Pressable
               style={{
@@ -93,20 +106,19 @@ const Preferences = observer( () => {
           }}>
             <Section title='General' />
             <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderBottomWidth: 0.5,
-              paddingBottom: 15,
-              marginBottom: 20,
+              ...SectionStyle.section
             }}>
               <View style={{
                 flexDirection: 'row',
                 flex: 1,
                 alignItems: 'center'
               }}>
-                <Ionicon style={{ marginRight: 10 }} name='contrast-outline' size={IconSize} />
-                <Text style={{ fontSize }}>Theme</Text>
+                <Ionicon
+                  color={theme.colors.text}
+                  style={{ marginRight: 10 }}
+                  name='contrast-outline'
+                  size={IconSize} />
+                <Text style={{ fontSize, color: theme.colors.text }}>Theme</Text>
               </View>
               <View style={{
                 flexDirection: 'row',
@@ -120,33 +132,30 @@ const Preferences = observer( () => {
                     width: '100%',
                     justifyContent: 'flex-end',
                   }}
-                  selectedTextStyle={{ textAlign: 'right' }}
+                  selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
                   data={THEMES}
                   search={false}
                   value={prefs.theme}
                   onChange={(item) => {
                     PreferencesStore.setPreferences({ ...prefs, theme: item.value });
                   }}
-                  renderRightIcon={() => (<Ionicon style={{}} name='chevron-forward-outline' size={IconSize} />)}
+                  placeholderStyle={{ color: theme.colors.text }}
+                  renderRightIcon={() => (<Ionicon color={theme.colors.text} style={{}} name='chevron-forward-outline' size={IconSize} />)}
                   labelField={'label'}
                   valueField={'value'}
                 />
               </View>
             </View>
             <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderBottomWidth: 0.5,
-              paddingBottom: 15,
+              ...SectionStyle.section
             }}>
               <View style={{
                 flexDirection: 'row',
                 flex: 1,
                 alignItems: 'center'
               }}>
-                <Ionicon style={{ marginRight: 10 }} name='language' size={IconSize} />
-                <Text style={{ fontSize: 16 }}>Language</Text>
+                <Ionicon color={theme.colors.text} style={{ marginRight: 10 }} name='language' size={IconSize} />
+                <Text style={{ fontSize: 16, color: theme.colors.text }}>Language</Text>
               </View>
               <View style={{
                 flexDirection: 'row',
@@ -160,14 +169,15 @@ const Preferences = observer( () => {
                     width: '100%',
                     justifyContent: 'flex-end',
                   }}
-                  selectedTextStyle={{ textAlign: 'right' }}
+                  placeholderStyle={{ color: theme.colors.text }}
+                  selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
                   data={LANGUAGES}
                   search={false}
                   value={prefs.language}
                   onChange={({value}) => {
                     PreferencesStore.setPreferences({ ...prefs, language: value });
                   }}
-                  renderRightIcon={() => (<Ionicon style={{}} name='chevron-forward-outline' size={IconSize} />)}
+                  renderRightIcon={() => (<Ionicon color={theme.colors.text} style={{}} name='chevron-forward-outline' size={IconSize} />)}
                   labelField={'label'}
                   valueField={'value'}
                 />
@@ -175,20 +185,15 @@ const Preferences = observer( () => {
             </View>
             <Section title='Notifications' />
             <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderBottomWidth: 0.5,
-              paddingBottom: 15,
-              marginBottom: 20,
+              ...SectionStyle.section
             }}>
               <View style={{
                 flexDirection: 'row',
                 flex: 1,
                 alignItems: 'center'
               }}>
-                <Ionicon style={{ marginRight: 10 }} name='notifications' size={IconSize} />
-                <Text style={{ fontSize }}>Allow Notification</Text>
+                <Ionicon color={theme.colors.text} style={{ marginRight: 10 }} name='notifications' size={IconSize} />
+                <Text style={{ fontSize, color: theme.colors.text }}>Allow Notification</Text>
               </View>
               <View style={{
                 flexDirection: 'row',
@@ -204,20 +209,15 @@ const Preferences = observer( () => {
               </View>
             </View>
             <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderBottomWidth: 0.5,
-              paddingBottom: 15,
-              marginBottom: 20,
+              ...SectionStyle.section
             }}>
               <View style={{
                 flexDirection: 'row',
                 flex: 1,
                 alignItems: 'center'
               }}>
-                <Ionicon style={{ marginRight: 10 }} name='musical-notes-sharp' size={IconSize} />
-                <Text style={{ fontSize }}>Notification Sound</Text>
+                <Ionicon color={theme.colors.text} style={{ marginRight: 10 }} name='musical-notes-sharp' size={IconSize} />
+                <Text style={{ fontSize, color: theme.colors.text }}>Notification Sound</Text>
               </View>
               <View style={{
                 flexDirection: 'row',
@@ -231,14 +231,15 @@ const Preferences = observer( () => {
                     width: '100%',
                     justifyContent: 'flex-end',
                   }}
-                  selectedTextStyle={{ textAlign: 'right' }}
+                  placeholderStyle={{ color: theme.colors.text }}
+                  selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
                   data={NotificationSounds}
                   search={false}
                   value={prefs.notificationSound}
                   onChange={(item) => {
                     PreferencesStore.setPreferences({ ...prefs, notificationSound: item.value });
                   }}
-                  renderRightIcon={() => (<Ionicon style={{}} name='chevron-forward-outline' size={IconSize} />)}
+                  renderRightIcon={() => (<Ionicon color={theme.colors.text} style={{}} name='chevron-forward-outline' size={IconSize} />)}
                   labelField={'label'}
                   valueField={'value'}
                 />
@@ -253,10 +254,10 @@ const Preferences = observer( () => {
                   alignItems: 'center',
 
                 }}>
-                  <Text style={{ fontSize }}>
+                  <Text style={{ fontSize, color: theme.colors.text }}>
                     Version:
                   </Text>
-                  <Text style={{ fontWeight: '500', fontSize }}>
+                  <Text style={{ fontWeight: '500', fontSize, color: theme.colors.text }}>
                     v1.0
                   </Text>
                 </View>
@@ -266,10 +267,10 @@ const Preferences = observer( () => {
                   alignItems: 'center',
                   marginVertical: 10,
                 }}>
-                  <Text style={{ fontSize }}>
+                  <Text style={{ fontSize, color: theme.colors.text }}>
                     Developer:
                   </Text>
-                  <Text style={{ fontWeight: '500', fontSize }}>
+                  <Text style={{ fontWeight: '500', fontSize, color: theme.colors.text }}>
                     (Paul Cyril Ologho)
                   </Text>
                 </View>
@@ -280,17 +281,17 @@ const Preferences = observer( () => {
                 marginTop: 20
               }}>
                 <TouchableOpacity onPress={toggelModal}>
-                  <Text style={{ fontSize, marginVertical: 5, }}>
+                  <Text style={{ fontSize, marginVertical: 5, color: theme.colors.text }}>
                     Show Terms &amp; Condition
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={toggelModal}>
-                  <Text style={{ fontSize, marginVertical: 5, }}>
+                  <Text style={{ fontSize, marginVertical: 5, color: theme.colors.text }}>
                     Show Privacy Policy
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={toggelModal}>
-                  <Text style={{ fontSize, marginVertical: 5, }}>
+                  <Text style={{ fontSize, marginVertical: 5, color: theme.colors.text }}>
                     Show Third-Party Software
                   </Text>
                 </TouchableOpacity>

@@ -16,7 +16,7 @@ import { formatTimeString } from '../utils/stringUtils';
 import { useTheme } from '@react-navigation/native';
 
 const Alarm = observer(({navigation, route} :ScreenWithNavigation) => {
-  const alarmKeys = Object.keys(AlarmStore.alarms);
+  const alarmKeys = AlarmStore.alarms && Object.keys(AlarmStore.alarms) || [];
   const theme = useTheme();
   return (
     <SafeAreaView 
@@ -36,7 +36,7 @@ const Alarm = observer(({navigation, route} :ScreenWithNavigation) => {
             navigation.navigate('Set Alarm');
         }} />
           {alarmKeys.map((item, index) => {
-            const alarm = AlarmStore.alarms[item];
+            const alarm = AlarmStore.alarms && (AlarmStore.alarms[item]) || {};
             return (
               <TouchableOpacity
                 key={index}

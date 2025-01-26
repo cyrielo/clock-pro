@@ -5,7 +5,7 @@ import { storage } from '../utils/storage';
 
 const __CLOCK__KEY__ = '__CLOCK__KEY__';
 export default class ClockStore {
-  allPlaces: Record<string, Place> = this.getAllPlaces();
+  allPlaces: Record<string, Place> = this.getAllPlaces() || {};
   favorites: Record<string, Place> = this.getSavedPlaces() || {};
   localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -16,7 +16,7 @@ export default class ClockStore {
   private getAllPlaces(): Record<string, Place> {
     const allTimezones = getAllTimezones()
     const countries = getAllCountries();
-    const keys = Object.keys(allTimezones);
+    const keys = allTimezones && Object.keys(allTimezones) || [];
     const places = {} as Record<string, Place>;
     for (let i = 0; i < keys.length; i++) {
       const timeZone = keys[i] as TimezoneName;
@@ -25,7 +25,7 @@ export default class ClockStore {
       const location = `${nameSplit[nameSplit.length - 1].split('_').join(' ')}`;
       const utcOffset = allTimezones[timeZone].utcOffset;
       const dstOffset = allTimezones[timeZone].dstOffset;
-      const isFave = Object.hasOwn(this.favorites, location);
+      const isFave = this.favorites ? Object.hasOwn(this.favorites, location) : false;
       if (!(countries[code])) { continue }
       try {
         const place: Place = {

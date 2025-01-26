@@ -14,6 +14,12 @@ const AllTimeZones = observer(() => {
   const windowHeight = Dimensions.get('window').height;
   const marginBottom = 60;
   const screenHeight = windowHeight - (FLOATING_FOOTER_HEIGHT + SPACING + marginBottom);
+  const timeZoneData = ClockStore.allPlaces && Object.values(ClockStore.allPlaces).filter((val, _) => {
+    const city = val.location.toLocaleLowerCase();
+    const country = val.country.toLocaleLowerCase();
+    const continent = val.continent.toLocaleLowerCase();
+    return (city.includes(searchString) || country.includes(searchString) || continent.includes(searchString));
+  }) || [];
   return (
     <KeyboardAvoidingView
       style={{
@@ -40,12 +46,7 @@ const AllTimeZones = observer(() => {
           />
       </View>
       <TimeZones
-        data={Object.values(ClockStore.allPlaces).filter((val, _) => {
-          const city = val.location.toLocaleLowerCase();
-          const country = val.country.toLocaleLowerCase();
-          const continent = val.continent.toLocaleLowerCase();
-          return (city.includes(searchString) || country.includes(searchString) || continent.includes(searchString));
-        })}
+        data={timeZoneData}
         localTimezone={ClockStore.localTimezone}
         />
     </KeyboardAvoidingView>

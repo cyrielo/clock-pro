@@ -128,7 +128,7 @@ const Clock = observer(({ navigation }:any) => {
             }}>Saved places</Text>
           </View>
           <TimeZones
-            data={Object.values(ClockStore.favorites)}
+            data={( ClockStore.favorites && Object.values(ClockStore.favorites) || [])}
             localTimezone={ClockStore.localTimezone}
           />
         </View>

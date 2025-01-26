@@ -10,6 +10,8 @@ import { NotificationSounds, THEMES, LANGUAGES } from '../constants';
 import { PreferencesStore } from '../store/';
 import { useTheme } from '@react-navigation/native';
 import { COLORS } from '../constants/colors';
+import { useTranslation } from 'react-i18next';
+
 const IconSize = 24;
 const fontSize = 16;
 
@@ -40,6 +42,8 @@ auris fringilla purus at lacus consequat, vel dictum sapien scelerisque.
 
 const Preferences = observer( () => {
   const theme = useTheme();
+  const { i18n, t} = useTranslation();
+  console.log('i18n', i18n, t);
   const [modalVisibility, setModalVisibility] = useState(false);
   const prefs = PreferencesStore.preferences;
 

@@ -66,7 +66,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
       const hours = timeObj.hours && timeObj.hours + 'hrs' || '';
       const minutes = timeObj.minutes && timeObj.minutes + ' mins' || '';
       const left = (hours) ? `- ${hours} ${minutes}` : ``;
-      if(!Object.keys(timeObj).length) {
+      if (!timeObj || !Object.keys(timeObj).length) {
         clearInterval(timerRef.current);
       }
       setRemainingTime(left);

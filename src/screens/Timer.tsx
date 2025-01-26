@@ -46,7 +46,8 @@ const TimerItem = observer(({ columnKey }: TimerItemProps) => {
     if (!isPaused ) {
       if (countDownComplete) {
         setCountDown(duration); // reset duration if complete
-        const update = Object.assign({},TimerStore.timer[columnKey], {
+        const timer = TimerStore.timer && TimerStore.timer[columnKey] || {};
+        const update = Object.assign({}, timer, {
           elapsedTime: 0,
           isPaused: true,
           isComplete: true
@@ -59,7 +60,8 @@ const TimerItem = observer(({ columnKey }: TimerItemProps) => {
       if (countDown == -1000) { clearInterval(countDownRef.current); }
     } else {
       // handle countdownPause event
-      const update = Object.assign({}, TimerStore.timer[columnKey], {
+      const timer = TimerStore.timer && TimerStore.timer[columnKey] || {};
+      const update = Object.assign({}, timer, {
         elapsedTime: duration - countDown,
         isComplete: countDown === duration,
       }) as TimerType;
@@ -135,7 +137,7 @@ const Rows: React.FC<RowProps> = ({ Col, timerRecord }) => (
 const Cols: React.FC<ColProps> = ({ row, timerRecord }) => {
   return Array.from({ length: GRID.length }).map((_, index) => {
     const columnKey = `${row}_${index}`;
-    const hasTimer = Object.hasOwn(timerRecord, columnKey);
+    const hasTimer = timerRecord && Object.hasOwn(timerRecord, columnKey);
     const timer = hasTimer ? timerRecord[columnKey] as TimerType : {} as TimerType;
     return (
       <TouchableOpacity
@@ -167,7 +169,7 @@ const Cols: React.FC<ColProps> = ({ row, timerRecord }) => {
         }}
       >
         {
-          Object.hasOwn(TimerStore.timer, columnKey) ?
+          (TimerStore && Object.hasOwn(TimerStore.timer, columnKey)) ?
             <TimerItem columnKey={columnKey} /> : null
         }
       </TouchableOpacity>
@@ -177,7 +179,7 @@ const Cols: React.FC<ColProps> = ({ row, timerRecord }) => {
 const Timer = observer(() => {
   const windowHeight = Dimensions.get('window').height;
   const screenHeight = windowHeight - (FLOATING_FOOTER_HEIGHT + SPACING);
-  const timerRecord = Object.keys(TimerStore.timer).length ? TimerStore.timer : {};
+  const timerRecord = (TimerStore.timer && Object.keys(TimerStore.timer).length) ? TimerStore.timer : {};
   return (
     <SafeAreaProvider>
       <SafeAreaView>

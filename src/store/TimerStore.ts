@@ -6,7 +6,7 @@ import { storage } from "../utils/storage";
   const __TIMER_STORE_ = '__TIMER_STORE_';
 
 export default class TimerStore {
-  timer:Record<string, Timer> = this.fetchTimer();
+  timer:Record<string, Timer> = this.fetchTimer() || {};
   timerModalVisibility = false;
   activeColumnKey = '';
 
@@ -16,7 +16,8 @@ export default class TimerStore {
 
   async updateTimer(activeColumnKey:string, timer:Timer) {
     runInAction(() => {
-      this.timer[activeColumnKey] = Object.assign(this.timer[activeColumnKey], { ...timer });
+      const oldTimer = this.timer[activeColumnKey] || {};
+      this.timer[activeColumnKey] = Object.assign(oldTimer, { ...timer });
     });
     this.persistTimer();
     // handle notification triggers

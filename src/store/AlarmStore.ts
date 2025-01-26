@@ -1,23 +1,15 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storage } from '../utils/storage';
 import { ScheduleAlarm, CancelAlarmSchedule } from '../services/NotificationServices';
 import { Alarm } from '../types';
 
 export default class AlarmStore {
 
-  alarms: Record<string, Alarm> = {};
+  alarms: Record<string, Alarm> = this.getAlarms();
   private _ALARM_KEY = 'ALARM_KEY';
 
   constructor() {
     makeAutoObservable(this);
-    this.loadAlarms();
-  }
-
-  async loadAlarms() {
-    const alarms = await this.getAlarms();
-    runInAction(() => {
-      this.alarms = alarms;
-    });
   }
 
   async createAlarm(alarm: Alarm) {
@@ -30,7 +22,7 @@ export default class AlarmStore {
         this.alarms[alarm.id] = alarm;
       });
       await ScheduleAlarm(alarm);
-      await this.persistAlarm();
+      this.persistAlarm();
     } catch (error) {
       console.error('Error While Saving..', error);
     }
@@ -47,7 +39,7 @@ export default class AlarmStore {
       if (alarm.active) {
         await ScheduleAlarm(alarm);
       }
-      await this.persistAlarm();
+      this.persistAlarm();
     }catch(error) {
       console.error('Error While updating', error);
     }
@@ -60,20 +52,20 @@ export default class AlarmStore {
       runInAction(() => {
         delete this.alarms[key];
       });
-      await this.persistAlarm();
+      this.persistAlarm();
     } catch (error) {
       console.error('Error while deleting', error);
     }
   }
 
-  async persistAlarm() {
+  persistAlarm() {
     const alarmObjsStr = JSON.stringify(this.alarms);
-    return await AsyncStorage.setItem(this._ALARM_KEY, alarmObjsStr);
+    storage.set(this._ALARM_KEY, alarmObjsStr);
   }
 
-  async getAlarms() : Promise<Record<string, Alarm>> {
-    const allAlarms = await AsyncStorage.getItem(this._ALARM_KEY);
-    return (allAlarms !== null) ? JSON.parse(allAlarms) : {};
+  getAlarms(): Record<string, Alarm>{
+    const allAlarms = storage.getString(this._ALARM_KEY);
+    return (allAlarms !== undefined) ? JSON.parse(allAlarms) : {};
   }
 };
 

@@ -1,3 +1,4 @@
+import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
@@ -7,6 +8,7 @@ interface AnalogClockProps {
   timeZone?: string;
 }
 const AnalogClock = ({date} : AnalogClockProps) => {
+  const theme = useTheme();
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -21,6 +23,77 @@ const AnalogClock = ({date} : AnalogClockProps) => {
   const secondsAngle = (time.getSeconds() / 60) * 360;
   const minutesAngle = (time.getMinutes() / 60) * 360 + (secondsAngle / 60);
   const hoursAngle = (time.getHours() % 12 / 12) * 360 + (minutesAngle / 12);
+
+  const styles = StyleSheet.create({
+    clockContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    clockFace: {
+      width: 200,
+      height: 200,
+      borderRadius: 150,
+      borderWidth: 8,
+      borderColor: theme.colors.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
+    },
+    hiddenLine: {
+      backgroundColor: 'transparent'
+    },
+    hourMarking: {
+      borderColor: 'pink',
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      alignItems: 'center',
+    },
+    minutesLine: {
+      width: 0.5,
+      height: 7,
+      backgroundColor: 'grey',
+      position: 'absolute',
+      bottom: 5,
+    },
+    hourDot: {
+      width: 6,
+      height: 6,
+      backgroundColor: '#333',
+      borderRadius: 3,
+      position: 'absolute',
+      top: 10,
+    },
+    hand: {
+      position: 'absolute',
+      width: 4,
+      height: '50%',
+      backgroundColor: '#333',
+      borderRadius: 3,
+      bottom: '50%',
+      transformOrigin: 'center bottom'
+    },
+    hourHand: {
+      height: '30%',
+      backgroundColor: '#000',
+    },
+    minuteHand: {
+      height: '35%',
+      backgroundColor: '#666',
+    },
+    secondHand: {
+      height: '40%',
+      backgroundColor: '#e74c3c',
+    },
+    centerDot: {
+      width: 12,
+      height: 12,
+      backgroundColor: '#333',
+      borderRadius: 6,
+      position: 'absolute',
+      zIndex: 10,
+    }
+  });
 
   return (
     <View style={styles.clockContainer}>
@@ -46,8 +119,12 @@ const AnalogClock = ({date} : AnalogClockProps) => {
               { transform: [{ rotate: `${index * 30}deg` }] },
             ]}
           >
-            <View style={{}} >
-              <Text style={{fontWeight: '500', fontSize: 16,}} >{index == 0 ? '12' : index}</Text>
+            <View style={{ transform: [{ rotate: `-${index * 30}deg` }] }} >
+              <Text style={{
+                fontWeight: '500',
+                fontSize: 16,
+                color: theme.colors.text
+                }} >{index == 0 ? '12' : index}</Text>
             </View>
           </View>
         ))}
@@ -86,73 +163,3 @@ const AnalogClock = ({date} : AnalogClockProps) => {
 
 export default AnalogClock;
 
-const styles = StyleSheet.create({
-  clockContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  clockFace: {
-    width: 200,
-    height: 200,
-    borderRadius: 150,
-    borderWidth: 8,
-    borderColor: '#333',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  hiddenLine: {
-    backgroundColor: 'transparent'
-  },
-  hourMarking: {
-    borderColor: 'pink',
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-  },
-  minutesLine: {
-    width: 0.5,
-    height: 7,
-    backgroundColor: 'grey',
-    position: 'absolute',
-    bottom: 5,
-  },
-  hourDot: {
-    width: 6,
-    height: 6,
-    backgroundColor: '#333',
-    borderRadius: 3,
-    position: 'absolute',
-    top: 10,
-  },
-  hand: {
-    position: 'absolute',
-    width: 4,
-    height: '50%',
-    backgroundColor: '#333',
-    borderRadius: 3,
-    bottom: '50%',
-    transformOrigin: 'center bottom'
-  },
-  hourHand: {
-    height: '30%',
-    backgroundColor: '#000',
-  },
-  minuteHand: {
-    height: '35%',
-    backgroundColor: '#666',
-  },
-  secondHand: {
-    height: '40%',
-    backgroundColor: '#e74c3c',
-  },
-  centerDot: {
-    width: 12,
-    height: 12,
-    backgroundColor: '#333',
-    borderRadius: 6,
-    position: 'absolute',
-    zIndex: 10,
-  }
-});

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { View, Text, StyleSheet, ViewStyle, Switch } from 'react-native';
 import { COLORS } from '../constants/colors';
+import i18n from '../i18n';
+import { Weekdays } from '../types';
 
 const AlarmCardStyles = StyleSheet.create({
   container: {
@@ -20,7 +22,7 @@ type ReflectionCardProps = PropsWithChildren<{
   style?: ViewStyle;
   active: boolean;
   time:string;
-  weekdays: string[];
+  weekdays: Weekdays[];
   shouldVibrate?:boolean;
   shouldRepeat:boolean;
   onPress?: Function;
@@ -67,7 +69,7 @@ const AlarmCard = ({
             marginBottom: 2,
             color: theme.colors.text
             }} >
-            {weekdays.join(', ')}
+            {weekdays.map((weekday: Weekdays) => i18n.t(weekday)).join(', ')}
           </Text>
         </View>
         <View>

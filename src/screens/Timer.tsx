@@ -7,7 +7,7 @@ import {observer} from 'mobx-react-lite';
 import { FLOATING_FOOTER_HEIGHT, SPACING } from '../constants';
 import CircularProgressBar from '../components/CircularProgressBar';
 import Pulsate from '../components/Pulsate';
-import { TimerStore } from '../store';
+import { PreferencesStore, TimerStore } from '../store';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ManageTimer from '../components/ManageTimer';
 import { Timer as TimerType } from '../types';
@@ -181,6 +181,8 @@ const Timer = observer(() => {
   const windowHeight = Dimensions.get('window').height;
   const screenHeight = windowHeight - (FLOATING_FOOTER_HEIGHT + SPACING);
   const timerRecord = (TimerStore.timer && Object.keys(TimerStore.timer).length) ? TimerStore.timer : {};
+  const {} = PreferencesStore.preferences;
+  
   return (
     <SafeAreaProvider>
       <SafeAreaView>

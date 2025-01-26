@@ -12,7 +12,6 @@ const StopWatch = observer(() => {
   const floatingFooter = 100;
   const spacing = 70;
   const screenHeight = windowHeight - (floatingFooter + spacing);
-  
   return (
     <View style={{ height: screenHeight }} >
       <StopwatchFace ref={stopWatchRef} />

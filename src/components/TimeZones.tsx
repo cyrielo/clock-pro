@@ -5,12 +5,14 @@ import { observer } from 'mobx-react-lite';
 import { formatInTimeZone, getTimezoneOffset } from 'date-fns-tz'
 import { Place } from '../types';
 import { ClockStore } from '../store';
+import { useTheme } from '@react-navigation/native';
 
 interface TimeZoneProps {
   data: Place[];
   localTimezone: string;
 }
 const TimeZones = observer(({ data, localTimezone }: TimeZoneProps) => {
+  const theme = useTheme();
   const date = new Date();
 
   const calcOffset = (timezone:string, date:Date) :string => {
@@ -38,7 +40,7 @@ const TimeZones = observer(({ data, localTimezone }: TimeZoneProps) => {
               paddingBottom: 10,
               marginTop: 25,
               borderBottomWidth: 0.3,
-              borderBottomColor: 'rgba(0,0,0,0.3)',
+              borderBottomColor: theme.colors.border,
             }}>
             <View style={{
               display: 'flex',
@@ -54,10 +56,10 @@ const TimeZones = observer(({ data, localTimezone }: TimeZoneProps) => {
               source={{ uri: item.flag }}
             />
             <View style={{ marginLeft: 5 }}>
-              <Text style={{ fontSize: 14 }}>
+              <Text style={{ fontSize: 14, color: theme.colors.text }}>
                   {`${item.location}, ${item.country}`}
                 </Text>
-                <Text style={{ fontSize: 12 }}>
+                <Text style={{ fontSize: 12, color: theme.colors.text }}>
                   {
                     `${formatInTimeZone(date, item.timeZone, 'EE, LLL dd')}`
                   }
@@ -90,11 +92,11 @@ const TimeZones = observer(({ data, localTimezone }: TimeZoneProps) => {
             display: 'flex',
             flexDirection:'column',
             }}>
-            <Text style={{ fontSize: 14, fontWeight:500 }}>
+              <Text style={{ fontSize: 14, fontWeight: 500, color: theme.colors.text }}>
               { formatInTimeZone(date, item.timeZone, 'hh : mm aa') }
             </Text>
 
-              <Text style={{ fontSize: 12 }}>
+              <Text style={{ fontSize: 12, color: theme.colors.text }}>
                 {calcOffset(item.timeZone, date)}
               </Text>
           </View>

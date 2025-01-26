@@ -11,7 +11,7 @@
   "notification_sound": "Tunog ng Abiso",
   "version": "Bersyon",
   "en": "Ingles",
-  "ch": "Intsik",
+  "cn": "Intsik",
   "fr": "Pranses",
   "tl": "Tagalog",
   "hi": "Hindi",
@@ -27,5 +27,9 @@
   "screaming_goat": "Pagsigaw ng Kambing",
   "ring_ring": "Tugtog",
   "morning_rooster": "Tandang sa Umaga",
-  "oppo_tune": "Tunog ng Oppo"
+  "oppo_tune": "Tunog ng Oppo",
+  "phone_linging": "Tunog ng Telepono",
+  "minions_hello": "Minions Kamusta",
+  "kill_bill_whistle": "Sipol ng Kill Bill",
+  "sister_is_calling": "Tumatawag ang Kapatid"
 }

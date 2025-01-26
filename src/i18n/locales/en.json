@@ -11,7 +11,7 @@
   "notification_sound": "Notifications Sound",
   "version": "Version",
   "en": "English",
-  "ch": "Chinese",
+  "cn": "Chinese",
   "fr": "French",
   "tl": "Tagalog",
   "hi": "Hindi",
@@ -27,5 +27,9 @@
   "screaming_goat": "Screaming Goat",
   "ring_ring": "Ring Ring",
   "morning_rooster": "Morning Rooster",
-  "oppo_tune": "Oppo tune"
+  "oppo_tune": "Oppo tune",
+  "phone_linging": "Phone Linging",
+  "minions_hello": "Minions Hello",
+  "kill_bill_whistle": "Kill Bill Whistle",
+  "sister_is_calling": "Sister is Calling"
 }

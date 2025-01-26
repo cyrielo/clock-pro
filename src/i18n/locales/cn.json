@@ -11,7 +11,7 @@
   "notification_sound": "通知声音",
   "version": "版本",
   "en": "英语",
-  "ch": "中文",
+  "cn": "中文",
   "fr": "法语",
   "tl": "塔加路语",
   "hi": "印地语",
@@ -27,5 +27,9 @@
   "screaming_goat": "尖叫山羊",
   "ring_ring": "铃声",
   "morning_rooster": "早晨公鸡",
-  "oppo_tune": "Oppo 铃声"
+  "oppo_tune": "Oppo 铃声",
+  "phone_linging": "电话铃声",
+  "minions_hello": "小黄人你好",
+  "kill_bill_whistle": "杀死比尔口哨",
+  "sister_is_calling": "姐姐来电"
 }

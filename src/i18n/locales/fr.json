@@ -11,7 +11,7 @@
   "notification_sound": "Son des notifications",
   "version": "Version",
   "en": "Anglais",
-  "ch": "Chinois",
+  "cn": "Chinois",
   "fr": "Français",
   "tl": "Tagalog",
   "hi": "Hindi",
@@ -27,5 +27,9 @@
   "screaming_goat": "Chèvre hurlante",
   "ring_ring": "Sonnerie",
   "morning_rooster": "Coq du matin",
-  "oppo_tune": "Mélodie Oppo"
+  "oppo_tune": "Mélodie Oppo",
+  "phone_linging": "Sonnerie de téléphone",
+  "minions_hello": "Minions Bonjour",
+  "kill_bill_whistle": "Sifflet de Kill Bill",
+  "sister_is_calling": "Sœur appelle"
 }

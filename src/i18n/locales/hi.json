@@ -11,7 +11,7 @@
   "notification_sound": "सूचना ध्वनि",
   "version": "संस्करण",
   "en": "अंग्रेज़ी",
-  "ch": "चीनी",
+  "cn": "चीनी",
   "fr": "फ्रेंच",
   "tl": "टैगालोग",
   "hi": "हिंदी",
@@ -27,5 +27,9 @@
   "screaming_goat": "चीखता बकरा",
   "ring_ring": "रिंग रिंग",
   "morning_rooster": "सुबह का मुर्गा",
-  "oppo_tune": "ओप्पो धुन"
+  "oppo_tune": "ओप्पो धुन",
+  "phone_linging": "फोन की घंटी",
+  "minions_hello": "मिनियन हैलो",
+  "kill_bill_whistle": "किल बिल सीटी",
+  "sister_is_calling": "बहन का कॉल"
 }

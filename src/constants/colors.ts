@@ -1,3 +1,20 @@
+import { DarkTheme as darkTheme, DefaultTheme, Theme } from "@react-navigation/native";
+
+export const LightTheme:Theme = {
+  colors: {
+    ...DefaultTheme.colors,
+
+  },
+  dark: false
+};
+
+export const DarkTheme: Theme = {
+  colors: {
+    ...darkTheme.colors,
+  },
+  dark: true
+};
+
 export const COLORS:Record<string,string> = {
   Blue_Grey: '#78909c',
   Dark_BlueGrey: '#455a64',
@@ -15,6 +32,7 @@ export const COLORS:Record<string,string> = {
   Blue_2:'#7476fe',
   Blue_1: '#00aeec',
   Dark_Blue: '#0d47a1',
+  Light_Purple: '#bda5e0',
   Purple: '#6a1b9a',
   Dark_Purple: '#4a148c',
   Pink: '#ec407a',

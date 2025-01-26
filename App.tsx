@@ -29,7 +29,6 @@ const App = observer(() => {
       </View>
     );
   }
-  console.log('colorScheme', colorScheme);
   return (
     <NavigationContainer theme={theme} >
         <Stack.Navigator>

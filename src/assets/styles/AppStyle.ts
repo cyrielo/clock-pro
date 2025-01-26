@@ -1,10 +1,8 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../constants/colors";
 
 export default StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: COLORS.Light,
   },
   bottomPadding: {
     paddingBottom: 130,
@@ -39,6 +37,11 @@ export const ClockValueStyle = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
     alignItems: 'center'
+  },
+  lapTableLabel: {
+    fontSize: 16,
+    fontWeight: 500,
+    textAlign: 'center',
   },
   controlsBTNgrp: {
     display: 'flex',

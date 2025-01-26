@@ -19,10 +19,14 @@ import i18n from './src/i18n';
 const Stack = createNativeStackNavigator();
 
 const App = observer(() => {
-  const userTheme = PreferencesStore.preferences.theme;
+  const prefs = PreferencesStore.preferences;
+  const userTheme = prefs.theme;
   const systemTheme = useColorScheme() || 'light' as ThemeType;
   const colorScheme = (userTheme === 'system') ? systemTheme : userTheme;
   const theme = colorScheme == 'dark' ? DarkTheme : LightTheme;
+  if (i18n.language !== prefs.language) {
+    i18n.changeLanguage(prefs.language);
+  }
   return (
     <I18nextProvider i18n={i18n}>
       <NavigationContainer theme={theme} >

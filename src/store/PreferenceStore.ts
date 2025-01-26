@@ -1,49 +1,37 @@
 import {runInAction, makeAutoObservable} from 'mobx';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Preferences } from '../types';
+import { storage } from '../utils/storage';
 export default class PreferenceStore {
 
   preferences: Preferences = {
-    theme: 'system',
-    isHydrated: false,
-    language: 'ch',
-    notificationEnabled: true,
-    notificationSound: 'loud_alarm_sound'
+    theme: this.getPreferences().theme || 'system',
+    language: this.getPreferences().language || 'ch',
+    notificationEnabled: this.getPreferences().notificationEnabled || true,
+    notificationSound: this.getPreferences().notificationSound || 'loud_alarm_sound'
   };
   private _PREFERENCE_KEY = 'PREFERENCE_KEY';
 
   constructor() {
     makeAutoObservable(this);
-    this.loadPreference();
   }
 
-  private async loadPreference() {
-    const savedPrefs = await this.getPreferences();
-    await this.setPreferences(savedPrefs);
-  }
-
-  async setPreferences(preferences: Preferences) {
-    try {
+  setPreferences(preferences: Preferences) {
     runInAction(() => {
       this.preferences = preferences;
       this.preferences = Object.assign(this.preferences, preferences);
-      this.preferences.isHydrated = true;
     });
-    } catch(e) {
-    }
-    await this.savePreference(preferences);
+    this.savePreference(preferences);
   }
 
-  async getPreferences(): Promise<Preferences> {
-    const preferencesStr = await AsyncStorage.getItem(this._PREFERENCE_KEY) || '';
-    const preferenceObj: Preferences = 
-    (preferencesStr !== null) ? JSON.parse(preferencesStr) : this.preferences;
+  getPreferences(): Preferences {
+    const preferencesStr = storage.getString(this._PREFERENCE_KEY);
+    const preferenceObj: Preferences =
+    (preferencesStr !== undefined) ? JSON.parse(preferencesStr) : this.preferences;
     return preferenceObj;
   }
 
-  private async savePreference(preferences: Preferences) {
+  private savePreference(preferences: Preferences) {
     const preferencesStr = JSON.stringify(preferences);
-    return await AsyncStorage.setItem(this._PREFERENCE_KEY, preferencesStr);
+    storage.set(this._PREFERENCE_KEY, preferencesStr);
   }
-
 }

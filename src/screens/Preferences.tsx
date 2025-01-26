@@ -11,6 +11,7 @@ import { PreferencesStore } from '../store/';
 import { useTheme } from '@react-navigation/native';
 import { COLORS } from '../constants/colors';
 import i18n from '../i18n';
+import Header from '../components/Header';
 
 const IconSize = 24;
 const fontSize = 16;
@@ -115,6 +116,7 @@ const Preferences = observer( () => {
             marginBottom: 0,
             paddingBottom: 130
           }}>
+            <Header title={i18n.t('preferences')} hasAdd={false} />
             <Section title={i18n.t('general')} />
             <View style={{
               ...SectionStyle.section
@@ -331,10 +333,7 @@ const PreferenceStackNavigator = createNativeStackNavigator();
 export const PreferenceStackScreen = () => {
   return (
     <PreferenceStackNavigator.Navigator>
-      <PreferenceStackNavigator.Screen name="Preferences" options={{
-        headerTitleAlign: 'center',
-        headerBackground: () => null,
-      }}>
+      <PreferenceStackNavigator.Screen name="Preferences" options={{ header: () => null }}>
         {(props: any) => <Preferences {...props} />}
       </PreferenceStackNavigator.Screen>
     </PreferenceStackNavigator.Navigator>

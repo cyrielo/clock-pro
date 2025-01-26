@@ -81,7 +81,6 @@ export interface DropdownOption {
 }
 export interface Preferences {
   theme: ThemeType,
-  isHydrated: boolean,
   notificationEnabled: boolean,
   language: string,
   notificationSound: string

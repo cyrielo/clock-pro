@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Dimensions, TextInput,  } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput,  } from 'react-native';
 import RNDateTimePicker, { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { Alarm, ScreenWithNavigation, Weekdays } from '../types';
 import { CircularCard } from '../components/Card';
 import Ionicon from '@react-native-vector-icons/ionicons';
-import {  formatTimeString, getTimeObj, upperCaseFirst, createHash } from '../utils/stringUtils';
+import {  formatTimeString, getTimeObj,  createHash } from '../utils/stringUtils';
 import { FLOATING_FOOTER_HEIGHT } from '../constants';
 import Button from '../components/Button';
 import { Switch } from 'react-native';
@@ -16,14 +16,13 @@ import { format } from 'date-fns';
 import Pulsate from '../components/Pulsate';
 import { useTheme } from '@react-navigation/native';
 import { COLORS } from '../constants/colors';
+import i18n from '../i18n';
+import { observer } from 'mobx-react-lite';
 
-interface ManageAlarmProps extends ScreenWithNavigation {
-  alarmKey:string;
-};
-
-const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
+const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
   const theme = useTheme();
   const routeParams = route && route.params || {};
+  navigation.setOptions({ title: i18n.t('set_alarm') });
   const prevAlarm = (routeParams && routeParams.prevAlarm || {}) as Alarm;
   const timerRef = useRef<NodeJS.Timeout | number>();
   const timezone = ClockStore.localTimezone;
@@ -100,7 +99,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
   const showTimepicker = () => {
     showMode('time');
   };
-  const allDays: Weekdays[] = ['sunday','monday', 'tuesday', 'wednessday', 'thursday', 'friday', 'saturday'];
+  const allDays: Weekdays[] = ['sunday','monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
   return (
     <ScrollView
       style={{
@@ -140,7 +139,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
                 textAlign: 'center',
                 color: theme.colors.text
                 }}>
-                Alarm {isAlaramActive ? 'on' : 'off'}
+                { isAlaramActive ? i18n.t('alarm_on') : i18n.t('alarm_off')}
               </Text>
             </View>
             <Text style={{
@@ -161,7 +160,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
                   textAlign: 'center',
                   color: theme.colors.text
                 }}>
-                {(isAlaramActive && remainingTime) ? remainingTime : ''}
+                {(isAlaramActive && remainingTime || '')}
               </Text>
               <Text style={{
                 marginHorizontal: 'auto',
@@ -170,7 +169,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
                 textAlign: 'center',
                 color: theme.colors.text
               }}>
-                {(isAlaramActive && remainingTime) ? 'remaining' : ''}
+                {(isAlaramActive && remainingTime) ? i18n.t('remaining').toLocaleLowerCase() : ''}
               </Text>
             </Pulsate>
           </View>
@@ -209,7 +208,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
                   textAlign: 'center',
                   color: theme.colors.text
                   }}>
-                  {upperCaseFirst(day).slice(0,3)}
+                  {i18n.t(`short_${day}`)}
                 </Text>
               </TouchableOpacity>
             )
@@ -228,10 +227,10 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
               padding: 5,
               color: theme.colors.text
               }}>
-              Alarm name
+            {i18n.t('alarm_name')}
             </Text>
             <TextInput
-              placeholder='Enter alarm name'
+              placeholder={i18n.t('enter_alarm_name')}
               style={{
                 color: theme.colors.text,
                 borderColor: theme.colors.border,
@@ -254,7 +253,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
           <Text style={{
               color: theme.colors.text,
             }}>
-            Active
+            {i18n.t('active')}
           </Text>
           <Switch
             thumbColor={theme.colors.text}
@@ -278,7 +277,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
             <Text style={{
               color: theme.colors.text,
             }}>
-              Alarm Sound
+              {i18n.t('alarm_sound')}
             </Text>
           </View>
 
@@ -318,7 +317,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
           <Text style={{
               color: theme.colors.text,
             }}>
-            Allow Snooze
+            {i18n.t('set_snooze')}
           </Text>
           <Switch
             thumbColor={theme.colors.text}
@@ -339,7 +338,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
           <Text style={{
               color: theme.colors.text,
             }}>
-            Repeat
+            {i18n.t('repeat')}
           </Text>
           <Switch
             thumbColor={theme.colors.text}
@@ -358,7 +357,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
           <Text style={{
               color: theme.colors.text,
             }}>
-            Vibrate
+            {i18n.t('vibrate')}
           </Text>
           <Switch
             thumbColor={theme.colors.text}
@@ -414,7 +413,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
       </View>
     </ScrollView>
   );
-};
+});
 
 export default ManageAlarm;
 

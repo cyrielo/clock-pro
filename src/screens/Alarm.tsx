@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -9,14 +9,16 @@ import AppStyle from '../assets/styles/AppStyle';
 import AlarmCard from '../components/AlarmCard';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {observer} from 'mobx-react-lite';
-import { AlarmStore } from '../store/';
+import { AlarmStore, PreferencesStore } from '../store/';
 import ManageAlarm from './ManageAlarm';
 import { ScreenWithNavigation } from '../types/index';
 import { formatTimeString } from '../utils/stringUtils';
 import { useTheme } from '@react-navigation/native';
+import i18n from '../i18n';
 
 const Alarm = observer(({navigation, route} :ScreenWithNavigation) => {
   const alarmKeys = AlarmStore.alarms && Object.keys(AlarmStore.alarms) || [];
+  const {} = PreferencesStore.preferences;
   const theme = useTheme();
   return (
     <SafeAreaView 
@@ -32,8 +34,8 @@ const Alarm = observer(({navigation, route} :ScreenWithNavigation) => {
         style={{
           marginBottom: 90,
         }}>
-        <Header title='Alarm' onAdd={() => {
-            navigation.navigate('Set Alarm');
+        <Header title={i18n.t('alarm')} onAdd={() => {
+          navigation.navigate('set_alarm');
         }} />
           {alarmKeys.map((item, index) => {
             const alarm = AlarmStore.alarms && (AlarmStore.alarms[item]) || {};
@@ -70,11 +72,11 @@ export const AlarmStackScreen = () => {
   return (
     <AlarmStackNavigator.Navigator>
       <AlarmStackNavigator.Screen name="Alarm" options={{ header: () => null }}>
-        {(props: any) => <Alarm  {...props} />}
+        {(props: any) => <Alarm {...props} />}
       </AlarmStackNavigator.Screen>
       <AlarmStackNavigator.Group screenOptions={{ presentation: 'modal' }}>
-        <AlarmStackNavigator.Screen name="Set Alarm">
-          {(props: any) => <ManageAlarm {...props} />}
+        <AlarmStackNavigator.Screen options={{title: i18n.t('set_alarm')}} name="set_alarm">
+          {(props: any) => <ManageAlarm  {...props} />}
         </AlarmStackNavigator.Screen>
       </AlarmStackNavigator.Group>
     </AlarmStackNavigator.Navigator>

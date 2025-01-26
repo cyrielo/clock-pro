@@ -2,10 +2,12 @@ import React from 'react';
 import { View, FlatList, Text, Image, TouchableOpacity} from 'react-native';
 import MaterialIcon from '@react-native-vector-icons/material-design-icons';
 import { observer } from 'mobx-react-lite';
-import { formatInTimeZone, getTimezoneOffset } from 'date-fns-tz'
+import { formatInTimeZone, fromZonedTime, getTimezoneOffset } from 'date-fns-tz'
 import { Place } from '../types';
-import { ClockStore } from '../store';
+import { ClockStore, PreferencesStore } from '../store';
 import { useTheme } from '@react-navigation/native';
+import i18n from '../i18n';
+import { formatDateWithTranslation } from '../utils/stringUtils';
 
 interface TimeZoneProps {
   data: Place[];
@@ -13,14 +15,16 @@ interface TimeZoneProps {
 }
 const TimeZones = observer(({ data, localTimezone }: TimeZoneProps) => {
   const theme = useTheme();
-  const date = new Date();
-
+  const date = fromZonedTime(new Date(), ClockStore.localTimezone);
+  const {} = PreferencesStore.preferences;
+  const dateStr = formatDateWithTranslation(date);
   const calcOffset = (timezone:string, date:Date) :string => {
     const localOffset = getTimezoneOffset(localTimezone, date) / 3600000;
     const offset = getTimezoneOffset(timezone, date) / 3600000;
     const diff = Math.abs(localOffset - offset);
+    const hours = i18n.t('hours').toLocaleLowerCase();
     if (localOffset == offset) {return ''};
-    return (localOffset > offset) ? `- ${diff} hours` : `+ ${diff} hours`;
+    return (localOffset > offset) ? `- ${diff} ${hours}` : `+ ${diff} ${hours}`;
   }
   return (
     <FlatList
@@ -61,7 +65,7 @@ const TimeZones = observer(({ data, localTimezone }: TimeZoneProps) => {
                 </Text>
                 <Text style={{ fontSize: 12, color: theme.colors.text }}>
                   {
-                    `${formatInTimeZone(date, item.timeZone, 'EE, LLL dd')}`
+                    dateStr
                   }
                 </Text>
             </View>

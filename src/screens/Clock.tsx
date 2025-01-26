@@ -2,7 +2,6 @@ import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { format,} from 'date-fns';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import {COLORS} from '../constants/colors';
 import Header from '../components/Header';
 import AppStyle from '../assets/styles/AppStyle';
 import Ionicon from '@react-native-vector-icons/ionicons';
@@ -11,10 +10,12 @@ import TimeZones from '../components/TimeZones';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AllTimeZones from './AllTimeZones';
 import { observer } from 'mobx-react-lite';
-import { useNavigation, useTheme } from '@react-navigation/native';
-import { ClockStore } from '../store';
+import { useTheme } from '@react-navigation/native';
+import { ClockStore, PreferencesStore } from '../store';
 import { FLOATING_FOOTER_HEIGHT, SPACING } from '../constants';
 import { fromZonedTime } from 'date-fns-tz';
+import i18n from '../i18n';
+import { formatDateWithTranslation } from '../utils/stringUtils';
 
 
 interface DateTimeProps extends PropsWithChildren {
@@ -39,7 +40,7 @@ const ClockStyle = StyleSheet.create({
 const DateTime = ({timezone} : DateTimeProps) => {
   const theme = useTheme();
   const [date, setDate] = useState(fromZonedTime(new Date(), timezone));
-  const dateStr = `${format(date, 'EE, LLL dd yyy')}`;
+  const dateStr = formatDateWithTranslation(date);
   const timeStr = `${format(date, 'hh : mm aa')}`;
   useEffect(() => {
     const interval = setInterval(() => {
@@ -74,6 +75,7 @@ const Clock = observer(({ navigation }:any) => {
   const theme = useTheme();
   const windowHeight = Dimensions.get('window').height;
   const screenHeight = windowHeight - (FLOATING_FOOTER_HEIGHT + SPACING);
+  const {} = PreferencesStore.preferences;
 
   return (
     <SafeAreaProvider>
@@ -88,7 +90,7 @@ const Clock = observer(({ navigation }:any) => {
         >
           <Header
             hasAdd
-            title='World clock'
+            title={i18n.t('world_clock')}
             onAdd={() => {
               navigation.navigate('Timezones');
             }}
@@ -105,7 +107,9 @@ const Clock = observer(({ navigation }:any) => {
                 marginBottom: 10,
                 color: theme.colors.text,
                 fontWeight: 500,
-              }}>Local Time</Text>
+              }}>
+                {i18n.t('local_time')}
+              </Text>
               <DateTime date={new Date()} timezone={ClockStore.localTimezone} />
             </View>
             <View style={{}}>
@@ -125,7 +129,9 @@ const Clock = observer(({ navigation }:any) => {
               fontWeight: 500,
               marginLeft: 10,
               color: theme.colors.text
-            }}>Saved places</Text>
+            }}>
+              {i18n.t('saved_places')}
+            </Text>
           </View>
           <TimeZones
             data={( ClockStore.favorites && Object.values(ClockStore.favorites) || [])}
@@ -147,8 +153,8 @@ export const ClockStackScreen = () => {
           {(props: any) => <Clock {...props} />}
         </ClockStackNavigator.Screen>
       </ClockStackNavigator.Group>
-      <ClockStackNavigator.Group screenOptions={{ presentation: 'modal' }}>
-        <ClockStackNavigator.Screen name="Timezones">
+      <ClockStackNavigator.Group  screenOptions={{ presentation: 'modal' }}>
+        <ClockStackNavigator.Screen options={{ title: i18n.t('timezones') }} name="Timezones">
           {(props:any) => <AllTimeZones {...props} />}
         </ClockStackNavigator.Screen>
       </ClockStackNavigator.Group>

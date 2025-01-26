@@ -7,7 +7,6 @@ import { ClockValueStyle } from '../assets/styles/AppStyle';
 import {StopWatchStore} from '../store';
 import { Lap, StopWatchObj } from '../types';
 import { observer } from 'mobx-react-lite';
-import { getTimeObj } from '../utils/stringUtils';
 
 const togglePlay = (stopWatchFaceHandle: RefObject<ReactNode | null>) => {
   if (StopWatchStore.isPaused){

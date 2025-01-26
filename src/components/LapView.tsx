@@ -1,14 +1,16 @@
 import React, {useEffect, useRef} from 'react';
-import { View, Text, FlatList, Dimensions, ViewStyle } from 'react-native';
+import { View, Text, FlatList, Dimensions, ViewStyle, StyleSheet } from 'react-native';
 import { ClockValueStyle } from '../assets/styles/AppStyle';
 import { observer } from 'mobx-react-lite';
 import { StopWatchStore } from '../store';
 import { getTimeObj } from '../utils/stringUtils';
+import { useTheme } from '@react-navigation/native';
 
 interface LapViewProps {
   style?: ViewStyle
 }
 const LapView = observer(({style}: LapViewProps) => {
+  const theme = useTheme();
   const { laps } = StopWatchStore;
   const listRef = useRef<FlatList>(null);
   useEffect(() => {
@@ -22,6 +24,13 @@ const LapView = observer(({style}: LapViewProps) => {
   const floatingFooter = 100;
   const spacing = 70 + lapControlHeight;
   const screenHeight = windowHeight - (floatingFooter + spacing + clockHeight + lapControlHeight);
+  const LapTableLabelStyle = StyleSheet.create({
+    ...ClockValueStyle,
+    lapTableLabel: {
+      ...ClockValueStyle.lapTableLabel,
+      color: theme.colors.text,
+    }
+  })
   return (
     <View style={{
       marginVertical: 20, ...style,
@@ -29,18 +38,18 @@ const LapView = observer(({style}: LapViewProps) => {
       paddingBottom: 20
       }}>
       <View style={{
-        ...ClockValueStyle.lapTable,
+        ...LapTableLabelStyle.lapTable,
         marginBottom: 2,
-        backgroundColor: '#f5f8fa',
+        backgroundColor: theme.colors.background,
       }}>
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 16, fontWeight: 500, textAlign: 'center' }}>CURRENT TIME</Text>
+          <Text style={LapTableLabelStyle.lapTableLabel}>CURRENT TIME</Text>
         </View>
         <View style={{ flex: 1, }}>
-          <Text style={{ fontSize: 16, fontWeight: 500, textAlign: 'center' }}>LAP TIME</Text>
+          <Text style={LapTableLabelStyle.lapTableLabel}>LAP TIME</Text>
         </View>
         <View style={{ flex: 1, }}>
-          <Text style={{ fontSize: 16, fontWeight: 500, textAlign: 'center' }}>#LAP</Text></View>
+          <Text style={LapTableLabelStyle.lapTableLabel}>#LAP</Text></View>
       </View>
       <FlatList
         ref={listRef}
@@ -58,7 +67,7 @@ const LapView = observer(({style}: LapViewProps) => {
               marginBottom: 2,
             }}>
               <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 16, textAlign: 'center' }}>
+                <Text style={{ fontSize: 16, textAlign: 'center', color: theme.colors.text, }}>
                   {overallTime.hours ? `${overallTime.hours}h `:''}
                   {overallTime.minutes ? `${overallTime.minutes}m ` : ''}
                   {overallTime.seconds ? `${overallTime.seconds}s ` : ''}
@@ -66,7 +75,7 @@ const LapView = observer(({style}: LapViewProps) => {
                 </Text>
               </View>
               <View style={{ flex: 1, }}>
-                <Text style={{ fontSize: 16, textAlign: 'center' }}>
+                <Text style={{...LapTableLabelStyle.lapTableLabel, ...{ fontWeight: 400 }}}>
                   {lapTime.hours ? `${lapTime.hours}h ` : ''}
                   {lapTime.minutes ? `${lapTime.minutes}m ` : ''}
                   {lapTime.seconds ? `${lapTime.seconds}s ` : ''}
@@ -74,8 +83,10 @@ const LapView = observer(({style}: LapViewProps) => {
                 </Text>
               </View>
               <View style={{ flex: 1, }}>
-              <Text style={{ fontSize: 16, fontWeight: 400, textAlign: 'center' }}>
-                  Lap {index + 1}</Text></View>
+                <Text style={{ ...LapTableLabelStyle.lapTableLabel, ...{ fontWeight: 400 } }}>
+                  Lap {index + 1}
+                </Text>
+              </View>
             </View>
         )}}
       />

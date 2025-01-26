@@ -1,13 +1,15 @@
 import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle} from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { CircularCard } from '../components/Card';
 import { ClockValueStyle } from '../assets/styles/AppStyle';
 import Separator from './Seperator';
 import { getTimeObj } from '../utils/stringUtils';
 import { StopWatchStore } from '../store';
 import { observer } from 'mobx-react-lite';
+import { useTheme } from '@react-navigation/native';
 
 const StopwatchFace = observer(forwardRef((_, ref) => {
+  const theme = useTheme();
   const { isPaused, timestamp: prevTimeStamp } = StopWatchStore;
   const [timestamp, setTimeStamp] = useState(prevTimeStamp);
   useImperativeHandle(ref, () => ({
@@ -37,10 +39,17 @@ const StopwatchFace = observer(forwardRef((_, ref) => {
     }
   }, [isPaused]);
 
+  const ClockStyle = StyleSheet.create({
+    ...ClockValueStyle,
+    themeColor: {
+      color: theme.colors.text,
+    }
+  });
+
   return (
     <CircularCard style={{ marginTop: 10, paddingHorizontal: 10 }}>
       <View style={{ marginVertical: 10 }}>
-        <Text style={{ ...ClockValueStyle.title }}>STOPWATCH</Text>
+        <Text style={{ ...ClockStyle.title, ...ClockStyle.themeColor }}>STOPWATCH</Text>
       </View>
       <View style={{
         display: 'flex',
@@ -49,35 +58,35 @@ const StopwatchFace = observer(forwardRef((_, ref) => {
         alignItems: 'baseline',
       }}>
         <View style={{ marginRight: 15, flex: 1, }}>
-          <Text style={{ ...ClockValueStyle.values }}>
+          <Text style={{ ...ClockStyle.values, ...ClockStyle.themeColor}}>
             {getTimeObj(timestamp).hours}
           </Text>
-          <Text style={{ ...ClockValueStyle.labels }}>hour</Text>
+          <Text style={{ ...ClockStyle.labels, ...ClockStyle.themeColor }}>hour</Text>
         </View>
-        <Separator style={{ ...ClockValueStyle.separator }} />
+        <Separator style={{ ...ClockStyle.separator, ...ClockStyle.themeColor }} />
         <View style={{ marginRight: 15, flex: 1, }}>
-          <Text style={{ ...ClockValueStyle.values }}>
+          <Text style={{ ...ClockStyle.values, ...ClockStyle.themeColor }}>
             {getTimeObj(timestamp).minutes}
           </Text>
-          <Text style={{ ...ClockValueStyle.labels }}>min</Text>
+          <Text style={{ ...ClockStyle.labels, ...ClockStyle.themeColor }}>min</Text>
         </View>
-        <Separator style={{ ...ClockValueStyle.separator }} />
+        <Separator style={{ ...ClockStyle.separator, ...ClockStyle.themeColor }} />
         <View style={{ marginRight: 15, flex: 1, }}>
-          <Text style={{ ...ClockValueStyle.values }}>
+          <Text style={{ ...ClockStyle.values, ...ClockStyle.themeColor }}>
             {getTimeObj(timestamp).seconds}
           </Text>
-          <Text style={{ ...ClockValueStyle.labels }}>sec</Text>
+          <Text style={{ ...ClockStyle.labels, ...ClockStyle.themeColor }}>sec</Text>
         </View>
-        <Separator style={{ ...ClockValueStyle.separator, }} />
+        <Separator style={{ ...ClockStyle.separator, ...ClockStyle.themeColor }} />
         <View style={{ marginRight: 15, flex: 1, }}>
-          <Text style={{ ...ClockValueStyle.values, fontSize: 18, }}>
+          <Text style={{ ...ClockStyle.values, fontSize: 18, ...ClockStyle.themeColor }}>
             {getTimeObj(timestamp).milliseconds}
           </Text>
-          <Text style={{ ...ClockValueStyle.labels, }}>ms</Text>
+          <Text style={{ ...ClockStyle.labels, ...ClockStyle.themeColor }}>ms</Text>
         </View>
       </View>
-      <View style={{ marginVertical: 15, }}>
-        <Text style={{ ...ClockValueStyle.labels }}>
+      <View style={{ marginVertical: 15 }}>
+        <Text style={{ ...ClockStyle.labels, ...ClockStyle.themeColor }}>
           {StopWatchStore.isPaused ? 'Paused' : ''}
         </Text>
       </View>

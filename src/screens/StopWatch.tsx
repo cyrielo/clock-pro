@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useState, useRef, ReactNode, Ref } from 'react';
+import React, { useRef, ReactNode } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Dimensions, View, } from 'react-native';
 import StopwatchFace from '../components/StopwatchFace';

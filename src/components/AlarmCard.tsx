@@ -73,7 +73,7 @@ const AlarmCard = ({
         <View>
           <Switch
             thumbColor={theme.colors.text}
-            trackColor={{ false: COLORS.Grey, true: COLORS.Blue_2 }}
+            trackColor={{ false: COLORS.Grey, true: COLORS.Light_Purple }}
             value={isActive}
             onValueChange={(val) => {
               if (typeof onActiveToggle == 'function') {

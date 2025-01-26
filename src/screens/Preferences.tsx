@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite';
 import { NotificationSounds, THEMES, LANGUAGES } from '../constants';
 import { PreferencesStore } from '../store/';
 import { useTheme } from '@react-navigation/native';
+import { COLORS } from '../constants/colors';
 const IconSize = 24;
 const fontSize = 16;
 
@@ -202,6 +203,8 @@ const Preferences = observer( () => {
                 alignItems: 'center'
               }}>
                 <Switch
+                  thumbColor={theme.colors.text}
+                  trackColor={{ false: COLORS.Grey, true: COLORS.Light_Purple }}
                   value={prefs.notificationEnabled}
                   onValueChange={(val: boolean) => {
                     PreferencesStore.setPreferences({ ...prefs, notificationEnabled: !!val });
@@ -278,7 +281,8 @@ const Preferences = observer( () => {
               <View style={{
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop: 20
+                marginTop: 20,
+                display: 'none',
               }}>
                 <TouchableOpacity onPress={toggelModal}>
                   <Text style={{ fontSize, marginVertical: 5, color: theme.colors.text }}>

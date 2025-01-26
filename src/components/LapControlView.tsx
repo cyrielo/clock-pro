@@ -61,7 +61,7 @@ const LapControlView = observer(({stopWatchFaceHandle}: LapControlViewProps) => 
         </Button>
         <Button
           onPress={() => togglePlay(stopWatchFaceHandle)}
-          style={{ ...ClockValueStyle.controlsBTN, backgroundColor: COLORS.Blue_1 }}>
+          style={{ ...ClockValueStyle.controlsBTN, backgroundColor: COLORS.Dark_Purple }}>
           <Ionicons
             name={StopWatchStore.isPaused ? 'play' : 'pause'}
             color={COLORS.Light} size={24} />

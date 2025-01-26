@@ -15,6 +15,7 @@ import { fromZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
 import Pulsate from '../components/Pulsate';
 import { useTheme } from '@react-navigation/native';
+import { COLORS } from '../constants/colors';
 
 interface ManageAlarmProps extends ScreenWithNavigation {
   alarmKey:string;
@@ -256,6 +257,8 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
             Active
           </Text>
           <Switch
+            thumbColor={theme.colors.text}
+            trackColor={{ false: COLORS.Grey, true: COLORS.Light_Purple }}
             onValueChange={setIsAlarmActive}
             value={isAlaramActive} />
         </View>
@@ -318,6 +321,8 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
             Allow Snooze
           </Text>
           <Switch
+            thumbColor={theme.colors.text}
+            trackColor={{ false: COLORS.Grey, true: COLORS.Light_Purple }}
             onValueChange={setShouldSnooze}
             value={shouldSnooze}
           />
@@ -337,6 +342,8 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
             Repeat
           </Text>
           <Switch
+            thumbColor={theme.colors.text}
+            trackColor={{ false: COLORS.Grey, true: COLORS.Light_Purple }}
             value={shouldRepeat}
             onValueChange={setShouldRepeat}
           />
@@ -354,6 +361,8 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
             Vibrate
           </Text>
           <Switch
+            thumbColor={theme.colors.text}
+            trackColor={{ false: COLORS.Grey, true: COLORS.Light_Purple }}
             value={shouldVibrate}
             onValueChange={setShouldVibrate}
           />
@@ -373,7 +382,12 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
             await AlarmStore.deleteAlarm(prevAlarm.id);
             navigation.goBack();
           }}
-          style={{marginRight: 10, padding: 10, borderRadius: 20}}>
+          style={{
+            marginRight: 10,
+            padding: 10,
+            borderRadius: 20,
+            backgroundColor: COLORS.Dark_Grey
+          }}>
           <Ionicon name='trash' color={'#f9f9f9'} size={22} />
         </Button>
         <Button
@@ -394,8 +408,8 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
             await AlarmStore.createAlarm(alarm);
             navigation.goBack();
           }}
-          style={{padding: 10, backgroundColor: 'teal', borderRadius: 20 }}>
-          <Ionicon name='checkmark' color={'#f9f9f9'} size={22} />
+          style={{ padding: 10, backgroundColor: COLORS.Dark_Purple, borderRadius: 20 }}>
+          <Ionicon name='checkmark' color={COLORS.Light} size={22} />
         </Button>
       </View>
     </ScrollView>

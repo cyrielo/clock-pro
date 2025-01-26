@@ -10,6 +10,7 @@ import { getTimeObj, timeToMilliseconds, createHash } from '../utils/stringUtils
 import { observer } from 'mobx-react-lite';
 import { PreferencesStore, TimerStore } from '../store';
 import { useTheme } from '@react-navigation/native';
+import i18n from '../i18n';
 
 type ManageTimerProps = {
 };
@@ -99,13 +100,15 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
           <Text style={{ fontWeight: 500, fontSize: 16 }}></Text>
         </TouchableOpacity>
         <Text style={{ fontWeight: 500, fontSize: 16, color: theme.colors.text }}>
-          {(editMode) ? 'Edit Timer' : 'New Timer'}
+          {(editMode) ? i18n.t('edit_timer') : i18n.t('new_timer') }
         </Text>
         <TouchableOpacity
           onPress={() => {
             TimerStore.toggleTimerModalVisibility();
           }}>
-          <Text style={{ fontWeight: 500, fontSize: 16, color: theme.colors.text, }}>Cancel</Text>
+          <Text style={{ fontWeight: 500, fontSize: 16, color: theme.colors.text, }}>
+            {i18n.t('cancel')}
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={{
@@ -119,19 +122,19 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
         <TimerInput
           placeholder='00'
           value={`${parseInt(hours, 10) || ''}`}
-          label='hour'
+          label={i18n.t('hours').toLocaleLowerCase()}
           onChangeText={(value: string) => setHour(value)}
         />
         <TimerInput
           placeholder='00'
           value={`${parseInt(minutes, 10) || ''}`}
-          label='min'
+          label={i18n.t('short_minutes').toLocaleLowerCase()}
           onChangeText={(value: string) => setMinutes(value)}
         />
         <TimerInput
           placeholder='00'
           value={`${parseInt(seconds, 10) || '' }`}
-          label='sec'
+          label={i18n.t('short_seconds').toLocaleLowerCase()}
           onChangeText={(value: string) => setSeconds(value)}
         />
       </View>
@@ -146,10 +149,12 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
           marginHorizontal: 10,
           minWidth: 120
         }}>
-          <Text style={{ marginBottom: 5, color: theme.colors.text, }}>Label</Text>
+          <Text style={{ marginBottom: 5, color: theme.colors.text, }}>
+            {i18n.t('label')}
+          </Text>
           <TextInput
             placeholderTextColor={theme.colors.text}
-            placeholder='Timer Label'
+            placeholder={i18n.t('timer_label')}
             value={timer.label}
             onChangeText={(label) => {
               setTimer({...timer, label});
@@ -186,7 +191,9 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             renderLeftIcon={() => {
               return (
                 <View>
-                  <Text style={{ color: theme.colors.text, }}>Color</Text>
+                  <Text style={{ color: theme.colors.text, }}>
+                    {i18n.t('color')}
+                  </Text>
                   <TouchableOpacity
                     onPress={() => {
                       if (colorSelectorRef.current) {
@@ -236,7 +243,9 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
           justifyContent: 'center',
           }}>
           <Ionicon name='notifications' color={theme.colors.text} size={18}/>
-          <Text style={{ textAlign: 'center', marginLeft: 4, color: theme.colors.text, }}>Sound</Text>
+          <Text style={{ textAlign: 'center', marginLeft: 4, color: theme.colors.text, }}>
+            {i18n.t('sound')}
+          </Text>
         </View>
         <Dropdown
           style={{
@@ -288,7 +297,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
           }}
           >
           <Text style={{textAlign: 'center', color: theme.colors.text }}>
-            {editMode ? 'Update timer' : 'Start timer'}
+            {editMode ? i18n.t('update_timer') : i18n.t('start_timer')}
           </Text>
         </Button>
         { editMode ? (
@@ -302,7 +311,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
               fontWeight: 500,
               textAlign: 'center'
               }}>
-                Delete timer
+              {i18n.t('delete_timer')}
             </Text>
           </Button>
         ) : null }

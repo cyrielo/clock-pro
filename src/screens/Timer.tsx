@@ -14,6 +14,7 @@ import { Timer as TimerType } from '../types';
 import { getTimeObj, padNumber } from '../utils/stringUtils';
 const GRID = {length: 3, height: 4};
 const TimerStackNavigator = createNativeStackNavigator();
+import i18n from '../i18n';
 
 type ColProps = {
   timerRecord: Record<string, TimerType>;
@@ -207,7 +208,7 @@ const Timer = observer(() => {
           paddingBottom: 130,
           height: screenHeight
         }}>
-          <Header title='Timer' hasAdd={false} />
+          <Header title={i18n.t('timer')} hasAdd={false} />
           <View style={{
             display: 'flex',
             justifyContent: 'center',

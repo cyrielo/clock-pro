@@ -293,7 +293,7 @@ const ManageAlarm = ({ navigation, route }: ManageAlarmProps) => {
                 width: '100%',
               }}
               selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
-              data={NotificationSounds}
+              data={NotificationSounds()}
               search={false}
               value={alarmSound}
               placeholderStyle={{ textAlign: 'right', color: theme.colors.text }}

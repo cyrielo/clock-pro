@@ -248,7 +248,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             borderColor: theme.colors.border,
           }}
           showsVerticalScrollIndicator={false}
-          data={NotificationSounds}
+          data={NotificationSounds()}
           selectedTextStyle={{ color: theme.colors.text }}
           labelField={'label'}
           valueField={'value'}

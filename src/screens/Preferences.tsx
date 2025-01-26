@@ -1,17 +1,17 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Switch, ScrollView, Modal, TouchableOpacity, StyleSheet, Pressable, Keyboard, Button } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Section from '../components/Section';
 import Ionicon from '@react-native-vector-icons/ionicons';
 import { Dropdown } from 'react-native-element-dropdown';
 import { observer } from 'mobx-react-lite';
-import { NotificationSounds } from '../constants';
+import { NotificationSounds, LANGUAGES, THEMES } from '../constants';
 import { PreferencesStore } from '../store/';
 import { useTheme } from '@react-navigation/native';
 import { COLORS } from '../constants/colors';
 import i18n from '../i18n';
-import {  ThemeType } from '../types';
+
 const IconSize = 24;
 const fontSize = 16;
 
@@ -146,18 +146,7 @@ const Preferences = observer( () => {
                     justifyContent: 'flex-end',
                   }}
                   selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
-                  data={[{
-                    label: i18n.t('system'),
-                    value: 'system' as ThemeType
-                  },
-                  {
-                    label: i18n.t('light'),
-                    value: 'light' as ThemeType
-                  },
-                  {
-                    label: i18n.t('dark'),
-                    value: 'dark' as ThemeType
-                  }]}
+                  data={THEMES()}
                   search={false}
                   value={prefs.theme}
                   onChange={(item) => {
@@ -197,26 +186,7 @@ const Preferences = observer( () => {
                   }}
                   placeholderStyle={{ color: theme.colors.text }}
                   selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
-                  data={[{
-                      label: i18n.t('en'),
-                      value: 'en'
-                      },
-                      {
-                        label: i18n.t('cn'),
-                        value: 'cn'
-                      }, {
-                        label: i18n.t('hi'),
-                        value: 'hi'
-                      },
-                      {
-                        label: i18n.t('tl'),
-                        value: 'tl'
-                      },
-                      {
-                        label: i18n.t('fr'),
-                        value: 'fr'
-                      }]
-                    }
+                  data={LANGUAGES()}
                   search={false}
                   value={prefs.language}
                   onChange={({value}) => {
@@ -284,7 +254,7 @@ const Preferences = observer( () => {
                   }}
                   placeholderStyle={{ color: theme.colors.text }}
                   selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
-                  data={NotificationSounds}
+                  data={NotificationSounds()}
                   search={false}
                   value={prefs.notificationSound}
                   onChange={(item) => {

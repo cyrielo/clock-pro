@@ -5,17 +5,17 @@ import { COLORS } from '../constants/colors';;
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { ClockValueStyle } from '../assets/styles/AppStyle';
 import {StopWatchStore} from '../store';
-import { Lap, StopWatchObj } from '../types';
+import { Lap } from '../types';
 import { observer } from 'mobx-react-lite';
 
 const togglePlay = (stopWatchFaceHandle: RefObject<ReactNode | null>) => {
+  const { laps, timestamp } = StopWatchStore;
   if (StopWatchStore.isPaused){
-    StopWatchStore.setStopWatch({ isPaused: false } as StopWatchObj);
+    StopWatchStore.setStopWatch({ isPaused: false, laps, timestamp });
   } else {
     // @ts-ignore
     const currentTimetamp = stopWatchFaceHandle.current.getTimeStamp();
-    StopWatchStore.pause(currentTimetamp);
-    StopWatchStore.setStopWatch({ isPaused: true } as StopWatchObj);
+    StopWatchStore.setStopWatch({ isPaused: true, timestamp: currentTimetamp, laps });
   }
 };
 
@@ -26,15 +26,15 @@ const resetTimer = (stopWatchFaceHandle: RefObject<ReactNode|null>) => {
 }
 
 const addLap = (stopWatchFaceHandle: RefObject<ReactNode|null>) => {
+  const { isPaused, laps, timestamp } = StopWatchStore;
   if (stopWatchFaceHandle) {
     if (stopWatchFaceHandle.current) {
       // @ts-ignore
       const currentTimetamp = stopWatchFaceHandle.current.getTimeStamp();
-      const { laps } = StopWatchStore;
       const prevLap = laps[laps.length - 1];
       const prevLapTime = (prevLap) ? (currentTimetamp - prevLap.overallTime) : currentTimetamp;
       const lap: Lap = { lapTime: prevLapTime, overallTime: currentTimetamp };
-      StopWatchStore.setStopWatch({ laps: [...StopWatchStore.laps, lap] } as StopWatchObj);
+      StopWatchStore.setStopWatch({ laps: [...laps, lap], timestamp, isPaused });
     }
   }
 

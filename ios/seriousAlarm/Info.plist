@@ -48,7 +48,6 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>

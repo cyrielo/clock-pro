@@ -7,7 +7,10 @@ import { AlarmStackScreen } from '../screens/Alarm';
 import { ClockStackScreen } from '../screens/Clock';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { COLORS } from '../constants/colors';
+import { Platform, View, ViewStyle } from 'react-native';
 export const screenConfig = { header: () => null };
+
+const os = Platform.OS;
 
 const Tab = createBottomTabNavigator();
 
@@ -17,35 +20,60 @@ export default (() => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size, focused }) => {
           size = 32;
-          let activeIconStyle = {};
+          let activeIconStyle: ViewStyle = { };
           if (focused) {
-            activeIconStyle = { 
+            activeIconStyle = {
               ...activeIconStyle,
               backgroundColor: '#171717',
-              padding: 15,
-              borderRadius: 150,
-              position: 'relative',
+              height: 60,
+              width: 60,
+              borderRadius: 50,
+              margin: 'auto',
+              justifyContent:'center',
+              alignItems:'center'
             };
           }
           if (route.name === 'alarm') {
-            return <Ionicons name='alarm' style={activeIconStyle} color={color} size={size} />;
+            return (
+              <View style={activeIconStyle}>
+                <Ionicons name='alarm'  color={color} size={size} />
+              </View>
+            );
           } else if (route.name === 'timer') {
-            return <Ionicons name='timer' style={activeIconStyle} color={color} size={size} />;
+            return (
+              <View style={activeIconStyle}>
+                <Ionicons name='timer' color={color} size={size} />
+              </View>
+            );
           } else if (route.name === 'clock') {
-            return <Ionicons name='time' style={activeIconStyle} color={color} size={size} />;
+            return (
+              <View style={activeIconStyle}>
+                <Ionicons name='time' color={color} size={size} />
+              </View>
+            );
           } else if (route.name === 'stopwatch') {
-            return <Ionicons name='stopwatch' style={activeIconStyle} color={color} size={size} />;
+            return (
+              <View style={activeIconStyle}>
+                <Ionicons name='stopwatch' color={color} size={size} />
+              </View>
+            );
           } else if (route.name === 'pref') {
-            return <Ionicons name='cog' style={activeIconStyle} color={color} size={size} />
+            return (
+              <View style={activeIconStyle}>
+                <Ionicons name='cog' color={color} size={size} />
+              </View>
+            );
           }
         },
         tabBarShowLabel: false,
+        tabBarIconStyle: {
+          top: (os === 'ios') ? 10 : 0,
+        },
         tabBarStyle: {
-          position: 'absolute',
           bottom: 20,
+          marginVertical:'auto',
           marginHorizontal: 20,
-          paddingHorizontal: 10,
-          borderRadius: 40,
+          borderRadius: 50,
           height: 80,
         },
         tabBarHideOnKeyboard: true,

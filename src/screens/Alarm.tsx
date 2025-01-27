@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -15,54 +15,57 @@ import { ScreenWithNavigation } from '../types/index';
 import { formatTimeString } from '../utils/stringUtils';
 import { useTheme } from '@react-navigation/native';
 import i18n from '../i18n';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Alarm = observer(({navigation, route} :ScreenWithNavigation) => {
   const alarmKeys = AlarmStore.alarms && Object.keys(AlarmStore.alarms) || [];
   const {} = PreferencesStore.preferences;
   const theme = useTheme();
   return (
-    <SafeAreaView 
-      style={{
-        ...AppStyle.container,
-        ...theme.colors,
-        marginBottom: 0,
-        position: 'relative',
-        height: '100%'
-      }}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
+    <SafeAreaProvider>
+      <SafeAreaView
         style={{
-          marginBottom: 90,
+          ...AppStyle.container,
+          ...theme.colors,
+          marginBottom: 0,
+          position: 'relative',
+          height: '100%'
         }}>
-        <Header title={i18n.t('alarm')} onAdd={() => {
-          navigation.navigate('set_alarm');
-        }} />
-          {alarmKeys.map((item, index) => {
-            const alarm = AlarmStore.alarms && (AlarmStore.alarms[item]) || {};
-            return (
-              <TouchableOpacity
-                key={index}
-                onPress={() => {
-                  navigation.navigate('Set Alarm', { prevAlarm: alarm });
-                }}
-              >
-                <AlarmCard
-                  style={{ marginBottom: 20 }}
-                  title={alarm.label}
-                  time={formatTimeString(new Date(alarm.timestamp))}
-                  active={alarm.active}
-                  weekdays={alarm.weekdays}
-                  shouldRepeat={alarm.shouldRepeat}
-                  shouldVibrate={alarm.shouldVibrate}
-                  onActiveToggle={(val: boolean) => {
-                    AlarmStore.updateAlarm(Object.assign({}, alarm, { active: val }));
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            marginBottom: 90,
+          }}>
+          <Header title={i18n.t('alarm')} onAdd={() => {
+            navigation.navigate('set_alarm');
+          }} />
+            {alarmKeys.map((item, index) => {
+              const alarm = AlarmStore.alarms && (AlarmStore.alarms[item]) || {};
+              return (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => {
+                    navigation.navigate('Set Alarm', { prevAlarm: alarm });
                   }}
-                />
-              </TouchableOpacity>
-            );
-          })}
-      </ScrollView>
-    </SafeAreaView>
+                >
+                  <AlarmCard
+                    style={{ marginBottom: 20 }}
+                    title={alarm.label}
+                    time={formatTimeString(new Date(alarm.timestamp))}
+                    active={alarm.active}
+                    weekdays={alarm.weekdays}
+                    shouldRepeat={alarm.shouldRepeat}
+                    shouldVibrate={alarm.shouldVibrate}
+                    onActiveToggle={(val: boolean) => {
+                      AlarmStore.updateAlarm(Object.assign({}, alarm, { active: val }));
+                    }}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   )
 });
 

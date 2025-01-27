@@ -7,7 +7,7 @@ export default class PreferenceStore {
 
   preferences: Preferences = {
     theme: this.getPreferences().theme || 'system',
-    language: this.getPreferences().language || 'ch',
+    language: this.getPreferences().language || 'en',
     notificationEnabled: this.getPreferences().notificationEnabled || true,
     notificationSound: this.getPreferences().notificationSound || 'loud_alarm_sound'
   };

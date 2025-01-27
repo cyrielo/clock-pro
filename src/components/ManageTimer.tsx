@@ -185,6 +185,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
           <Dropdown
             ref={colorSelectorRef}
             style={{ backgroundColor: theme.colors.background }}
+            placeholderStyle={{ color: theme.colors.text, textAlign: 'right' }}
             showsVerticalScrollIndicator={false}
             data={ColorData}
             labelField={'label'}
@@ -264,6 +265,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             backgroundColor: theme.colors.background,
             borderColor: theme.colors.border,
           }}
+          placeholderStyle={{ color: theme.colors.text, textAlign: 'right' }}
           showsVerticalScrollIndicator={false}
           data={NotificationSounds()}
           selectedTextStyle={{ color: theme.colors.text }}

@@ -296,7 +296,7 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
               data={NotificationSounds()}
               search={false}
               value={alarmSound}
-              placeholderStyle={{ textAlign: 'right', color: theme.colors.text }}
+              placeholderStyle={{ color: theme.colors.text, textAlign: 'right' }}
               onChange={(item) => {
                 setAlarmSound(item.value);
               }}

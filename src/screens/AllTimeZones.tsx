@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Button, TextInput, Dimensions, KeyboardAvoidingView } from 'react-native';
+import { View, TextInput, Dimensions, KeyboardAvoidingView } from 'react-native';
 import TimeZones from '../components/TimeZones';
 import { ClockStore, PreferencesStore } from '../store';
 import Ionicon from '@react-native-vector-icons/ionicons';
@@ -12,9 +12,8 @@ import { ScreenWithNavigation } from '../types';
 
 const AllTimeZones = observer(({ navigation, route }: ScreenWithNavigation) => {
   const theme = useTheme();
-  navigation.setOptions({ title: i18n.t('set_alarm') });
   const [searchString, setSearchString] = useState('');
-  const {} = PreferencesStore.preferences;
+  const { language } = PreferencesStore.preferences;
   const windowHeight = Dimensions.get('window').height;
   const marginBottom = 60;
   const screenHeight = windowHeight - (FLOATING_FOOTER_HEIGHT + SPACING + marginBottom);
@@ -24,6 +23,9 @@ const AllTimeZones = observer(({ navigation, route }: ScreenWithNavigation) => {
     const continent = val.continent.toLocaleLowerCase();
     return (city.includes(searchString) || country.includes(searchString) || continent.includes(searchString));
   }) || [];
+  useEffect(() => {
+    navigation.setOptions({ title: i18n.t('set_alarm') });
+  }, [language]);
   return (
     <KeyboardAvoidingView
       style={{

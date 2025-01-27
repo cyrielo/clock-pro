@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, FlatList, Text, Image, TouchableOpacity} from 'react-native';
-import MaterialIcon from '@react-native-vector-icons/material-design-icons';
+import Ionicon from '@react-native-vector-icons/ionicons';
 import { observer } from 'mobx-react-lite';
 import { formatInTimeZone, fromZonedTime, getTimezoneOffset } from 'date-fns-tz'
 import { Place } from '../types';
@@ -85,8 +85,8 @@ const TimeZones = observer(({ data, localTimezone }: TimeZoneProps) => {
                     ClockStore.addFavorite(item);
                   }
                 }}>
-                <MaterialIcon
-                  name={(item.isFave) ? 'heart-circle' : 'heart-plus-outline'}
+                <Ionicon
+                  name={(item.isFave) ? 'heart-circle' : 'heart-outline'}
                   color={(item.isFave) ? 'red' : 'grey' }
                   size={22}
                 />

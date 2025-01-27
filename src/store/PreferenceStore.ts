@@ -27,7 +27,7 @@ export default class PreferenceStore {
   getPreferences(): Preferences {
     const preferencesStr = storage.getString(_PREFERENCE_KEY);
     const preferenceObj: Preferences =
-    (preferencesStr !== undefined) ? JSON.parse(preferencesStr) : this.preferences;
+    (preferencesStr !== undefined) ? JSON.parse(preferencesStr) : {};
     return preferenceObj;
   }
 

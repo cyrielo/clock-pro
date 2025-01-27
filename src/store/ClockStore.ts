@@ -78,6 +78,6 @@ export default class ClockStore {
   }
   private getSavedPlaces(): Record<string, Place>{
     const favesString = storage.getString(__CLOCK__KEY__);
-    return (favesString !== undefined) ? JSON.parse(favesString) : this.favorites;
+    return (favesString !== undefined) ? JSON.parse(favesString) : {};
   }
 }

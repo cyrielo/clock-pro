@@ -3,7 +3,7 @@ import { Timer } from "../types";
 import { CancelTimerNotification, GetTriggerNotificationIds, DisplayNotification, ScheduleTimer } from "../services/NotificationServices";
 import { storage } from "../utils/storage";
 
-  const __TIMER_STORE_ = '__TIMER_STORE_';
+const __TIMER_STORE_ = '__TIMER_STORE_';
 
 export default class TimerStore {
   timer:Record<string, Timer> = this.fetchTimer() || {};
@@ -68,7 +68,7 @@ export default class TimerStore {
       });
       this.persistTimer();
     } catch (error) {
-      console.error('failed to delete ->', error);
+      console.error('deleteTimer error ', error);
     }
 
   }
@@ -79,6 +79,6 @@ export default class TimerStore {
 
   private fetchTimer() {
     const timerStr = storage.getString(__TIMER_STORE_);
-    return (timerStr !== undefined) ? JSON.parse(timerStr) : this.timer;
+    return (timerStr !== undefined) ? JSON.parse(timerStr) : {};
   }
 }

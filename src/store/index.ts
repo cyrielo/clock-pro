@@ -9,12 +9,3 @@ export const PreferencesStore = new preferenceStore();
 export const StopWatchStore = new stopWatchStore();
 export const ClockStore = new clockStore();
 export const TimerStore = new timerStore();
-
-
-export default {
-  AlarmStore,
-  PreferencesStore,
-  StopWatchStore,
-  ClockStore,
-  TimerStore
-};

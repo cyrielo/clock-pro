@@ -2,7 +2,7 @@ import {runInAction, makeAutoObservable} from 'mobx';
 import { Lap, StopWatchObj } from '../types';
 import { storage } from '../utils/storage';
 
-  const STORE_KEY = '_STOPWATCH_KEY__';
+const STORE_KEY = '_STOPWATCH_KEY__';
 
 export default class StopwatchStore implements StopWatchObj {
 

@@ -10,7 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useColorScheme } from 'react-native';
 import { DarkTheme, LightTheme } from './src/constants/colors';
-import _, { PreferencesStore } from './src/store';
+import { PreferencesStore } from './src/store';
 import TabNavigation from './src/navigations/TabNavigation';
 import { ThemeType } from './src/types';
 import { observer } from 'mobx-react-lite';

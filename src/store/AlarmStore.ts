@@ -7,7 +7,7 @@ const _ALARM_KEY: string = 'ALARM_KEY';
 
 export default class AlarmStore {
 
-  alarms: Record<string, Alarm> = this.getAlarms();
+  alarms: Record<string, Alarm> = this.getAlarms() || {};
   constructor() {
     makeAutoObservable(this);
   }

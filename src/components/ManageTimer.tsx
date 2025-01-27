@@ -282,6 +282,21 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
         marginTop:15,
         justifyContent: 'center'
       }}>
+        {editMode ? (
+          <Button onPress={async () => {
+            await TimerStore.deleteTimer(colKey);
+            TimerStore.toggleTimerModalVisibility();
+          }}
+            style={{ backgroundColor: '#d11a2a', }}>
+            <Text style={{
+              color: theme.colors.text,
+              fontWeight: 500,
+              textAlign: 'center'
+            }}>
+              {i18n.t('delete_timer')}
+            </Text>
+          </Button>
+        ) : null}
         <Button
           style={{
             backgroundColor: theme.colors.background,
@@ -308,21 +323,6 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             {editMode ? i18n.t('update_timer') : i18n.t('start_timer')}
           </Text>
         </Button>
-        { editMode ? (
-          <Button onPress={async () => {
-            await TimerStore.deleteTimer(colKey);
-            TimerStore.toggleTimerModalVisibility();
-          }}
-          style={{ backgroundColor: '#d11a2a', }}>
-            <Text style={{
-              color: theme.colors.text,
-              fontWeight: 500,
-              textAlign: 'center'
-              }}>
-              {i18n.t('delete_timer')}
-            </Text>
-          </Button>
-        ) : null }
       </View>
     </View>
   );

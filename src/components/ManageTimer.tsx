@@ -51,7 +51,14 @@ const TimerInput: React.FC<TimerInputProps> = (({
         maxLength={2}
         placeholderTextColor={theme.colors.text}
         placeholder={placeholder} />
-      <Text style={{ fontSize: 18, marginLeft: 2, marginTop: 5 }}>{label}</Text>
+      <Text style={{
+        fontSize: 18,
+        marginLeft: 2,
+        marginTop: 5,
+        color: theme.colors.text
+        }}>
+          {label}
+        </Text>
     </View>
   )
 });
@@ -163,7 +170,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             style={{
               borderRadius: 5,
               borderWidth: 1,
-              borderColor: 'grey',
+              borderColor: theme.colors.border,
               backgroundColor: theme.colors.background,
               padding: 5,
               color: theme.colors.text,
@@ -177,7 +184,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
         }}>
           <Dropdown
             ref={colorSelectorRef}
-            style={{ }}
+            style={{ backgroundColor: theme.colors.background }}
             showsVerticalScrollIndicator={false}
             data={ColorData}
             labelField={'label'}
@@ -254,6 +261,7 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             borderWidth: 1,
             borderRadius: 8,
             padding: 4,
+            backgroundColor: theme.colors.background,
             borderColor: theme.colors.border,
           }}
           showsVerticalScrollIndicator={false}

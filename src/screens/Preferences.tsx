@@ -138,6 +138,7 @@ const Preferences = observer( () => {
               }}>
                 <Dropdown
                   style={{
+                    backgroundColor: theme.colors.background,
                     height: 35,
                     width: '100%',
                     justifyContent: 'flex-end',
@@ -177,6 +178,7 @@ const Preferences = observer( () => {
               }}>
                 <Dropdown
                   style={{
+                    backgroundColor: theme.colors.background,
                     height: 35,
                     width: '100%',
                     justifyContent: 'flex-end',
@@ -245,6 +247,7 @@ const Preferences = observer( () => {
               }}>
                 <Dropdown
                   style={{
+                    backgroundColor: theme.colors.background,
                     height: 35,
                     width: '100%',
                     justifyContent: 'flex-end',

@@ -5,6 +5,8 @@ import { Dimensions, View, } from 'react-native';
 import StopwatchFace from '../components/StopwatchFace';
 import LapControlView from '../components/LapControlView';
 import LapView from '../components/LapView';
+import Header from '../components/Header';
+import i18n from '../i18n';
 
 const StopWatch = observer(() => {
   const stopWatchRef = useRef<ReactNode|null>(null);
@@ -14,6 +16,7 @@ const StopWatch = observer(() => {
   const screenHeight = windowHeight - (floatingFooter + spacing);
   return (
     <View style={{ height: screenHeight }} >
+      <Header title={i18n.t('stopwatch')} hasAdd={false} />
       <StopwatchFace ref={stopWatchRef} />
       <LapView />
       <LapControlView stopWatchFaceHandle={stopWatchRef} />

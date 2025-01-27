@@ -289,6 +289,7 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
           }}>
             <Dropdown
               style={{
+                backgroundColor: theme.colors.background,
                 width: '100%',
               }}
               selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}

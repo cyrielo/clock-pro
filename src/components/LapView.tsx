@@ -46,17 +46,17 @@ const LapView = observer(({style}: LapViewProps) => {
         backgroundColor: theme.colors.background,
       }}>
         <View style={{ flex: 1 }}>
-          <Text style={LapTableLabelStyle.lapTableLabel}>
+          <Text numberOfLines={1} ellipsizeMode='tail' style={LapTableLabelStyle.lapTableLabel}>
             {i18n.t('current_time').toLocaleUpperCase()}
           </Text>
         </View>
-        <View style={{ flex: 1, }}>
-          <Text style={LapTableLabelStyle.lapTableLabel}>
+        <View  style={{ flex: 1, }}>
+          <Text numberOfLines={1} ellipsizeMode='tail' style={LapTableLabelStyle.lapTableLabel}>
             {i18n.t('lap_time').toLocaleUpperCase()}
           </Text>
         </View>
         <View style={{ flex: 1, }}>
-          <Text style={LapTableLabelStyle.lapTableLabel}>
+          <Text numberOfLines={1} ellipsizeMode='tail' style={LapTableLabelStyle.lapTableLabel}>
             #{i18n.t('lap').toLocaleUpperCase()}
           </Text>
         </View>

@@ -12,6 +12,7 @@ import { useTheme } from '@react-navigation/native';
 import { COLORS } from '../constants/colors';
 import i18n from '../i18n';
 import Header from '../components/Header';
+import AppStyle from '../assets/styles/AppStyle';
 
 const IconSize = 24;
 const fontSize = 16;
@@ -63,10 +64,6 @@ const Preferences = observer( () => {
     }
   });
 
-  // useEffect(() => {
-
-  // }, [prefs.language]);
-
   return (
     <SafeAreaProvider>
       <SafeAreaView>
@@ -105,12 +102,11 @@ const Preferences = observer( () => {
 
           </Modal>
         <ScrollView
+          style={{
+            ...AppStyle.container
+          }}
           showsVerticalScrollIndicator={false}>
-          <View style={{
-            margin: 20,
-            marginBottom: 0,
-            paddingBottom: 130
-          }}>
+          <View>
             <Header title={i18n.t('preferences')} hasAdd={false} />
             <Section title={i18n.t('general')} />
             <View style={{
@@ -150,7 +146,7 @@ const Preferences = observer( () => {
                   onChange={(item) => {
                     PreferencesStore.setPreferences({ ...prefs, theme: item.value });
                   }}
-                  placeholderStyle={{ color: theme.colors.text }}
+                  placeholderStyle={{ color: theme.colors.text, textAlign: 'right' }}
                   renderRightIcon={() => (<Ionicon color={theme.colors.text} style={{}} name='chevron-forward-outline' size={IconSize} />)}
                   labelField={'label'}
                   valueField={'value'}
@@ -183,7 +179,7 @@ const Preferences = observer( () => {
                     width: '100%',
                     justifyContent: 'flex-end',
                   }}
-                  placeholderStyle={{ color: theme.colors.text }}
+                  placeholderStyle={{ color: theme.colors.text, textAlign:'right' }}
                   selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
                   data={LANGUAGES()}
                   search={false}
@@ -252,7 +248,7 @@ const Preferences = observer( () => {
                     width: '100%',
                     justifyContent: 'flex-end',
                   }}
-                  placeholderStyle={{ color: theme.colors.text }}
+                  placeholderStyle={{ color: theme.colors.text, textAlign: 'right' }}
                   selectedTextStyle={{ textAlign: 'right', color: theme.colors.text }}
                   data={NotificationSounds()}
                   search={false}

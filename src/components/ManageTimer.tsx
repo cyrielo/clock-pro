@@ -285,11 +285,16 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
         justifyContent: 'center'
       }}>
         {editMode ? (
-          <Button onPress={async () => {
-            await TimerStore.deleteTimer(colKey);
-            TimerStore.toggleTimerModalVisibility();
-          }}
-            style={{ backgroundColor: '#d11a2a', }}>
+          <Button
+            style={{
+              backgroundColor: '#d11a2a',
+              marginRight: 10,
+            }}
+            onPress={async () => {
+              await TimerStore.deleteTimer(colKey);
+              TimerStore.toggleTimerModalVisibility();
+            }}
+            >
             <Text style={{
               color: theme.colors.text,
               fontWeight: 500,
@@ -302,7 +307,6 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
         <Button
           style={{
             backgroundColor: theme.colors.background,
-            marginRight: 10,
             borderColor: theme.colors.border,
             borderWidth: 1,
           }}

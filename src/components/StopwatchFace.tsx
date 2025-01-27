@@ -59,9 +59,9 @@ const StopwatchFace = observer(forwardRef((_, ref) => {
         display: 'flex',
         flexDirection: 'row',
         marginVertical: 10,
-        alignItems: 'baseline',
+        alignItems: 'center',
       }}>
-        <View style={{ marginRight: 15, flex: 1, }}>
+        <View style={{ marginRight: 10, flex: 1, }}>
           <Text style={{ ...ClockStyle.values, ...ClockStyle.themeColor}}>
             {getTimeObj(timestamp).hours}
           </Text>
@@ -70,7 +70,7 @@ const StopwatchFace = observer(forwardRef((_, ref) => {
           </Text>
         </View>
         <Separator style={{ ...ClockStyle.separator, ...ClockStyle.themeColor }} />
-        <View style={{ marginRight: 15, flex: 1, }}>
+        <View style={{ marginRight: 10, flex: 1, }}>
           <Text style={{ ...ClockStyle.values, ...ClockStyle.themeColor }}>
             {getTimeObj(timestamp).minutes}
           </Text>
@@ -79,7 +79,7 @@ const StopwatchFace = observer(forwardRef((_, ref) => {
           </Text>
         </View>
         <Separator style={{ ...ClockStyle.separator, ...ClockStyle.themeColor }} />
-        <View style={{ marginRight: 15, flex: 1, }}>
+        <View style={{ marginRight: 10, flex: 1, }}>
           <Text style={{ ...ClockStyle.values, ...ClockStyle.themeColor }}>
             {getTimeObj(timestamp).seconds}
           </Text>
@@ -88,8 +88,8 @@ const StopwatchFace = observer(forwardRef((_, ref) => {
           </Text>
         </View>
         <Separator style={{ ...ClockStyle.separator, ...ClockStyle.themeColor }} />
-        <View style={{ marginRight: 15, flex: 1, }}>
-          <Text style={{ ...ClockStyle.values, fontSize: 18, ...ClockStyle.themeColor }}>
+        <View style={{ marginRight: 10, flex: 1, }}>
+          <Text numberOfLines={1} style={{ ...ClockStyle.values, fontSize: 18, ...ClockStyle.themeColor }}>
             {getTimeObj(timestamp).milliseconds}
           </Text>
           <Text style={{ ...ClockStyle.labels, ...ClockStyle.themeColor }}>

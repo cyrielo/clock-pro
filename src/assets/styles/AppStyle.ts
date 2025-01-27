@@ -23,7 +23,7 @@ export const ClockValueStyle = StyleSheet.create({
   },
   values: {
     fontWeight: 'condensedBold',
-    fontSize: 28,
+    fontSize: 22,
     textAlign: 'center'
   },
   labels: {

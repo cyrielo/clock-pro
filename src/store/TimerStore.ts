@@ -54,6 +54,12 @@ export default class TimerStore {
     });
   }
 
+  setModalVisibility(visibility:boolean){
+    runInAction(() => {
+      this.timerModalVisibility = visibility;
+    });
+  }
+
   setActiveColumnKey(activeColumnKey:string) {
     runInAction(() => {
       this.activeColumnKey = activeColumnKey;

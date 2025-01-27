@@ -94,6 +94,9 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
     <View style={{
       backgroundColor: theme.colors.background,
       padding: 10,
+      borderColor: theme.colors.border,
+      borderWidth: 2,
+      borderRadius: 10,
     }}>
       <View style={{
         display: 'flex',

@@ -189,7 +189,7 @@ const Timer = observer(() => {
       <SafeAreaView>
         <Modal
           animationType='slide'
-          onDismiss={() => TimerStore.toggleTimerModalVisibility()}
+          onDismiss={() => TimerStore.setModalVisibility(false)}
           transparent={true}
           visible={TimerStore.timerModalVisibility}
           >
@@ -197,8 +197,6 @@ const Timer = observer(() => {
               minWidth: '85%',
               minHeight: 300,
               margin: 'auto',
-              backgroundColor: '#fff',
-              borderRadius: 5
             }}>
               <ManageTimer/>
             </View>

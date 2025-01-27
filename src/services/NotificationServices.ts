@@ -41,7 +41,7 @@ export const DisplayNotification = async (timer:Timer) => {
   const notifciation: Notification = {
     id: timer.id,
     color: timer.color,
-    sound: timer.sound,
+    sound: (timer.sound == 'silent') ? '' : timer.sound,
     title: `⏰ ${timer.label}`,
     description: `Timer is complete`
   };
@@ -66,6 +66,10 @@ export const DisplayNotification = async (timer:Timer) => {
       onlyAlertOnce: false,
       visibility: AndroidVisibility.PUBLIC,
       pressAction: { id: notifciation.id, },
+    },
+    ios: {
+      interruptionLevel: 'timeSensitive',
+      critical: true,
     },
   });
 };
@@ -178,7 +182,7 @@ const triggerNotification = async (payload: TriggerPayload) => {
     await notifee.createChannel({
       id: channelId,
       name: payload.notifciation.id,
-      sound: payload.notifciation.sound,
+      sound: (payload.notifciation.sound == 'silent') ? '' : payload.notifciation.sound,
       bypassDnd: true,
       importance: AndroidImportance.HIGH
     }); 
@@ -190,7 +194,7 @@ const triggerNotification = async (payload: TriggerPayload) => {
       android: {
         channelId,
         ongoing: true,
-        sound: payload.notifciation.sound || 'default',
+        sound: (payload.notifciation.sound == 'silent') ? '' : payload.notifciation.sound,
         color: payload.notifciation.color || 'blue',
         importance: AndroidImportance.HIGH,
         lightUpScreen: true,
@@ -199,6 +203,10 @@ const triggerNotification = async (payload: TriggerPayload) => {
         visibility: AndroidVisibility.PUBLIC,
         pressAction: { id: payload.notifciation.id,  },
       },
+      ios: {
+        interruptionLevel: 'timeSensitive',
+        critical: true,
+      }
     }, payload.trigger);
   } catch (e) {
     console.error('notifciation error', e);

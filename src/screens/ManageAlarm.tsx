@@ -22,14 +22,13 @@ import { observer } from 'mobx-react-lite';
 const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
   const theme = useTheme();
   const routeParams = route && route.params || {};
-  navigation.setOptions({ title: i18n.t('set_alarm') });
   const prevAlarm = (routeParams && routeParams.prevAlarm || {}) as Alarm;
   const timerRef = useRef<NodeJS.Timeout | number>();
   const timezone = ClockStore.localTimezone;
   const prevDate =
     prevAlarm && prevAlarm.timestamp ? (fromZonedTime(new Date(prevAlarm.timestamp), timezone)) : fromZonedTime(new Date(), timezone)
   const [date, setDate] = useState(prevDate);
-
+  const { notificationSound, language } = PreferencesStore.preferences;
   const handleAlarmTimeChange = (event:DateTimePickerEvent) => {
     const eventType = event.type;
     if (eventType == 'dismissed') { return; }
@@ -44,6 +43,7 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
     setIsAlarmActive(true);
     setTimestamp(timestamp);
   };
+
   const [timestamp, setTimestamp] = useState(prevDate.getTime());
 
   const [timeString, setTimeString] = useState(formatTimeString(date));
@@ -53,10 +53,11 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
   const [shouldVibrate, setShouldVibrate] = useState(prevAlarm && prevAlarm.shouldVibrate || false);
   const [label, setLabel] = useState(prevAlarm && prevAlarm.label || '');
   const [selectedDays, setSelectedDays] = useState(prevAlarm && prevAlarm.weekdays || [] as Weekdays[]);
-  const [alarmSound, setAlarmSound] = useState(prevAlarm && prevAlarm.sound || PreferencesStore.preferences.notificationSound);
+  const [alarmSound, setAlarmSound] = useState(prevAlarm && prevAlarm.sound || notificationSound);
   const [remainingTime, setRemainingTime] = useState('');
 
   useEffect(() => {
+    navigation.setOptions({ title: i18n.t('set_alarm') });
     timerRef.current = setInterval(() => {
       const localDate = fromZonedTime(new Date(), timezone);
       const localTimeStamp = localDate.getTime();
@@ -73,7 +74,7 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
     return (() => {
       clearInterval(timerRef.current);
     })
-  }, [timeString]);
+  }, [timeString, language]);
   const showMode = (currentMode:any) => {
     DateTimePickerAndroid.open({
       value: date,
@@ -226,14 +227,13 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
             <Text style={{
               padding: 5,
               color: theme.colors.text
-              }}>
-            {i18n.t('alarm_name')}
-            </Text>
+              }}>{i18n.t('alarm_name')}</Text>
             <TextInput
               placeholder={i18n.t('enter_alarm_name')}
               style={{
                 color: theme.colors.text,
                 borderColor: theme.colors.border,
+                padding:5,
                 borderRadius: 5,
               }}
               placeholderTextColor={theme.colors.text}

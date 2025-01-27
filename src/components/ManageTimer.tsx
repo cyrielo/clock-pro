@@ -195,8 +195,16 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
             valueField={'value'}
             value={timer.color}
             activeColor='transparent'
+            itemTextStyle={{
+              color: theme.colors.text
+            }}
+            itemContainerStyle={{
+              backgroundColor: theme.colors.background,
+              borderColor: theme.colors.border
+            }}
             containerStyle={{
-              borderColor: 'transparent',
+              backgroundColor: theme.colors.background,
+              borderColor: theme.colors.border,
               width: 34,
             }}
             renderLeftIcon={() => {
@@ -277,6 +285,18 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
           value={timer.sound}
           onChange={({ value }) => {
             setTimer((prev) => Object.assign(prev, { sound: value }));
+          }}
+          itemTextStyle={{
+            color: theme.colors.text
+          }}
+          itemContainerStyle={{
+            backgroundColor: theme.colors.background,
+            borderColor: theme.colors.border
+          }}
+          activeColor={theme.colors.border}
+          containerStyle={{
+            backgroundColor: theme.colors.background,
+            borderColor: theme.colors.border
           }}
         />
       </View>

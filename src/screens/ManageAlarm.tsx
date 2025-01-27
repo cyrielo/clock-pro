@@ -303,6 +303,18 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
               renderRightIcon={() => (<Ionicon color={theme.colors.text } style={{}} name='chevron-forward-outline' size={24} />)}
               labelField={'label'}
               valueField={'value'}
+              itemTextStyle={{
+                color: theme.colors.text
+              }}
+              itemContainerStyle={{
+                backgroundColor: theme.colors.background,
+                borderColor: theme.colors.border
+              }}
+              activeColor={theme.colors.border}
+              containerStyle={{
+                backgroundColor: theme.colors.background,
+                borderColor: theme.colors.border
+              }}
             />
           </View>
         </View>

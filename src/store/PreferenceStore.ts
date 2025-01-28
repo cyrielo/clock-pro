@@ -1,13 +1,21 @@
 import {runInAction, makeAutoObservable} from 'mobx';
 import { Preferences } from '../types';
 import { storage } from '../utils/storage';
-
+import { getLocales } from 'react-native-localize';
 const _PREFERENCE_KEY = 'PREFERENCE_KEY';
+
+const locale = getLocales();
+let defaulLocale = 'en';
+
+if (locale && locale.length){
+  defaulLocale = locale[0].languageCode;
+}
+
 export default class PreferenceStore {
 
   preferences: Preferences = {
     theme: this.getPreferences().theme || 'system',
-    language: this.getPreferences().language || 'en',
+    language: this.getPreferences().language || defaulLocale,
     notificationEnabled: this.getPreferences().notificationEnabled || true,
     notificationSound: this.getPreferences().notificationSound || 'loud_alarm_sound'
   };

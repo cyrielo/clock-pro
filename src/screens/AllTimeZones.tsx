@@ -21,7 +21,7 @@ const AllTimeZones = observer(({ navigation, route }: ScreenWithNavigation) => {
     const city = val.location.toLocaleLowerCase();
     const country = val.country.toLocaleLowerCase();
     const continent = val.continent.toLocaleLowerCase();
-    return (city.includes(searchString) || country.includes(searchString) || continent.includes(searchString));
+    return (city.includes(searchString.toLocaleLowerCase()) || country.includes(searchString.toLocaleLowerCase()) || continent.includes(searchString.toLocaleLowerCase()));
   }) || [];
   useEffect(() => {
     navigation.setOptions({ title: i18n.t('set_alarm') });

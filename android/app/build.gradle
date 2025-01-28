@@ -77,9 +77,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "ca.rockyroads.seriousalarm"
+    namespace "com.seriousalarm"
     defaultConfig {
-        applicationId "ca.rockyroads.seriousalarm"
+        applicationId "com.seriousalarm"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -20,17 +20,18 @@ export default (() => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size, focused }) => {
           size = 32;
-          let activeIconStyle: ViewStyle = { };
+          let activeIconStyle: ViewStyle = {
+            height: 60,
+            width: 60,
+            borderRadius: 50,
+            margin: 'auto',
+            justifyContent: 'center',
+            alignItems: 'center'
+          };
           if (focused) {
             activeIconStyle = {
               ...activeIconStyle,
               backgroundColor: '#171717',
-              height: 60,
-              width: 60,
-              borderRadius: 50,
-              margin: 'auto',
-              justifyContent:'center',
-              alignItems:'center'
             };
           }
           if (route.name === 'alarm') {

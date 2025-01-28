@@ -22,7 +22,7 @@ export default class TimerStore {
     this.persistTimer();
     // handle notification triggers
     if (timer.isPaused && !timer.isComplete) {
-      await CancelTimerNotification(timer.id);
+      await CancelTimerNotification(timer);
     }
 
     if(!timer.isPaused && !timer.isComplete) {
@@ -68,7 +68,7 @@ export default class TimerStore {
 
   async deleteTimer(activeColumnKey:string) {
     try {
-      await CancelTimerNotification(this.timer[activeColumnKey].id);
+      await CancelTimerNotification(this.timer[activeColumnKey]);
       runInAction(() => {
         delete this.timer[activeColumnKey];
       });

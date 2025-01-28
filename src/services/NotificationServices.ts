@@ -7,6 +7,7 @@ import { add, format, getTime } from 'date-fns';
 
 export const ScheduleTimer = async (timer:Timer, timestamp:number) => {
   if (!PreferencesStore.preferences.notificationEnabled) { return; }
+  const timerId = `${timer.id}_${timer.sound}`;
   const notificationTrigger: TimestampTrigger = {
     timestamp: timestamp,
     type: TriggerType.TIMESTAMP,
@@ -16,7 +17,7 @@ export const ScheduleTimer = async (timer:Timer, timestamp:number) => {
     },
   };
   const notifciation: Notification = {
-    id: timer.id,
+    id: timerId,
     color: timer.color,
     sound: timer.sound,
     title: `⏰ ${timer.label}`,
@@ -29,15 +30,17 @@ export const ScheduleTimer = async (timer:Timer, timestamp:number) => {
   await triggerNotification(payload);
 };
 
-export const CancelTimerNotification = async (id:string) => {
-  await notifee.cancelTriggerNotification(id);
-  await notifee.deleteChannel(id);
+export const CancelTimerNotification = async (timer:Timer) => {
+  const timerId = `${timer.id}_${timer.sound}`;
+  await notifee.cancelTriggerNotification(timerId);
+  await notifee.cancelNotification(timerId);
+  await notifee.deleteChannel(timerId);
 }
 
 export const DisplayNotification = async (timer:Timer) => {
   if (!PreferencesStore.preferences.notificationEnabled) { return; }
   await notifee.requestPermission();
-  const channelId = timer.id;
+  const channelId = `${timer.id}_${timer.sound}`;
   const notifciation: Notification = {
     id: timer.id,
     color: timer.color,
@@ -113,7 +116,7 @@ const RescheduleAlarmInPlace = async (alarm:Alarm) => {
 export const ScheduleAlarm = async (alarm: Alarm) => {
   try {
     const timezone = ClockStore.localTimezone;
-    const alarmNotificationId = `${alarm.id}_alarm`; //adds alarm keyWord for alarmNotifications identity;
+    const alarmNotificationId = `${alarm.id}_alarm_${alarm.sound}`; //adds alarm keyWord for alarmNotifications identity;
     const today = fromZonedTime(new Date(), timezone);
     // start alarm from nextDay if the datetime is in the past
     if (alarm.timestamp < getTime(today)) {

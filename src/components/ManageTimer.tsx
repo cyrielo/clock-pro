@@ -11,6 +11,7 @@ import { observer } from 'mobx-react-lite';
 import { PreferencesStore, TimerStore } from '../store';
 import { useTheme } from '@react-navigation/native';
 import i18n from '../i18n';
+import { CancelTimerNotification } from '../services/NotificationServices';
 
 type ManageTimerProps = {
 };
@@ -344,6 +345,9 @@ const ManageTimer: React.FC<ManageTimerProps> = observer(({}) => {
               elapsedTime: 0,
               duration: durationInms
             });
+            if (editMode) {
+              await CancelTimerNotification(timer);
+            }
             await TimerStore.addTimer(colKey, a);
             TimerStore.toggleTimerModalVisibility();
           }}

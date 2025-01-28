@@ -5,6 +5,9 @@ import cnTranslations from './locales/cn.json';
 import hiTranslations from './locales/hi.json';
 import tlTranslations from './locales/tl.json';
 import frTranslations from './locales/fr.json';
+import esTranslations from './locales/es.json';
+import igTranslations from './locales/ig.json';
+import yoTranslations from './locales/yo.json';
 import { PreferencesStore } from '../store';
 
 const languages: Resource = {
@@ -12,7 +15,10 @@ const languages: Resource = {
   cn: { translation: cnTranslations },
   hi: { translation: hiTranslations },
   tl: { translation: tlTranslations },
-  fr: { translation: frTranslations }
+  fr: { translation: frTranslations },
+  es: { translation: esTranslations },
+  ig: { translation: igTranslations },
+  yo: { translation: yoTranslations },
 };
 
 

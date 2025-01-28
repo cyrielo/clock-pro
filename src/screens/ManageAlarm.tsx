@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TextInput,  } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Platform } from 'react-native';
 import RNDateTimePicker, { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { Alarm, ScreenWithNavigation, Weekdays } from '../types';
 import { CircularCard } from '../components/Card';
@@ -22,6 +22,7 @@ import { observer } from 'mobx-react-lite';
 const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
   const theme = useTheme();
   const routeParams = route && route.params || {};
+  const PlatformOS = Platform.OS;
   const prevAlarm = (routeParams && routeParams.prevAlarm || {}) as Alarm;
   const timerRef = useRef<NodeJS.Timeout | number>();
   const timezone = ClockStore.localTimezone;
@@ -65,7 +66,7 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
       const timeObj = getTimeObj(diff);
       const hours = timeObj.hours && timeObj.hours + 'hrs' || '';
       const minutes = timeObj.minutes && timeObj.minutes + ' mins' || '';
-      const left = (hours) ? `- ${hours} ${minutes}` : ``;
+      const left = (hours || minutes) ? `- ${hours} ${minutes}` : ``;
       if (!timeObj || !Object.keys(timeObj).length) {
         clearInterval(timerRef.current);
       }
@@ -81,6 +82,7 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
       onChange: handleAlarmTimeChange,
       mode: currentMode,
       is24Hour: false,
+      display: 'spinner'
     });
   };
 
@@ -93,11 +95,7 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
     }
   }
 
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const showTimepicker = () => {
+  const showAndroidTimepicker = () => {
     showMode('time');
   };
   const allDays: Weekdays[] = ['sunday','monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -111,9 +109,9 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
       >
       <CircularCard style={{marginTop: 20}}>
         <TouchableOpacity
-          style={{  }}
+          disabled={PlatformOS === 'ios'}
           onPress={() => {
-            showTimepicker();
+            if (PlatformOS === 'android') { showAndroidTimepicker();}
           }}>
           <View
             style={{
@@ -143,15 +141,26 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
                 { isAlaramActive ? i18n.t('alarm_on') : i18n.t('alarm_off')}
               </Text>
             </View>
-            <Text style={{
-              fontSize: 38,
-              marginVertical: 15, 
-              width: '100%',
-              textAlign: 'center',
-              color: theme.colors.text
-              }}>
-              {timeString}
-            </Text>
+            {(PlatformOS === 'ios') ? (
+              <RNDateTimePicker
+              style={{
+                margin:'auto',
+                marginTop: 20,
+              }}
+              accentColor='purple'
+              themeVariant={theme.dark ? 'dark' : 'light'}
+              mode='time' display='inline' onChange={handleAlarmTimeChange} value={date} />
+            ) : (
+                <Text style={{
+                  fontSize: 38,
+                  marginVertical: 15,
+                  width: '100%',
+                  textAlign: 'center',
+                  color: theme.colors.text
+                }}>
+                  {timeString}
+                </Text>
+            )}
             <Pulsate isPaused={!isAlaramActive && !remainingTime}>
               <Text
                 style={{

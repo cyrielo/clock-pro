@@ -22,6 +22,19 @@ export const LANGUAGES = (): DropdownOption[] => ([{
   label: i18n.t('en'),
   value: 'en'
 },
+  {
+    label: i18n.t('yo'),
+    value: 'yo'
+  },
+  {
+    label: i18n.t('ig'),
+    value: 'ig'
+  },
+  {
+    label: i18n.t('es'),
+    value: 'es'
+  },
+
 {
   label: i18n.t('cn'),
   value: 'cn'

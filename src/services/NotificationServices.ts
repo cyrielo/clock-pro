@@ -1,9 +1,10 @@
-import notifee, { TimestampTrigger, TriggerType, AlarmType, AndroidImportance, AndroidVisibility, EventType } from '@notifee/react-native';
+import notifee, { TimestampTrigger, TriggerType, AlarmType, AndroidImportance, AndroidVisibility, EventType, AndroidChannel, NotificationIOS, AuthorizationStatus } from '@notifee/react-native';
 import { Alarm, Timer, Notification, Weekdays, TriggerPayload } from '../types';
 import { COLORS } from '../constants/colors';
 import { fromZonedTime } from 'date-fns-tz';
 import { ClockStore, PreferencesStore } from '../store';
 import { add, format, getTime } from 'date-fns';
+import { Alert } from 'react-native';
 
 export const ScheduleTimer = async (timer:Timer, timestamp:number) => {
   if (!PreferencesStore.preferences.notificationEnabled) { return; }
@@ -73,6 +74,7 @@ export const DisplayNotification = async (timer:Timer) => {
     ios: {
       interruptionLevel: 'timeSensitive',
       critical: true,
+      sound: (notifciation.sound == 'silent') ? '' : `${notifciation.sound}.mp3`,
     },
   });
 };
@@ -159,15 +161,16 @@ export const ScheduleAlarm = async (alarm: Alarm) => {
 
 };
 
-export const CancelAlarmSchedule = async (alarm:Alarm, channelId:string) => {
+export const CancelAlarmSchedule = async (alarm:Alarm) => {
   try {
-    const notifciationIds = [`${alarm.id}_alarm`];
+    const alarmNotificationId = `${alarm.id}_alarm_${alarm.sound}`;
+    const notifciationIds = [alarmNotificationId];
     for (let i = 0; i < alarm.weekdays.length; i++) {
       const weekday = alarm.weekdays[i];
       notifciationIds.push(`${alarm.timestamp}_${weekday}_alarm`);
     }
     await notifee.cancelAllNotifications(notifciationIds);
-    await notifee.deleteChannel(channelId);
+    await notifee.deleteChannel(alarmNotificationId);
   } catch(error) {
     console.error('Error while CancelAlarmSchedule ', error);
   }
@@ -179,40 +182,68 @@ export const GetTriggerNotificationIds = async() => {
 
 const triggerNotification = async (payload: TriggerPayload) => {
   if (!PreferencesStore.preferences.notificationEnabled) { return; }
-  await notifee.requestPermission();
-  try {
-    const channelId = payload.channelId ? payload.channelId : payload.notifciation.id;
-    await notifee.createChannel({
-      id: channelId,
-      name: payload.notifciation.id,
-      sound: (payload.notifciation.sound == 'silent') ? '' : payload.notifciation.sound,
-      bypassDnd: true,
-      importance: AndroidImportance.HIGH
-    }); 
-    await notifee.createTriggerNotification({
-      id: payload.notifciation.id,
-      title: payload.notifciation.title,
-      body: payload.notifciation.description,
-      data: payload.data,
-      android: {
-        channelId,
-        ongoing: true,
-        sound: (payload.notifciation.sound == 'silent') ? '' : payload.notifciation.sound,
-        color: payload.notifciation.color || 'blue',
-        importance: AndroidImportance.HIGH,
-        lightUpScreen: true,
-        loopSound: true,
-        onlyAlertOnce: false,
-        visibility: AndroidVisibility.PUBLIC,
-        pressAction: { id: payload.notifciation.id,  },
-      },
-      ios: {
+  const permission = await notifee.requestPermission({
+    alert: true,   // Ensures notification appears on screen
+    sound: true,   // Enables sound
+    badge: true,   // Allows badge updates
+    criticalAlert: true, // Enables critical alerts if needed
+  });
+  const authorizationStatus = permission.authorizationStatus;
+  if (authorizationStatus == AuthorizationStatus.AUTHORIZED || authorizationStatus == AuthorizationStatus.PROVISIONAL) {
+    try {
+      const channelId = payload.channelId ? payload.channelId : payload.notifciation.id;
+      const channel: AndroidChannel = {
+        id: channelId,
+        name: payload.notifciation.id,
+        bypassDnd: true,
+        importance: AndroidImportance.HIGH
+      };
+      const isSilent = (payload.notifciation.sound === 'silent');
+      if (!isSilent) {
+        channel.sound = payload.notifciation.sound
+      }
+      const iosNotification: NotificationIOS = {
         interruptionLevel: 'timeSensitive',
         critical: true,
+        badgeCount: 1,
+        criticalVolume: 1.0,
+        foregroundPresentationOptions: {
+          alert: true,
+          sound: !isSilent,
+          badge:true,
+          banner:true,
+          list:true,
+        }
+      };
+      if (!isSilent) {
+        iosNotification.sound = `${payload.notifciation.sound}.mp3`;
       }
-    }, payload.trigger);
-  } catch (e) {
-    console.error('notifciation error', e);
+      await notifee.createChannel(channel); 
+      await notifee.createTriggerNotification({
+        id: payload.notifciation.id,
+        title: payload.notifciation.title,
+        body: payload.notifciation.description,
+        data: payload.data,
+        android: {
+          channelId,
+          ongoing: true,
+          sound: (payload.notifciation.sound == 'silent') ? '' : payload.notifciation.sound,
+          color: payload.notifciation.color || 'blue',
+          importance: AndroidImportance.HIGH,
+          lightUpScreen: true,
+          loopSound: true,
+          onlyAlertOnce: false,
+          visibility: AndroidVisibility.PUBLIC,
+          pressAction: { id: payload.notifciation.id,  },
+        },
+        ios: iosNotification
+      }, payload.trigger);
+    } catch (e) {
+      console.error('notifciation error', e);
+    }
+  } else {
+    Alert.alert('Enable notifications in settings!');
+    await notifee.openNotificationSettings();
   }
 }
 
@@ -225,13 +256,13 @@ notifee.onForegroundEvent(async ({ type, detail }) => {
         await notifee.cancelNotification(detail.notification.id);
         if (detail.notification.id.includes('_alarm')) {
           try {
-            const data = (detail.notification.data?.alarm as any) as string;
-            const alarm = (JSON.parse(data)) || {} as Alarm;
+            const data = (detail.notification.data?.alarm) as string|undefined;
+            const alarm = (data !== undefined) ? (JSON.parse(data)) : {} as Alarm;
             if (alarm.shouldRepeat) {
               await RescheduleAlarmInPlace(alarm);
             }
           } catch(error) {
-            console.error('Failed to RescheduleAlarmInPlace', error);
+            console.error('Failed RescheduleAlarmInPlace', error);
           }
         }
       }

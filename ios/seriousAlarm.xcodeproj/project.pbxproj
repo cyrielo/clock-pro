@@ -12,6 +12,25 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		6C9325922D48888400FB67F4 /* buzzer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325912D48888400FB67F4 /* buzzer.mp3 */; };
+		6C9325942D48889600FB67F4 /* loud_alarm_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325932D48889600FB67F4 /* loud_alarm_sound.mp3 */; };
+		6C9325962D4888A100FB67F4 /* merong_nag_txt_sayo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325952D4888A100FB67F4 /* merong_nag_txt_sayo.mp3 */; };
+		6C9325982D4888D200FB67F4 /* minions_hello.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325972D4888D200FB67F4 /* minions_hello.mp3 */; };
+		6C93259A2D4888E000FB67F4 /* morning_rooster.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325992D4888E000FB67F4 /* morning_rooster.mp3 */; };
+		6C93259C2D4888EA00FB67F4 /* oppo_tune.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C93259B2D4888EA00FB67F4 /* oppo_tune.mp3 */; };
+		6C93259E2D4888F200FB67F4 /* phone_linging.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C93259D2D4888F200FB67F4 /* phone_linging.mp3 */; };
+		6C9325A02D4888F800FB67F4 /* ring_ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C93259F2D4888F800FB67F4 /* ring_ring.mp3 */; };
+		6C9325A22D48890300FB67F4 /* screaming_goat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325A12D48890300FB67F4 /* screaming_goat.mp3 */; };
+		6C9325A42D48890B00FB67F4 /* screaming.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325A32D48890B00FB67F4 /* screaming.mp3 */; };
+		6C9325A62D48891E00FB67F4 /* serious_alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325A52D48891E00FB67F4 /* serious_alarm.mp3 */; };
+		6C9325A82D48894200FB67F4 /* sister_is_calling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325A72D48894200FB67F4 /* sister_is_calling.mp3 */; };
+		6C9325AA2D48894900FB67F4 /* slim_shady.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325A92D48894900FB67F4 /* slim_shady.mp3 */; };
+		6C9325AC2D48898800FB67F4 /* stella.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325AB2D48898800FB67F4 /* stella.mp3 */; };
+		6C9325AE2D48899800FB67F4 /* tsismosa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325AD2D48899800FB67F4 /* tsismosa.mp3 */; };
+		6C9325B02D4889B200FB67F4 /* wake_the_fxx_up_hard.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325AF2D4889B200FB67F4 /* wake_the_fxx_up_hard.mp3 */; };
+		6C9325B22D4889D500FB67F4 /* wake_the_fxx_up.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325B12D4889D500FB67F4 /* wake_the_fxx_up.mp3 */; };
+		6C9325B42D4889EA00FB67F4 /* wake_up.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325B32D4889EA00FB67F4 /* wake_up.mp3 */; };
+		6C9325B62D489D2700FB67F4 /* iphone_cat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C9325B52D489D2700FB67F4 /* iphone_cat.mp3 */; };
 		7699B88040F8A987B510C191 /* libPods-seriousAlarm-seriousAlarmTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-seriousAlarm-seriousAlarmTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C67C6561680EEDF3AA195A94 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
@@ -43,6 +62,25 @@
 		5709B34CF0A7D63546082F79 /* Pods-seriousAlarm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seriousAlarm.release.xcconfig"; path = "Target Support Files/Pods-seriousAlarm/Pods-seriousAlarm.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-seriousAlarm-seriousAlarmTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seriousAlarm-seriousAlarmTests.debug.xcconfig"; path = "Target Support Files/Pods-seriousAlarm-seriousAlarmTests/Pods-seriousAlarm-seriousAlarmTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-seriousAlarm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-seriousAlarm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C9325912D48888400FB67F4 /* buzzer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buzzer.mp3; sourceTree = "<group>"; };
+		6C9325932D48889600FB67F4 /* loud_alarm_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loud_alarm_sound.mp3; sourceTree = "<group>"; };
+		6C9325952D4888A100FB67F4 /* merong_nag_txt_sayo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = merong_nag_txt_sayo.mp3; sourceTree = "<group>"; };
+		6C9325972D4888D200FB67F4 /* minions_hello.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = minions_hello.mp3; sourceTree = "<group>"; };
+		6C9325992D4888E000FB67F4 /* morning_rooster.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = morning_rooster.mp3; sourceTree = "<group>"; };
+		6C93259B2D4888EA00FB67F4 /* oppo_tune.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = oppo_tune.mp3; sourceTree = "<group>"; };
+		6C93259D2D4888F200FB67F4 /* phone_linging.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = phone_linging.mp3; sourceTree = "<group>"; };
+		6C93259F2D4888F800FB67F4 /* ring_ring.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ring_ring.mp3; sourceTree = "<group>"; };
+		6C9325A12D48890300FB67F4 /* screaming_goat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = screaming_goat.mp3; sourceTree = "<group>"; };
+		6C9325A32D48890B00FB67F4 /* screaming.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = screaming.mp3; sourceTree = "<group>"; };
+		6C9325A52D48891E00FB67F4 /* serious_alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = serious_alarm.mp3; sourceTree = "<group>"; };
+		6C9325A72D48894200FB67F4 /* sister_is_calling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sister_is_calling.mp3; sourceTree = "<group>"; };
+		6C9325A92D48894900FB67F4 /* slim_shady.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = slim_shady.mp3; sourceTree = "<group>"; };
+		6C9325AB2D48898800FB67F4 /* stella.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = stella.mp3; sourceTree = "<group>"; };
+		6C9325AD2D48899800FB67F4 /* tsismosa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tsismosa.mp3; sourceTree = "<group>"; };
+		6C9325AF2D4889B200FB67F4 /* wake_the_fxx_up_hard.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wake_the_fxx_up_hard.mp3; sourceTree = "<group>"; };
+		6C9325B12D4889D500FB67F4 /* wake_the_fxx_up.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wake_the_fxx_up.mp3; sourceTree = "<group>"; };
+		6C9325B32D4889EA00FB67F4 /* wake_up.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wake_up.mp3; sourceTree = "<group>"; };
+		6C9325B52D489D2700FB67F4 /* iphone_cat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = iphone_cat.mp3; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = seriousAlarm/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-seriousAlarm-seriousAlarmTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-seriousAlarm-seriousAlarmTests.release.xcconfig"; path = "Target Support Files/Pods-seriousAlarm-seriousAlarmTests/Pods-seriousAlarm-seriousAlarmTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -95,6 +133,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				6C9325902D4887E500FB67F4 /* Sounds */,
 			);
 			name = seriousAlarm;
 			sourceTree = "<group>";
@@ -107,6 +146,32 @@
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-seriousAlarm-seriousAlarmTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6C9325902D4887E500FB67F4 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				6C9325B32D4889EA00FB67F4 /* wake_up.mp3 */,
+				6C9325B12D4889D500FB67F4 /* wake_the_fxx_up.mp3 */,
+				6C9325AF2D4889B200FB67F4 /* wake_the_fxx_up_hard.mp3 */,
+				6C9325AD2D48899800FB67F4 /* tsismosa.mp3 */,
+				6C9325AB2D48898800FB67F4 /* stella.mp3 */,
+				6C9325A92D48894900FB67F4 /* slim_shady.mp3 */,
+				6C9325A72D48894200FB67F4 /* sister_is_calling.mp3 */,
+				6C9325A52D48891E00FB67F4 /* serious_alarm.mp3 */,
+				6C9325A32D48890B00FB67F4 /* screaming.mp3 */,
+				6C9325B52D489D2700FB67F4 /* iphone_cat.mp3 */,
+				6C9325A12D48890300FB67F4 /* screaming_goat.mp3 */,
+				6C93259F2D4888F800FB67F4 /* ring_ring.mp3 */,
+				6C93259D2D4888F200FB67F4 /* phone_linging.mp3 */,
+				6C93259B2D4888EA00FB67F4 /* oppo_tune.mp3 */,
+				6C9325912D48888400FB67F4 /* buzzer.mp3 */,
+				6C9325932D48889600FB67F4 /* loud_alarm_sound.mp3 */,
+				6C9325952D4888A100FB67F4 /* merong_nag_txt_sayo.mp3 */,
+				6C9325972D4888D200FB67F4 /* minions_hello.mp3 */,
+				6C9325992D4888E000FB67F4 /* morning_rooster.mp3 */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -202,7 +267,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -245,8 +311,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				6C9325B02D4889B200FB67F4 /* wake_the_fxx_up_hard.mp3 in Resources */,
+				6C9325A82D48894200FB67F4 /* sister_is_calling.mp3 in Resources */,
+				6C9325B42D4889EA00FB67F4 /* wake_up.mp3 in Resources */,
+				6C9325962D4888A100FB67F4 /* merong_nag_txt_sayo.mp3 in Resources */,
+				6C9325A02D4888F800FB67F4 /* ring_ring.mp3 in Resources */,
+				6C9325B22D4889D500FB67F4 /* wake_the_fxx_up.mp3 in Resources */,
+				6C93259C2D4888EA00FB67F4 /* oppo_tune.mp3 in Resources */,
+				6C9325AA2D48894900FB67F4 /* slim_shady.mp3 in Resources */,
+				6C9325A42D48890B00FB67F4 /* screaming.mp3 in Resources */,
+				6C9325A22D48890300FB67F4 /* screaming_goat.mp3 in Resources */,
+				6C9325922D48888400FB67F4 /* buzzer.mp3 in Resources */,
+				6C9325B62D489D2700FB67F4 /* iphone_cat.mp3 in Resources */,
+				6C9325942D48889600FB67F4 /* loud_alarm_sound.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				6C93259A2D4888E000FB67F4 /* morning_rooster.mp3 in Resources */,
 				C67C6561680EEDF3AA195A94 /* PrivacyInfo.xcprivacy in Resources */,
+				6C9325A62D48891E00FB67F4 /* serious_alarm.mp3 in Resources */,
+				6C9325AE2D48899800FB67F4 /* tsismosa.mp3 in Resources */,
+				6C9325982D4888D200FB67F4 /* minions_hello.mp3 in Resources */,
+				6C93259E2D4888F200FB67F4 /* phone_linging.mp3 in Resources */,
+				6C9325AC2D48898800FB67F4 /* stella.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,10 +553,13 @@
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-seriousAlarm.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = seriousAlarm/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Serious Alarm";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -496,9 +584,12 @@
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-seriousAlarm.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = seriousAlarm/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Serious Alarm";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -550,6 +641,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -586,10 +678,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -630,6 +719,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -658,10 +748,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

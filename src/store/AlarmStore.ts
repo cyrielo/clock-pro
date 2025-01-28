@@ -32,7 +32,7 @@ export default class AlarmStore {
   async updateAlarm(alarm:Alarm) {
     try {
       const oldAlarm = this.alarms[alarm.id];
-      await CancelAlarmSchedule(oldAlarm, alarm.id);
+      await CancelAlarmSchedule(oldAlarm);
       runInAction(() => {
         this.alarms[alarm.id] = Object.assign({}, alarm);;
       });
@@ -48,7 +48,7 @@ export default class AlarmStore {
   async deleteAlarm(key:string) {
     try {
       const alarm = this.alarms[key];
-      await CancelAlarmSchedule(alarm, alarm.id);
+      await CancelAlarmSchedule(alarm);
       runInAction(() => {
         delete this.alarms[key];
       });

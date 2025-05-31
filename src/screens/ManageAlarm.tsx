@@ -5,7 +5,6 @@ import { Alarm, ScreenWithNavigation, Weekdays } from '../types';
 import { CircularCard } from '../components/Card';
 import Ionicon from '@react-native-vector-icons/ionicons';
 import {  formatTimeString, getTimeObj,  createHash } from '../utils/stringUtils';
-import { FLOATING_FOOTER_HEIGHT } from '../constants';
 import Button from '../components/Button';
 import { Switch } from 'react-native';
 import { NotificationSounds } from '../constants';
@@ -58,7 +57,59 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
   const [remainingTime, setRemainingTime] = useState('');
 
   useEffect(() => {
-    navigation.setOptions({ title: i18n.t('set_alarm') });
+    navigation.setOptions({
+      title: prevAlarm && prevAlarm.id ? '' : i18n.t('set_alarm'),
+      headerBackVisible: true,
+      headerLeft: () => {
+        return (<>
+          {prevAlarm && prevAlarm.id ?
+          <Text style={{ 
+            color: theme.colors.text,
+            fontWeight: 'bold',
+            fontSize: PlatformOS == 'ios' ? 16 : 20
+          }}>{
+            i18n.t('set_alarm')}</Text> : null}
+        </>)
+      },
+      headerRight: () => {
+        return (
+          <>
+            {prevAlarm && prevAlarm.id ? (
+              <Button
+                onPress={async () => {
+                  //delete
+                  await AlarmStore.deleteAlarm(prevAlarm.id);
+                  navigation.goBack();
+                }}
+                style={{ padding: 10, marginRight: 10, backgroundColor: 'transparent' }}>
+                <Text style={{ color: COLORS.Dark_Deep_Orange, fontWeight: '500' }}>Delete</Text>
+              </Button>
+            ) : null}
+            <Button
+              onPress={async () => {
+                //save
+                const uniquestring = `${timestamp}-${selectedDays.join(',')}`;
+                const alarm: Alarm = {
+                  id: (prevAlarm && prevAlarm.id) ? prevAlarm.id : createHash(uniquestring),
+                  active: isAlaramActive,
+                  shouldRepeat,
+                  shouldSnooze,
+                  shouldVibrate,
+                  sound: alarmSound,
+                  label,
+                  timestamp,
+                  weekdays: selectedDays
+                }
+                await AlarmStore.createAlarm(alarm);
+                navigation.goBack();
+              }}
+              style={{ padding: 10, backgroundColor: theme.colors.background }}>
+              <Text style={{ color: theme.colors.text }}>Save</Text>
+            </Button>
+          </>
+        );
+      }
+     });
     timerRef.current = setInterval(() => {
       const localDate = fromZonedTime(new Date(), timezone);
       const localTimeStamp = localDate.getTime();
@@ -101,9 +152,7 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
   const allDays: Weekdays[] = ['sunday','monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
   return (
     <ScrollView
-      style={{
-        marginBottom: FLOATING_FOOTER_HEIGHT + 15,
-      }}
+      style={{ marginBottom: 15, }}
       pagingEnabled={false}
       showsVerticalScrollIndicator={false}
       >
@@ -388,50 +437,6 @@ const ManageAlarm = observer(({ navigation, route }: ScreenWithNavigation) => {
             onValueChange={setShouldVibrate}
           />
         </View>
-      </View>
-      <View style={{
-        display:'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        marginHorizontal: 10,
-        padding: 10
-      }}>
-        <Button
-          onPress={async () => {
-            //delete
-            await AlarmStore.deleteAlarm(prevAlarm.id);
-            navigation.goBack();
-          }}
-          style={{
-            marginRight: 10,
-            padding: 10,
-            borderRadius: 20,
-            backgroundColor: COLORS.Dark_Grey
-          }}>
-          <Ionicon name='trash' color={'#f9f9f9'} size={22} />
-        </Button>
-        <Button
-          onPress={async () => {
-            //save
-            const uniquestring = `${timestamp}-${selectedDays.join(',')}`;
-            const alarm:Alarm = {
-              id: (prevAlarm && prevAlarm.id) ? prevAlarm.id : createHash(uniquestring),
-              active: isAlaramActive,
-              shouldRepeat,
-              shouldSnooze,
-              shouldVibrate,
-              sound:alarmSound,
-              label,
-              timestamp,
-              weekdays:selectedDays
-            }
-            await AlarmStore.createAlarm(alarm);
-            navigation.goBack();
-          }}
-          style={{ padding: 10, backgroundColor: COLORS.Dark_Purple, borderRadius: 20 }}>
-          <Ionicon name='checkmark' color={COLORS.Light} size={22} />
-        </Button>
       </View>
     </ScrollView>
   );

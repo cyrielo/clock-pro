@@ -45,7 +45,7 @@ const Alarm = observer(({navigation, route} :ScreenWithNavigation) => {
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
-                    navigation.navigate('Set Alarm', { prevAlarm: alarm });
+                    navigation.navigate('set_alarm', { prevAlarm: alarm });
                   }}
                 >
                   <AlarmCard
